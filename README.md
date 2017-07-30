@@ -30,3 +30,5 @@ dotnet run
 ```
 
 Then you can open your browser on http://localhost:5000 to browse the application.
+
+Enjoy!
