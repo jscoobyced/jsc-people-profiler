@@ -1,0 +1,12 @@
+$brand-primary: #4169e1;
+$body-bg: #FFF;
+$brand-bg: #000;
+$font-main: monospace;
+$text-color: darken(#4169e1, 10%);
+$navbar-bg: lighten($brand-bg, 10%);
+$dropdown-link-color: $brand-primary;
+$dropdown-link-hover-color: $brand-primary;
+$nav-link-hover-bg: lighten($navbar-bg, 10%);
+$dropdown-bg: $nav-link-hover-bg;
+$dropdown-link-hover-bg: lighten($dropdown-bg, 10%);
+$navbar-height: 28px;

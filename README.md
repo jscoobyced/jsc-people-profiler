@@ -1,0 +1,32 @@
+# jsc-people-profiler
+Application to manage people profiles (i.e. for Human Resource, Manager...)
+
+# Setup
+
+## Database
+
+This project is set to run with MySQL. You'll need to create a database and an account, then run those scripts on this database:
+- `<root>/app.web/SQL/create.sql`
+- `<root>/app.web/SQL/data.sql`
+
+Then update the `<root>/app.web/appsettings.json` to set your MySQL server, username and password in the `ConnectionString/MySql` setting.
+
+## Application
+
+In a CMD or TERMINAL window, follow those steps:
+- To create the client-side assets:
+```
+cd node
+yarn install
+yarn run wp
+```
+
+- To build the dotnet core application
+```
+cd ../app.web
+dotnet restore
+dotnet build
+dotnet run
+```
+
+Then you can open your browser on http://localhost:5000 to browse the application.
