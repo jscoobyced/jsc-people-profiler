@@ -6,6 +6,10 @@
     "module": "commonjs",
     "target": "es5",
     "jsx": "react",
-    "lib": ["dom", "es2015", "es2015.core", "es2015.promise"]
-  }
+    "lib": ["dom", "es2015", "es2015.core", "es2015.promise"],
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  },
+  "exclude": ["node_modules"]
 }

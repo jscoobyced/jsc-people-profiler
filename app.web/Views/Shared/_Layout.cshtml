@@ -2,31 +2,34 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
 
     <link rel="stylesheet" href="~/css/jsc-3894d40acbaecc8257ee.css" />
+    <base href="/" />
 </head>
+
 <body>
     <header>
     </header>
     <nav id="menu" data-menu='@Html.Raw(Json.Serialize(Model.Menu))'></nav>
     <main>
-        <div class="container body-content">
+        <div id="body-content" class="container body-content">
             @RenderBody()
-
         </div>
     </main>
     <footer>
         <p class="text-muted credit">&copy; 2017 - C&eacute;dric ROCHEFOLLE</p>
     </footer>
 
-    <script src="~/js/manifest-1922510135ecd76ebe82.js"></script>
-    <script src="~/js/vendor-aa842a9ad1599276a7a3.js"></script>
-    <script src="~/js/jsc-a547b1acfda5061967d0.js" asp-append-version="true"></script>
+    <script src="~/js/manifest-823230a5a13d696b0ef5.js"></script>
+    <script src="~/js/vendor-02bd59e176748b916b81.js"></script>
+    <script src="~/js/jsc-df01bdc58bff4ef54ee4.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
 </body>
+
 </html>

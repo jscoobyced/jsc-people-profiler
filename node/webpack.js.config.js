@@ -6,9 +6,10 @@ exports.jsConfig = {
     devtool: '#cheap-eval-source-map',
     entry: {
         jsc: ['./src/index'],
-        vendor: ['jquery',
-            'react',
+        vendor: ['react',
             'react-dom',
+            'jquery',
+            'react-router-dom',
             'bootstrap'
         ]
     },
@@ -61,13 +62,13 @@ exports.jsConfig = {
             },
             comments: false
         }),
-        new ChunkHashReplacePlugin({
-            src: 'src/_Layout.tpl.cshtml',
-            dest: 'src/_Layout.cshtml'
-        }),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery"
+        }),
+        new ChunkHashReplacePlugin({
+            src: 'src/_Layout.tpl.html',
+            dest: 'src/_Layout.cshtml'
         }),
         new WebpackCleanupPlugin(),
         new webpack.DefinePlugin({

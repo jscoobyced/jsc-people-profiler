@@ -3,11 +3,20 @@ body {
   font-family: $font-main;
 }
 
+.body-content {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.row {
+  min-height: 50px;
+}
+
 .credit {
   margin: 20px 0;
 }
 
-footer > p {
+footer>p {
   padding-left: 15px;
   padding-right: 15px;
 }

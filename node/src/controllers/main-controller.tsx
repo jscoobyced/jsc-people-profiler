@@ -4,6 +4,7 @@ import * as ReactDOM from 'react-dom';
 import { Menu } from '../components/menu/view/menu';
 import { MenuProps } from '../components/menu/view/menu-models';
 import { IMenuService } from '../components/menu/service/imenu-service';
+import { Content } from '../components/pages/content';
 
 export class MainController {
     private _menuService: IMenuService;
@@ -17,6 +18,10 @@ export class MainController {
         ReactDOM.render(
             React.createElement(Menu, menuProps, null),
             document.getElementById('menu')
+        );
+        ReactDOM.render(
+            React.createElement(Content, menuProps, null),
+            document.getElementById('body-content')
         );
     }
 }
