@@ -59,13 +59,11 @@ exports.cssConfig = {
             cssProcessor: cssnano,
             cssProcessorOptions: {
                 discardComments: {
-                    removeAll: true,
+                    removeAll: true
                 },
                 safe: false
             }
         }),
-        new WebpackCleanupPlugin({
-            preview: true,
-        })
+        new WebpackCleanupPlugin()
     ]
 };

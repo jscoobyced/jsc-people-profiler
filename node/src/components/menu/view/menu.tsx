@@ -5,8 +5,9 @@ import { MenuBar } from './menu-bar';
 import { MenuProps } from './menu-models';
 import { MenuBarProps } from './menu-models';
 import { MenuItem } from './menu-models';
+import { HashRouter as Router, Link } from 'react-router-dom';
 
-export class Menu extends React.Component<MenuProps, any> {
+export class Menu extends React.Component<MenuProps, MenuProps> {
     private menuMultiLevelClassName: string = 'dropdown-menu multi-level';
     private menuUlLeftClassName: string = 'nav navbar-nav';
     private menuUlRightClassName: string = 'nav navbar-nav navbar-right';
@@ -15,6 +16,10 @@ export class Menu extends React.Component<MenuProps, any> {
 
     constructor(props: MenuProps) {
         super(props);
+        this.state = {
+            leftMenu: props.leftMenu,
+            rightMenu: props.rightMenu
+        };
     }
 
     private createMenuItem(menuItem: MenuItem, index: number, isRight: boolean, level: number): JSX.Element {
@@ -59,12 +64,11 @@ export class Menu extends React.Component<MenuProps, any> {
                 if (level === 1) {
                     result = (
                         <li key={index}>
-                            <a href={menuItem.url} className={this.menuUlToggleClassName}
-                                alt={menuItem.description}
+                            <Link to={menuItem.url} className={this.menuUlToggleClassName}
                                 title={menuItem.description}
                                 data-toggle='dropdown'>
                                 {menuItem.title}<b className='caret'></b>
-                            </a>
+                            </Link>
                             {subResult}
                         </li>
                     );
@@ -72,10 +76,9 @@ export class Menu extends React.Component<MenuProps, any> {
                     // Deeper level menus
                     result = (
                         <li key={index} className={this.menuUlSubMenuClassName}>
-                            <a href={menuItem.url} className={this.menuUlToggleClassName}
-                                alt={menuItem.description}
+                            <Link to={menuItem.url} className={this.menuUlToggleClassName}
                                 title={menuItem.description}
-                                data-toggle='dropdown'>{menuItem.title}</a>
+                                data-toggle='dropdown'>{menuItem.title}</Link>
                             {subResult}
                         </li>
                     );
@@ -88,10 +91,9 @@ export class Menu extends React.Component<MenuProps, any> {
     private createLiItem(menuItem: MenuItem, index: number): JSX.Element {
         return (
             <li key={index}>
-                <a href={menuItem.url}
-                    alt={menuItem.description}
+                <Link to={menuItem.url}
                     title={menuItem.description}
-                >{menuItem.title}</a>
+                >{menuItem.title}</Link>
             </li>
         );
     }
@@ -106,17 +108,19 @@ export class Menu extends React.Component<MenuProps, any> {
     }
 
     render(): JSX.Element {
-        let leftMenuList = this.createMenuItem(this.props.leftMenu, 0, false, 0);
-        let rightMenuList = this.createMenuItem(this.props.rightMenu, 1, true, 0);
+        let leftMenuList = this.createMenuItem(this.state.leftMenu, 0, false, 0);
+        let rightMenuList = this.createMenuItem(this.state.rightMenu, 1, true, 0);
 
         return (
-            <nav className='navbar navbar-fixed-top'>
-                <div className='container'>
-                    <MenuHeader />
-                    <MenuBar leftMenuList={leftMenuList}
-                        rightMenuList={rightMenuList} />
-                </div>
-            </nav>
+            <Router>
+                <nav className='navbar navbar-fixed-top'>
+                    <div className='container'>
+                        <MenuHeader />
+                        <MenuBar leftMenuList={leftMenuList}
+                            rightMenuList={rightMenuList} />
+                    </div>
+                </nav>
+            </Router>
         );
     }
 }

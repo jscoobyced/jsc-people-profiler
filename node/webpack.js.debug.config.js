@@ -8,8 +8,10 @@ exports.jsConfig = {
     },
     externals: {
         "react": "React",
-        "react-dom": "ReactDOM",
         "jquery": "jQuery",
+        "react-dom": "ReactDOM",
+        "react-router": "ReactRouter",
+        "react-router-dom": "ReactRouterDOM",
         "bootstrap": "bootstrap"
     },
     output: {
@@ -39,7 +41,7 @@ exports.jsConfig = {
     },
     plugins: [
         new ChunkHashReplacePlugin({
-            src: 'src/_Layout.tpl.debug.cshtml',
+            src: 'src/_Layout.tpl.debug.html',
             dest: 'src/_Layout.cshtml'
         }),
         new webpack.ProvidePlugin({

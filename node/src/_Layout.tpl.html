@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,14 +11,14 @@
     <link rel="stylesheet" href="~/css/jsc.css" />
     <base href="/" />
 </head>
+
 <body>
     <header>
     </header>
     <nav id="menu" data-menu='@Html.Raw(Json.Serialize(Model.Menu))'></nav>
     <main>
-        <div class="container body-content">
+        <div id="body-content" class="container body-content">
             @RenderBody()
-
         </div>
     </main>
     <footer>
@@ -30,4 +31,5 @@
 
     @RenderSection("Scripts", required: false)
 </body>
+
 </html>
