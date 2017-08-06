@@ -1,9 +1,11 @@
 const webpack = require('webpack');
-const ChunkHashReplacePlugin = require('chunkhash-replace-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 // Used only to investigate bundle sizes
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+const ASSET_PATH = '/js/';
 
 exports.jsConfig = {
     entry: {
@@ -17,7 +19,8 @@ exports.jsConfig = {
     },
     output: {
         path: __dirname + '/../app.web/wwwroot/js',
-        filename: '[name]-[chunkhash].js'
+        filename: '[name]-[chunkhash].js',
+        publicPath: ASSET_PATH
     },
     module: {
         rules: [{
@@ -58,15 +61,15 @@ exports.jsConfig = {
             $: "jquery",
             jQuery: "jquery"
         }),
-        new ChunkHashReplacePlugin({
-            src: 'src/_Layout.tpl.html',
-            dest: 'src/_Layout.cshtml'
-        }),
         new WebpackCleanupPlugin(),
         new webpack.DefinePlugin({
             'process.env': {
                 'NODE_ENV': JSON.stringify('production')
             }
+        }),
+        new HtmlWebpackPlugin({
+            filename: __dirname + '/src/_Layout.cshtml',
+            template: 'src/_Layout.tpl.html'
         })
     ]
 };

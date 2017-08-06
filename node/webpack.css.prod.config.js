@@ -1,7 +1,6 @@
 const webpack = require('webpack');
-const ChunkHashReplacePlugin = require('chunkhash-replace-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const cssnano = require('cssnano');
 const extractSass = new ExtractTextPlugin({
@@ -9,13 +8,16 @@ const extractSass = new ExtractTextPlugin({
 });
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 
+const ASSET_PATH = '/css/';
+
 exports.cssConfig = {
     entry: {
         jsc: './src/styles/styles.scss'
     },
     output: {
         path: __dirname + '/../app.web/wwwroot/css',
-        filename: '[name]-[chunkhash].css'
+        filename: '[name]-[chunkhash].css',
+        publicPath: ASSET_PATH
     },
     module: {
         rules: [{
@@ -50,10 +52,6 @@ exports.cssConfig = {
         extensions: [".css", ".scss"]
     },
     plugins: [
-        new ChunkHashReplacePlugin({
-            src: 'src/_Layout.cshtml',
-            dest: '/../app.web/Views/Shared/_Layout.cshtml'
-        }),
         extractSass,
         new OptimizeCSSAssetsPlugin({
             cssProcessor: cssnano,
@@ -64,6 +62,10 @@ exports.cssConfig = {
                 safe: false
             }
         }),
-        new WebpackCleanupPlugin()
+        new WebpackCleanupPlugin(),
+        new HtmlWebpackPlugin({
+            filename: '../../Views/Shared/_Layout.cshtml',
+            template: __dirname + '/src/_Layout.cshtml'
+        })
     ]
 };

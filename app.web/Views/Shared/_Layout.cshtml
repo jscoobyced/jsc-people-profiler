@@ -1,17 +1,12 @@
-@model app.web.Models.Page
-
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
 
-    <link rel="stylesheet" href="~/css/jsc-3894d40acbaecc8257ee.css" />
-    <base href="/" />
+    <link rel="stylesheet" href="~/css/jsc.css" />
 </head>
-
 <body>
     <header>
     </header>
@@ -25,11 +20,15 @@
         <p class="text-muted credit">&copy; 2017 - C&eacute;dric ROCHEFOLLE</p>
     </footer>
 
-    <script src="~/js/manifest-823230a5a13d696b0ef5.js"></script>
-    <script src="~/js/vendor-02bd59e176748b916b81.js"></script>
-    <script src="~/js/jsc-df01bdc58bff4ef54ee4.js" asp-append-version="true"></script>
+
+    <script src="~/lib/js/jquery.min.js"></script>
+    <script src="~/lib/js/react.js"></script>
+    <script src="~/lib/js/react-dom.js"></script>
+    <script src="~/lib/js/react-router.min.js"></script>
+    <script src="~/lib/js/react-router-dom.min.js"></script>
+    <script src="~/lib/js/bootstrap.min.js"></script>
+    <script src="~/js/jsc.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
 </body>
-
 </html>
