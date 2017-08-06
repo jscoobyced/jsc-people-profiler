@@ -9,6 +9,6 @@ x86/
 .vs/
 .vscode/
 node_modules/
-*/wwwroot/css/
-*/wwwroot/js/
-node/src/_Layout.cshtml
+app.web/wwwroot/css/
+app.web/wwwroot/js/
+app.web/Views/Shared/_Layout.cshtml

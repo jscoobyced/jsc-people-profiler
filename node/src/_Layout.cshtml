@@ -1,0 +1,29 @@
+@model app.web.Models.Page
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <base href="/" />
+</head>
+
+<body>
+    <header>
+    </header>
+    <nav id="menu" data-menu='@Html.Raw(Json.Serialize(Model.Menu))'></nav>
+    <main>
+        <div id="body-content" class="container body-content">
+            @RenderBody()
+        </div>
+    </main>
+    <footer>
+        <p class="text-muted credit">&copy; 2017 - C&eacute;dric ROCHEFOLLE</p>
+    </footer>
+
+    @RenderSection("Scripts", required: false)
+<script type="text/javascript" src="/js/manifest-8cfc9a16d02010d19bbd.js"></script><script type="text/javascript" src="/js/vendor-02bd59e176748b916b81.js"></script><script type="text/javascript" src="/js/jsc-df01bdc58bff4ef54ee4.js"></script></body>
+
+</html>
