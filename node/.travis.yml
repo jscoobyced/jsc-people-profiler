@@ -1,0 +1,23 @@
+sudo: required
+
+language: node_js
+
+node_js:
+  - "7"
+  - "8"
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
+branches:
+  only:
+  - master
+
+before_script: cd node
+
+os:
+  - linux
+
+script: yarn run wp:prod
