@@ -22,6 +22,7 @@ cd node
 yarn install
 ```
 followed by
+
 | production mode | development mode |
 |  -------------- | ---------------- |
 | `yarn run wp:prod` | `yarn run wp:dev` |
