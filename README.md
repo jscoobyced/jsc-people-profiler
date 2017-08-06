@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jscoobyced/jsc-people-profiler.svg?branch=master)](https://travis-ci.org/jscoobyced/jsc-people-profiler)
+
 # jsc-people-profiler
 Application to manage people profiles (i.e. for Human Resource, Manager...)
 
