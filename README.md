@@ -9,7 +9,7 @@ This project is set to run with MySQL. You'll need to create a database and an a
 - `<root>/app.web/SQL/create.sql`
 - `<root>/app.web/SQL/data.sql`
 
-Then update the `<root>/app.web/appsettings.json` to set your MySQL server, username and password in the `ConnectionString/MySql` setting.
+Then update the `<root>/app.web/appsettings.json` to set your MySQL server host, username and password in the `ConnectionString/MySql` setting.
 
 ## Application
 
@@ -18,8 +18,12 @@ In a CMD or TERMINAL window, follow those steps:
 ```
 cd node
 yarn install
-yarn run wp
 ```
+followed by
+| production mode | development mode |
+|  -------------- | ---------------- |
+| `yarn run wp:prod` | `yarn run wp:dev` |
+
 
 - To build the dotnet core application
 ```

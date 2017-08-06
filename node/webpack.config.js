@@ -1,5 +1,5 @@
-//const jsConfig = require('./webpack.js.debug.config');
-const jsConfig = require('./webpack.js.config');
-const cssConfig = require('./webpack.css.config');
-
-module.exports = [jsConfig.jsConfig, cssConfig.cssConfig];
+module.exports = function (env) {
+    const jsConfig = require(`./webpack.js.${env}.config`);
+    const cssConfig = require(`./webpack.css.${env}.config`);
+    return [jsConfig.jsConfig, cssConfig.cssConfig];
+}

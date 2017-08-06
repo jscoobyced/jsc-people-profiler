@@ -2,8 +2,10 @@ const webpack = require('webpack');
 const ChunkHashReplacePlugin = require('chunkhash-replace-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 
+// Used only to investigate bundle sizes
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 exports.jsConfig = {
-    devtool: '#cheap-eval-source-map',
     entry: {
         jsc: ['./src/index'],
         vendor: ['react',
@@ -22,16 +24,6 @@ exports.jsConfig = {
                 test: /\.tsx?$/,
                 loader: 'awesome-typescript-loader',
                 exclude: __dirname + '/node_modules/',
-            },
-            {
-                enforce: 'pre',
-                test: /\.js$/,
-                loader: "source-map-loader"
-            },
-            {
-                enforce: 'pre',
-                test: /\.tsx?$/,
-                use: "source-map-loader"
             },
             {
                 enforce: 'pre',
@@ -57,7 +49,7 @@ exports.jsConfig = {
             },
             compress: {
                 screw_ie8: true,
-                drop_console: false,
+                drop_console: true,
                 warnings: false
             },
             comments: false
