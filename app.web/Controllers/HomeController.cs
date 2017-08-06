@@ -19,7 +19,6 @@
 
         public async Task<IActionResult> Index()
         {
-            ViewData["Message"] = "Welcome here!";
             return View(await this._pageService.GetPage());
         }
 
