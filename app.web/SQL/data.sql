@@ -7,5 +7,6 @@ VALUES
 ,(4, 'Configurations', 'Configurations', '#', 1, 3, 2, 1)
 ,(5, 'General Settings', 'General configurations', '/settings', 1, 4, 3, 1)
 ,(6, 'Profiles', 'Manage profiles', '/profiles/manage', 1, 4, 4, 1)
-,(7, 'Help', 'Help page of the profiler application', '/help', 1, 3, 5, 1)
+,(7, 'Profile', 'Edit profile', '/profiles/edit', 1, 4, 5, 2)
+,(8, 'Help', 'Help page of the profiler application', '/help', 1, 3, 6, 1)
 ;

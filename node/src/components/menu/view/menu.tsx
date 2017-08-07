@@ -27,6 +27,10 @@ export class Menu extends React.Component<MenuProps, MenuProps> {
         let liItem = this.createLiItem(menuItem, index);
         let result: JSX.Element;
 
+        if (menuItem.status === 2) {
+            return null;
+        }
+
         if (menuItem.title === null || menuItem.title === '') {
             // Root level of the menu
             let childrenNodes: JSX.Element[] = this.createChildrenNodes(menuItem, index, isRight, level);
@@ -98,10 +102,20 @@ export class Menu extends React.Component<MenuProps, MenuProps> {
         );
     }
     private createChildrenNodes(menuItem: MenuItem, index: number, isRight: boolean, level: number): JSX.Element[] {
+        if (menuItem.status === 2) {
+            return null;
+        }
+
         let counter = 1;
         let childrenNodes: JSX.Element[] = [];
         menuItem.menuItems.forEach(innerMenuItem => {
-            childrenNodes.push(this.createMenuItem(innerMenuItem, (index + counter++), isRight, level + 1));
+            if (innerMenuItem.status === 2) {
+                return;
+            }
+            let innerMenuItemChild = this.createMenuItem(innerMenuItem, (index + counter++), isRight, level + 1);
+            if (innerMenuItemChild !== null) {
+                childrenNodes.push(innerMenuItemChild);
+            }
         });
 
         return childrenNodes;

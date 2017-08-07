@@ -13,6 +13,8 @@ namespace app.web.Models
 
         public string Url { get; set; }
 
+        public int Status { get; set; }
+
         public int Order
         {
             private get;

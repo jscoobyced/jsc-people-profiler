@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { PageProps } from '../../page-models';
+import { ProfileProps } from '../models/profile';
+import { ProfileRow } from './profile-row';
 
 export class Page extends React.Component<PageProps, any> {
     constructor(props: any) {
@@ -45,14 +47,7 @@ export class Page extends React.Component<PageProps, any> {
                                     <th>Start Date</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope='row'>1</th>
-                                    <td>{this.state.data[0].firstName}</td>
-                                    <td>{this.state.data[0].lastName}</td>
-                                    <td>{this.state.data[0].startDate}</td>
-                                </tr>
-                            </tbody>
+                            <ProfileRow baseUrl='/profiles/edit' profiles={this.state.data} />
                         </table>
                     </div>
                 </div>

@@ -44,6 +44,7 @@ namespace app.web.Services
             menuItem.Url = page.Url;
             menuItem.Description = page.Description;
             menuItem.Order = page.Order;
+            menuItem.Status = (int)page.Status;
             if (page.Children != null && page.Children.Any())
             {
                 menuItem.MenuItems = new List<MenuItem>();

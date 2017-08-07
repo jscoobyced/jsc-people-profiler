@@ -3,8 +3,9 @@ namespace app.web.Repositories
     public enum Status
     {
         Active = 1,
-        Inactive = 2,
-        Deleted = 3,
-        Archived = 4
+        Hidden = 2,
+        Inactive = 3,
+        Deleted = 4,
+        Archived = 5
     }
 }

@@ -90,9 +90,10 @@ namespace app.web.Repositories
                     {
                         command.Connection = connection;
                         command.CommandText = @"SELECT * FROM `page_configuration`
-                        WHERE `status` = @status
+                        WHERE (`status` = @active OR `status` = @hidden)
                         ORDER BY `order`";
-                        command.Parameters.AddWithValue("@status", (int)Status.Active);
+                        command.Parameters.AddWithValue("@active", (int)Status.Active);
+                        command.Parameters.AddWithValue("@hidden", (int)Status.Hidden);
                         await connection.OpenAsync();
                         using (var reader = await command.ExecuteReaderAsync())
                         {

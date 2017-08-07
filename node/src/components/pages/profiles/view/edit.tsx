@@ -12,6 +12,7 @@ export class Page extends React.Component<PageProps, any> {
     render(): JSX.Element {
         return (
             <div className='row'>
+                Yeepee!
             </div>
         );
     }

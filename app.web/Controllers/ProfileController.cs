@@ -22,8 +22,16 @@ namespace app.web.Controllers
                     var profileList = new List<Profile>();
                     profileList.Add(new Profile()
                     {
+                        Id = 1,
                         FirstName = "John",
                         LastName = "Smith",
+                        StartDate = DateTime.Now
+                    });
+                    profileList.Add(new Profile()
+                    {
+                        Id = 2,
+                        FirstName = "Jane",
+                        LastName = "Doe",
                         StartDate = DateTime.Now
                     });
                     return profileList;
