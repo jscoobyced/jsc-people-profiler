@@ -25,14 +25,18 @@ namespace app.web.Controllers
                         Id = 1,
                         FirstName = "John",
                         LastName = "Smith",
-                        StartDate = DateTime.Now
+                        StartDate = (long)DateTime.Now.AddDays(-50).ToUniversalTime().Subtract(
+    new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+    ).TotalMilliseconds
                     });
                     profileList.Add(new Profile()
                     {
                         Id = 2,
                         FirstName = "Jane",
                         LastName = "Doe",
-                        StartDate = DateTime.Now
+                        StartDate = (long)DateTime.Now.ToUniversalTime().Subtract(
+    new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+    ).TotalMilliseconds
                     });
                     return profileList;
                 }

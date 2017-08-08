@@ -45,6 +45,7 @@ export class Page extends React.Component<PageProps, any> {
                                     <th>First Name</th>
                                     <th>Last Name</th>
                                     <th>Start Date</th>
+                                    <th>Edit</th>
                                 </tr>
                             </thead>
                             <ProfileRow baseUrl='/profiles/edit' profiles={this.state.data} />

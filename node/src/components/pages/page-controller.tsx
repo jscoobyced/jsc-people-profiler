@@ -8,10 +8,7 @@ export class PageController extends React.Component<PageProps, PageProps>  {
 
     constructor(props: PageProps) {
         super(props);
-        this.state = {
-            name: this.props.name,
-            url: this.props.url
-        };
+        this.state = props;
         this._resolver = new PageResolver();
     }
 

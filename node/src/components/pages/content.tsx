@@ -9,6 +9,8 @@ import Key from './../../utils/key';
 
 export class Content extends React.Component<MenuProps, MenuProps>  {
     private _key: Key = new Key();
+    private _routes: Array<JSX.Element> = new Array<JSX.Element>();
+    private _counter: number = 0;
 
     constructor(props: MenuProps) {
         super(props);
@@ -18,46 +20,66 @@ export class Content extends React.Component<MenuProps, MenuProps>  {
         };
     }
 
-    private createRoutes(menuItem: MenuItem): Array<JSX.Element> {
-        let routes = new Array<JSX.Element>();
+    private addRoutes(menuItem: MenuItem): void {
+        this._counter++;
         if (menuItem !== null
             && menuItem.menuItems !== null
             && menuItem.menuItems.length > 0) {
-            let index = 1;
             menuItem.menuItems.forEach((innerMenuItem) => {
-                let innerRoutes = this.createRoutes(innerMenuItem);
-                innerRoutes.forEach(innerRoute => {
-                    routes.push(innerRoute);
-                });
-            }
-            );
+                this.addRoutes(innerMenuItem);
+            });
         }
 
-        routes.push(this.createRoute(menuItem.url, menuItem.title));
-        return routes;
+        this.addRoute(menuItem.url, menuItem.title);
     }
 
-    private createRoute(link: string, name: string): JSX.Element {
+    private addRoute(link: string, name: string): void {
         if (link === '/') {
-            return (
+            this._routes.push(
                 <Route exact key={this._key.next()} path={link} render={props => <PageController name={name} url={link} />} />
             );
+            this._counter--;
+            return;
         }
 
-        return (
+        if (link.indexOf('edit') > 0) {
+            let path = link + '/:id';
+            let self = this;
+            System.import('./profiles/view/edit').then(
+                Page => {
+                    let Edit = Page.Page;
+                    self._routes.push(
+                        <Route key={this._key.next()} path={path} component={Edit} />
+                    );
+                    self._counter--;
+                }
+            );
+            return;
+        }
+
+        this._routes.push(
             <Route key={this._key.next()} path={link} render={props => <PageController name={name} url={link} />} />
         );
+        this._counter--;
+    }
+
+    componentDidMount() {
+        this.addRoutes(this.state.leftMenu);
+        this.addRoutes(this.state.rightMenu);
     }
 
     render(): JSX.Element {
-        let leftRoutes = this.createRoutes(this.state.leftMenu);
-        let routes = leftRoutes.concat(this.createRoutes(this.state.rightMenu));
-        return (
-            <Router>
-                <div>
-                    {routes}
-                </div>
-            </Router>
-        );
+        console.log(this._counter);
+        if (this._counter === 0) {
+            return (
+                <Router>
+                    <div>
+                        {this._routes}
+                    </div>
+                </Router>
+            );
+        } else {
+            return (<div></div>);
+        }
     }
 }

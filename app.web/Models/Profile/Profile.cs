@@ -11,6 +11,6 @@ namespace app.web.Models
 
         public string LastName { set; get; }
 
-        public DateTime StartDate { get; set; }
+        public long StartDate { get; set; }
     }
 }
