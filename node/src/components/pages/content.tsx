@@ -4,13 +4,13 @@ import { HashRouter as Router, Route } from 'react-router-dom';
 
 import { MenuProps } from '../menu/view/menu-models';
 import { MenuItem } from '../menu/view/menu-models';
-import { PageController } from './page-controller';
+import { PageResolver } from './page-resolver';
 import Key from './../../utils/key';
 
 export class Content extends React.Component<MenuProps, MenuProps>  {
     private _key: Key = new Key();
     private _routes: Array<JSX.Element> = new Array<JSX.Element>();
-    private _counter: number = 0;
+    private _resolver = new PageResolver();
 
     constructor(props: MenuProps) {
         super(props);
@@ -21,7 +21,6 @@ export class Content extends React.Component<MenuProps, MenuProps>  {
     }
 
     private addRoutes(menuItem: MenuItem): void {
-        this._counter++;
         if (menuItem !== null
             && menuItem.menuItems !== null
             && menuItem.menuItems.length > 0) {
@@ -34,52 +33,43 @@ export class Content extends React.Component<MenuProps, MenuProps>  {
     }
 
     private addRoute(link: string, name: string): void {
+        if (link === '#') {
+            return;
+        }
+        let page = this._resolver.resolve(link);
+        let extension = '';
+        if (page.endsWith('edit')) {
+            extension += '/:id';
+        }
+
+        let path = link + extension;
+        let self = this;
+
+        const Page = require(page + '.tsx');
+
+        let Edit = Page.Page;
         if (link === '/') {
-            this._routes.push(
-                <Route exact key={this._key.next()} path={link} render={props => <PageController name={name} url={link} />} />
+            console.log('Exact path: ' + path);
+            self._routes.push(
+                <Route exact key={this._key.next()} path={path} component={Edit} />
             );
-            this._counter--;
-            return;
-        }
-
-        if (link.indexOf('edit') > 0) {
-            let path = link + '/:id';
-            let self = this;
-            System.import('./profiles/view/edit').then(
-                Page => {
-                    let Edit = Page.Page;
-                    self._routes.push(
-                        <Route key={this._key.next()} path={path} component={Edit} />
-                    );
-                    self._counter--;
-                }
+        } else {
+            console.log('Path: ' + path);
+            self._routes.push(
+                <Route key={this._key.next()} path={path} component={Edit} />
             );
-            return;
         }
-
-        this._routes.push(
-            <Route key={this._key.next()} path={link} render={props => <PageController name={name} url={link} />} />
-        );
-        this._counter--;
-    }
-
-    componentDidMount() {
-        this.addRoutes(this.state.leftMenu);
-        this.addRoutes(this.state.rightMenu);
     }
 
     render(): JSX.Element {
-        console.log(this._counter);
-        if (this._counter === 0) {
-            return (
-                <Router>
-                    <div>
-                        {this._routes}
-                    </div>
-                </Router>
-            );
-        } else {
-            return (<div></div>);
-        }
+        this.addRoutes(this.state.leftMenu);
+        this.addRoutes(this.state.rightMenu);
+        return (
+            <Router>
+                <div>
+                    {this._routes}
+                </div>
+            </Router>
+        );
     }
 }

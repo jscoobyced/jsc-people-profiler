@@ -5,8 +5,8 @@ import { Page as P404 } from './errors/p404';
 
 export class PageResolver {
 
-    public resolve(props: PageProps): JSX.Element {
-        let name = props.url.split('/');
+    public resolve(url: string): string {
+        let name = url.split('/');
         name.shift();
         if (name.length === 1) {
             name.push(name[0]);
@@ -17,15 +17,6 @@ export class PageResolver {
             name[1] = 'home';
         }
 
-        let page = null;
-        let element: JSX.Element = null;
-        try {
-            page = require('./' + name[0] + '/view/' + name[1]);
-            let Component = page.Page;
-            element = (<Component {...props} />);
-        } catch (error) {
-            element = (<P404 />);
-        }
-        return element;
+        return './' + name[0] + '/view/' + name[1];
     }
 }

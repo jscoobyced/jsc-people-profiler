@@ -10,7 +10,6 @@ export class Page extends React.Component<ProfileEditProps, ProfileEditProps> {
 
     render(): JSX.Element {
         const match = this.props.match;
-        console.log(match);
         if (match) {
             return (
                 <div className='row'>
