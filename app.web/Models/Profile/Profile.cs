@@ -12,5 +12,13 @@ namespace app.web.Models
         public string LastName { set; get; }
 
         public long StartDate { get; set; }
+
+        public void SetStartDate(DateTime startDate)
+        {
+            // Create a UTC epoch value and set it to the StartDate property
+            this.StartDate = (long)startDate.ToUniversalTime()
+            .Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
+            .TotalMilliseconds;
+        }
     }
 }

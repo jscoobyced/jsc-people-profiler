@@ -1,4 +1,4 @@
-namespace app.web.Repositories
+namespace app.web.Models
 {
     public enum Status
     {

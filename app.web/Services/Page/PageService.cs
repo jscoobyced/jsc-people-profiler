@@ -4,16 +4,15 @@ namespace app.web.Services
     using System.Linq;
     using System.Threading.Tasks;
     using app.web.Models;
-    using app.web.Repositories;
 
     public class PageService : IPageService
     {
 
-        private readonly IPageRepo _pageRepo;
+        private readonly IPageConfigurationService _pageConfigurationService;
 
-        public PageService(IPageRepo pageRepo)
+        public PageService(IPageConfigurationService pageConfigurationService)
         {
-            this._pageRepo = pageRepo;
+            this._pageConfigurationService = pageConfigurationService;
         }
 
         public async Task<Page> GetPage()
@@ -26,7 +25,7 @@ namespace app.web.Services
         private async Task<Menu> GetMenu()
         {
             var menu = new Menu();
-            var pageConfiguration = await this._pageRepo.GetPage();
+            var pageConfiguration = await this._pageConfigurationService.GetPageConfiguration();
             menu.LeftMenu = this.GetMenuItem(pageConfiguration.LeftMenu);
             menu.RightMenu = this.GetMenuItem(pageConfiguration.RightMenu);
             return menu;

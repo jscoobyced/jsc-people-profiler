@@ -1,4 +1,4 @@
-namespace app.web.Repositories
+namespace app.web.Services
 {
     public enum PageSide
     {
