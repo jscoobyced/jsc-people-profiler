@@ -13,6 +13,10 @@ namespace app.web.Models
 
         public long StartDate { get; set; }
 
+        public string Position { get; set; }
+
+        public Status Status { get; set; }
+
         public void SetStartDate(DateTime startDate)
         {
             // Create a UTC epoch value and set it to the StartDate property

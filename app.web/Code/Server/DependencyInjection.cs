@@ -23,7 +23,6 @@ namespace app.web
         private void ConfigureRepositories(IServiceCollection services)
         {
             services.AddTransient<IDatabaseRepository, DatabaseRepository>();
-            services.AddTransient<IProfileRepository, ProfileRepository>();
         }
     }
 }

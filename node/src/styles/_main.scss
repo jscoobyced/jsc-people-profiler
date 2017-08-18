@@ -31,3 +31,8 @@ footer>p {
 .white:hover {
   color: #FFF;
 }
+
+// Middle align for rows
+.table > tbody > tr > td {
+  vertical-align: middle;
+}

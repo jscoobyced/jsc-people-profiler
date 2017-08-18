@@ -10,3 +10,11 @@ VALUES
 ,(7, 'Profile', 'Edit profile', '/profiles/edit', 1, 4, 5, 2)
 ,(8, 'Help', 'Help page of the profiler application', '/help', 1, 3, 6, 1)
 ;
+
+INSERT INTO `position`
+(`id`, `position`)
+VALUES
+(1, 'Junior Software Engineer')
+,(2, 'Software Engineer')
+,(3, 'Senior Software Engineer')
+;

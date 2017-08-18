@@ -8,3 +8,20 @@ CREATE TABLE `page_configuration` (
     ,`order` INT NOT NULL DEFAULT 1
     ,`status` INT NOT NULL DEFAULT 1
 );
+
+CREATE TABLE `position` (
+    `id` INT PRIMARY KEY
+    ,`position` VARCHAR(32)
+);
+
+CREATE TABLE `profile` (
+    `id` INT PRIMARY KEY
+    ,`firstname` VARCHAR(64)
+    ,`lastname` VARCHAR(64)
+    ,`position_id` INT NOT NULL DEFAULT 1
+    ,`start_date` DATE NOT NULL DEFAULT '2017-01-01'
+    ,`status` INT NOT NULL DEFAULT 1
+);
+
+ALTER TABLE `profile` ADD FOREIGN KEY (`position_id`)
+    REFERENCES `position` (`id`);

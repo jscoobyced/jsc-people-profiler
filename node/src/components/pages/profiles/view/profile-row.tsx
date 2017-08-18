@@ -24,8 +24,13 @@ export class ProfileRow extends React.Component<ProfileProps, ProfileProps> {
                     <td>{profile.id}</td>
                     <td>{profile.firstName}</td>
                     <td>{profile.lastName}</td>
+                    <td>{profile.position}</td>
                     <td>{startDate}</td>
-                    <td><Link to={url} title={title}>{edit}</Link></td>
+                    <td>
+                        <Link className='btn btn-default' to={url} title={title}>
+                            <span className='glyphicon glyphicon-edit'></span> {edit}
+                        </Link>
+                    </td>
                 </tr>
             );
         });

@@ -44,6 +44,7 @@ export class Page extends React.Component<PageProps, any> {
                                     <th>#</th>
                                     <th>First Name</th>
                                     <th>Last Name</th>
+                                    <th>Position</th>
                                     <th>Start Date</th>
                                     <th>Edit</th>
                                 </tr>

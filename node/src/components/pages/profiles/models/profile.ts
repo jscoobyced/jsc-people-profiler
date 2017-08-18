@@ -6,6 +6,8 @@ export interface Profile {
     firstName: string;
     lastName: string;
     startDate: number;
+    position: string;
+    status: number;
 }
 
 export interface ProfileProps {
