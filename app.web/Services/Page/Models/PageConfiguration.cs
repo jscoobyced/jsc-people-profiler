@@ -1,6 +1,7 @@
-namespace app.web.Repositories
+namespace app.web.Services
 {
     using System.Collections.Generic;
+    using app.web.Models;
 
     public class PageConfiguration
     {

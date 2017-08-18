@@ -19,5 +19,6 @@ export class MenuItem {
     public title: string;
     public description: string;
     public url: string;
+    public status: number;
     public menuItems: Array<MenuItem>;
 }

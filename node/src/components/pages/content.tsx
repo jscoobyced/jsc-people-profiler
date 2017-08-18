@@ -4,11 +4,13 @@ import { HashRouter as Router, Route } from 'react-router-dom';
 
 import { MenuProps } from '../menu/view/menu-models';
 import { MenuItem } from '../menu/view/menu-models';
-import { PageController } from './page-controller';
+import { PageResolver } from './page-resolver';
 import Key from './../../utils/key';
 
 export class Content extends React.Component<MenuProps, MenuProps>  {
     private _key: Key = new Key();
+    private _routes: Array<JSX.Element> = new Array<JSX.Element>();
+    private _resolver = new PageResolver();
 
     constructor(props: MenuProps) {
         super(props);
@@ -18,44 +20,54 @@ export class Content extends React.Component<MenuProps, MenuProps>  {
         };
     }
 
-    private createRoutes(menuItem: MenuItem): Array<JSX.Element> {
-        let routes = new Array<JSX.Element>();
+    private addRoutes(menuItem: MenuItem): void {
         if (menuItem !== null
             && menuItem.menuItems !== null
             && menuItem.menuItems.length > 0) {
-            let index = 1;
             menuItem.menuItems.forEach((innerMenuItem) => {
-                let innerRoutes = this.createRoutes(innerMenuItem);
-                innerRoutes.forEach(innerRoute => {
-                    routes.push(innerRoute);
-                });
-            }
-            );
+                this.addRoutes(innerMenuItem);
+            });
         }
 
-        routes.push(this.createRoute(menuItem.url, menuItem.title));
-        return routes;
+        this.addRoute(menuItem.url, menuItem.title);
     }
 
-    private createRoute(link: string, name: string): JSX.Element {
-        if (link === '/') {
-            return (
-                <Route exact key={this._key.next()} path={link} render={props => <PageController name={name} url={link} />} />
-            );
+    private addRoute(link: string, name: string): void {
+        if (link === '#') {
+            return;
+        }
+        let page = this._resolver.resolve(link);
+        let extension = '';
+        if (page.endsWith('edit')) {
+            extension += '/:id';
         }
 
-        return (
-            <Route key={this._key.next()} path={link} render={props => <PageController name={name} url={link} />} />
-        );
+        let path = link + extension;
+        let self = this;
+
+        const Page = require(page + '.tsx');
+
+        let Edit = Page.Page;
+        if (link === '/') {
+            console.log('Exact path: ' + path);
+            self._routes.push(
+                <Route exact key={this._key.next()} path={path} component={Edit} />
+            );
+        } else {
+            console.log('Path: ' + path);
+            self._routes.push(
+                <Route key={this._key.next()} path={path} component={Edit} />
+            );
+        }
     }
 
     render(): JSX.Element {
-        let leftRoutes = this.createRoutes(this.state.leftMenu);
-        let routes = leftRoutes.concat(this.createRoutes(this.state.rightMenu));
+        this.addRoutes(this.state.leftMenu);
+        this.addRoutes(this.state.rightMenu);
         return (
             <Router>
                 <div>
-                    {routes}
+                    {this._routes}
                 </div>
             </Router>
         );

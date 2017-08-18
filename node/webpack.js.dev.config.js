@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 
 exports.jsConfig = {
+    devtool: '#inline-source-map',
     entry: {
         jsc: ['./src/index']
     },

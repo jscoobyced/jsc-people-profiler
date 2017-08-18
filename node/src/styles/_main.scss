@@ -1,6 +1,9 @@
+$font-family-base: $font-family-monospace;
+
+
 body {
   padding-top: $navbar-height + 10;
-  font-family: $font-main;
+  background: $body-bg;
 }
 
 .body-content {
@@ -19,4 +22,17 @@ body {
 footer>p {
   padding-left: 15px;
   padding-right: 15px;
+}
+
+.white {
+  color: #FFF;
+}
+
+.white:hover {
+  color: #FFF;
+}
+
+// Middle align for rows
+.table > tbody > tr > td {
+  vertical-align: middle;
 }

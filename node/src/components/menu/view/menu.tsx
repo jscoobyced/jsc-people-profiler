@@ -12,7 +12,7 @@ export class Menu extends React.Component<MenuProps, MenuProps> {
     private menuUlLeftClassName: string = 'nav navbar-nav';
     private menuUlRightClassName: string = 'nav navbar-nav navbar-right';
     private menuUlSubMenuClassName: string = 'dropdown-submenu';
-    private menuUlToggleClassName: string = 'dropdown-toggle';
+    private menuUlToggleClassName: string = 'dropdown-toggle white';
 
     constructor(props: MenuProps) {
         super(props);
@@ -26,6 +26,10 @@ export class Menu extends React.Component<MenuProps, MenuProps> {
         let menuUlClassName = isRight ? this.menuUlRightClassName : this.menuUlLeftClassName;
         let liItem = this.createLiItem(menuItem, index);
         let result: JSX.Element;
+
+        if (menuItem.status === 2) {
+            return null;
+        }
 
         if (menuItem.title === null || menuItem.title === '') {
             // Root level of the menu
@@ -91,17 +95,27 @@ export class Menu extends React.Component<MenuProps, MenuProps> {
     private createLiItem(menuItem: MenuItem, index: number): JSX.Element {
         return (
             <li key={index}>
-                <Link to={menuItem.url}
+                <Link to={menuItem.url} className='white'
                     title={menuItem.description}
                 >{menuItem.title}</Link>
             </li>
         );
     }
     private createChildrenNodes(menuItem: MenuItem, index: number, isRight: boolean, level: number): JSX.Element[] {
+        if (menuItem.status === 2) {
+            return null;
+        }
+
         let counter = 1;
         let childrenNodes: JSX.Element[] = [];
         menuItem.menuItems.forEach(innerMenuItem => {
-            childrenNodes.push(this.createMenuItem(innerMenuItem, (index + counter++), isRight, level + 1));
+            if (innerMenuItem.status === 2) {
+                return;
+            }
+            let innerMenuItemChild = this.createMenuItem(innerMenuItem, (index + counter++), isRight, level + 1);
+            if (innerMenuItemChild !== null) {
+                childrenNodes.push(innerMenuItemChild);
+            }
         });
 
         return childrenNodes;
