@@ -5,6 +5,11 @@ namespace app.web.Repositories
 
     public interface IDatabaseRepository
     {
+        Task<T> ExecuteRead<T>(
+            string commandText,
+            Dictionary<string, object> parameters,
+            Read<T> read);
+
         Task<List<T>> ExecuteReadList<T>(
             string commandText,
             Dictionary<string, object> parameters,

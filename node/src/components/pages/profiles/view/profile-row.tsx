@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ProfileProps } from '../models/profile';
 import { Link } from 'react-router-dom';
-import * as moment from 'moment';
+import Util from '../../../../utils/util';
 
 export class ProfileRow extends React.Component<ProfileProps, ProfileProps> {
     constructor(props: ProfileProps) {
@@ -14,10 +14,7 @@ export class ProfileRow extends React.Component<ProfileProps, ProfileProps> {
             let url = this.state.baseUrl + '/' + profile.id;
             let edit = 'Edit';
             let title = edit + ' ' + profile.firstName;
-            let startDate = null;
-            if (profile.startDate > 0) {
-                startDate = moment(profile.startDate).format('YYYY-MM-DD');
-            }
+            let startDate = Util.toYYYYMMDD(profile.startDate);
 
             return (
                 <tr key={key}>

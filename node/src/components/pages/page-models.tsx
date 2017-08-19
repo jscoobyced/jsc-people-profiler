@@ -8,7 +8,7 @@ export interface PageProps {
 }
 
 export interface IdParam {
-    id: string;
+    id: number;
 }
 
 declare global {

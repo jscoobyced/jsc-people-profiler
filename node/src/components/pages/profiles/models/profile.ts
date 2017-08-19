@@ -5,7 +5,7 @@ export interface Profile {
     id: number;
     firstName: string;
     lastName: string;
-    startDate: number;
+    startDate: Date;
     position: string;
     status: number;
 }
@@ -18,4 +18,10 @@ export interface ProfileProps {
 export interface ProfileEditProps {
     required: string;
     match?: match<IdParam>;
+}
+
+export interface ProfileDetailProps {
+    id: number;
+    profile?: Profile;
+    requestFailed?: boolean;
 }

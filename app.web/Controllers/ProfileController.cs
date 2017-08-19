@@ -23,6 +23,13 @@ namespace app.web.Controllers
             return Ok(profiles);
         }
 
+        [HttpGet("/profile/getprofileasync/{id}")]
+        public async Task<IActionResult> GetProfileAsync(int id)
+        {
+            var profiles = await this._profileService.GetProfileAsync(id);
+            return Ok(profiles);
+        }
+
         public IActionResult Error()
         {
             return View();

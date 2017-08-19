@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { PageProps } from '../../page-models';
 import { ProfileProps } from '../models/profile';
+import { Profile } from '../models/profile';
 import { ProfileRow } from './profile-row';
 
 export class Page extends React.Component<PageProps, any> {
@@ -21,8 +22,12 @@ export class Page extends React.Component<PageProps, any> {
             })
             .then(d => d.json())
             .then(d => {
+                let profiles: Array<Profile> = d;
+                profiles.map((profile) => {
+                    profile.startDate = new Date(profile.startDate);
+                });
                 this.setState({
-                    data: d
+                    data: profiles
                 });
             }, () => {
                 this.setState({
