@@ -113,6 +113,44 @@ namespace app.web.Repositories
             return (listMode ? (object)list : (object)result);
         }
 
+        public async Task<int> ExecuteUpdate(string commandText, Dictionary<string, object> parameters)
+        {
+            var columnUpdated = 0;
+            if (string.IsNullOrWhiteSpace(commandText))
+            {
+                return columnUpdated;
+            }
+
+            var connectionString = this._appSettings.Value.ConnectionString;
+
+            try
+            {
+                using (var connection = new MySqlConnection(connectionString.MySql))
+                {
+                    using (var command = new MySqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandText = commandText;
+                        if (parameters != null)
+                        {
+                            foreach (var key in parameters.Keys)
+                            {
+                                command.Parameters.AddWithValue(key, parameters[key]);
+                            }
+                        }
+
+                        await connection.OpenAsync();
+                        columnUpdated = await command.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            catch (MySqlException exception)
+            {
+                Debug.WriteLine(exception.Message);
+            }
+
+            return columnUpdated;
+        }
 
     }
 }

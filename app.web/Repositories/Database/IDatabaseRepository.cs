@@ -14,5 +14,9 @@ namespace app.web.Repositories
             string commandText,
             Dictionary<string, object> parameters,
             ReadList<T> read);
+
+        Task<int> ExecuteUpdate(string commandText,
+            Dictionary<string, object> parameters);
+
     }
 }

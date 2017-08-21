@@ -60,6 +60,26 @@ namespace app.web.Services
             return profiles;
         }
 
+        public async Task<bool> UpdateProfileAsync(Profile profile)
+        {
+            string commandText = @"UPDATE `profile`
+                            set firstname = @firstname,
+                            lastname = @lastname,
+                            start_date = @startDate,
+                            status = @status
+                        WHERE (id = @id)";
+            var parameters = new Dictionary<string, object>();
+            parameters.Add("@firstname", profile.FirstName);
+            parameters.Add("@lastname", profile.LastName);
+            parameters.Add("@startDate", profile.StartDate);
+            parameters.Add("@status", (int)profile.Status);
+            parameters.Add("@id", profile.Id);
+            var columnUpdated = await this._databaseRepository.ExecuteUpdate(
+                commandText, parameters);
+
+            return columnUpdated == 1;
+        }
+
         private void ReadList(DbDataReader reader, List<Profile> profiles)
         {
             profiles.Add(this.Read(reader));

@@ -16,7 +16,7 @@ export default class Util {
 
     static toYYYYMMDD(date: Date): string {
         return date.getFullYear() + '-'
-            + Util.twoDigits(date.getMonth()) + '-'
+            + Util.twoDigits(date.getMonth() + 1) + '-'
             + Util.twoDigits(date.getDate());
     }
 

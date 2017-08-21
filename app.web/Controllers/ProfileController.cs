@@ -30,6 +30,25 @@ namespace app.web.Controllers
             return Ok(profiles);
         }
 
+        [HttpPut("/profile/updateprofileasync/{id}")]
+        public async Task<IActionResult> UpdateProfileAsync(int id, [FromBody] Profile profile)
+        {
+            if(id != profile.Id)
+            {
+                return BadRequest();
+            }
+
+            if (await this._profileService.UpdateProfileAsync(profile))
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+
         public IActionResult Error()
         {
             return View();

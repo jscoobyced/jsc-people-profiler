@@ -10,5 +10,7 @@ namespace app.web.Services
         Task<List<Profile>> GetProfilesAsync();
 
         Task<Profile> GetProfileAsync(int id);
+
+        Task<bool> UpdateProfileAsync(Profile profile);
     }
 }
