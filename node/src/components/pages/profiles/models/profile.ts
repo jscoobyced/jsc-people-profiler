@@ -6,8 +6,14 @@ export interface Profile {
     firstName: string;
     lastName: string;
     startDate: Date;
-    position: string;
+    position: number;
+    positionName?: string;
     status: number;
+}
+
+export interface Position {
+    id: number;
+    name: string;
 }
 
 export interface ProfileProps {
@@ -23,5 +29,6 @@ export interface ProfileEditProps {
 export interface ProfileDetailProps {
     id: number;
     profile?: Profile;
+    positions?: Array<Position>;
     requestFailed?: boolean;
 }

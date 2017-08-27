@@ -1,7 +1,7 @@
-using System;
-
 namespace app.web.Models
 {
+    using System;
+
     public class Profile
     {
 
@@ -13,7 +13,7 @@ namespace app.web.Models
 
         public DateTime StartDate { get; set; }
 
-        public string Position { get; set; }
+        public int Position { get; set; }
 
         public Status Status { get; set; }
     }

@@ -1,10 +1,14 @@
 import * as React from 'react';
 import { PageProps } from '../../page-models';
 import { ProfileProps } from '../models/profile';
-import { Profile } from '../models/profile';
 import { ProfileRow } from './profile-row';
+import { Profile } from '../models/profile';
+import { Position } from '../models/profile';
+import { ProfileHelper } from '../profile-helper';
 
 export class Page extends React.Component<PageProps, any> {
+    private profileHelper: ProfileHelper = new ProfileHelper();
+
     constructor(props: any) {
         super(props);
         this.state = {
@@ -22,10 +26,9 @@ export class Page extends React.Component<PageProps, any> {
             })
             .then(d => d.json())
             .then(d => {
-                let profiles: Array<Profile> = d;
-                profiles.map((profile) => {
-                    profile.startDate = new Date(profile.startDate);
-                });
+                let profiles: Array<Profile> = d.profiles;
+                let positions: Array<Position> = d.positions;
+                this.profileHelper.toViewModels(profiles, positions);
                 this.setState({
                     data: profiles
                 });

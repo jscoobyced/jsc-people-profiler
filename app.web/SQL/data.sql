@@ -12,7 +12,7 @@ VALUES
 ;
 
 INSERT INTO `position`
-(`id`, `position`)
+(`id`, `name`)
 VALUES
 (1, 'Junior Software Engineer')
 ,(2, 'Software Engineer')

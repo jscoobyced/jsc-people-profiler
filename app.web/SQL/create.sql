@@ -11,7 +11,7 @@ CREATE TABLE `page_configuration` (
 
 CREATE TABLE `position` (
     `id` INT PRIMARY KEY
-    ,`position` VARCHAR(32)
+    ,`name` VARCHAR(32)
 );
 
 CREATE TABLE `profile` (

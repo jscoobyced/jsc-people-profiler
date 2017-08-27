@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { ProfileDetailProps } from '../models/profile';
-import { Profile } from '../models/profile';
 import Util from '../../../../utils/util';
+import { Profile } from '../models/profile';
+import { Position } from '../models/profile';
+import { ProfileHelper } from '../profile-helper';
 
 export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDetailProps> {
+    private profileHelper: ProfileHelper = new ProfileHelper();
 
     constructor(props: ProfileDetailProps) {
         super(props);
@@ -20,10 +23,12 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
             })
             .then(d => d.json())
             .then(d => {
-                let profile: Profile = d;
-                profile.startDate = new Date(profile.startDate);
+                let profile: Profile = d.profile;
+                let positions: Array<Position> = d.positions;
+                this.profileHelper.toViewModel(profile, positions);
                 this.setState({
-                    profile: d
+                    profile: profile,
+                    positions: positions
                 });
             }, () => {
                 this.setState({
@@ -32,13 +37,20 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
             });
     }
 
+    handleSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
+        let profile = this.state.profile;
+        if (event.currentTarget.id === 'position') {
+            profile.position = Number(event.currentTarget.value);
+        }
+        this.setState({
+            profile: profile
+        });
+    }
+
     handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         let profile = this.state.profile;
         if (event.currentTarget.id === 'firstname') {
             profile.firstName = event.currentTarget.value;
-        }
-        if (event.currentTarget.id === 'position') {
-            profile.position = event.currentTarget.value;
         }
         if (event.currentTarget.id === 'lastname') {
             profile.lastName = event.currentTarget.value;
@@ -56,6 +68,7 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
         if (this.state.requestFailed) response = <p>Failed!</p>;
         if (this.state.profile) {
             let profile = this.state.profile;
+            let positions = this.state.positions;
             let startDate = Util.toYYYYMMDD(profile.startDate);
             response = (
                 <div className='col-md-6 col-md-offset-3'>
@@ -100,9 +113,16 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
                                 <label htmlFor='position' className='sr-only'>Position</label>
                                 <span className='input-group-addon'>
                                     <i className='glyphicon glyphicon-user'></i></span>
-                                <input type='text' id='position' value={profile.position}
-                                    onChange={this.handleChange}
-                                    className='form-control' placeholder='Select position' />
+                                <select id='position' value={profile.position}
+                                    onChange={this.handleSelect}
+                                    className='form-control'>
+                                    {
+                                        positions.map(function (position, key) {
+                                            return <option key={key}
+                                                value={position.id}>{position.name}</option>;
+                                        })
+                                    }
+                                </select>
                             </div>
                         </div>
                     </div>
