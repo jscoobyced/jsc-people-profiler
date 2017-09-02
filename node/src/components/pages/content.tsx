@@ -49,12 +49,10 @@ export class Content extends React.Component<MenuProps, MenuProps>  {
 
         let Edit = Page.Page;
         if (link === '/') {
-            console.log('Exact path: ' + path);
             self._routes.push(
                 <Route exact key={this._key.next()} path={path} component={Edit} />
             );
         } else {
-            console.log('Path: ' + path);
             self._routes.push(
                 <Route key={this._key.next()} path={path} component={Edit} />
             );

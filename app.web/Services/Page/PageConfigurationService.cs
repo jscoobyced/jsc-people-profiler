@@ -10,11 +10,19 @@ namespace app.web.Services
 
     public class PageConfigurationService : IPageConfigurationService
     {
-        private readonly IDatabaseRepository _databaseRepository;
+        private IDatabaseRepository _databaseRepository;
 
         public PageConfigurationService(IDatabaseRepository databaseRepository)
         {
             this._databaseRepository = databaseRepository;
+        }
+
+        public IDatabaseRepository DatabaseRepository
+        {
+            set
+            {
+                this._databaseRepository = value;
+            }
         }
 
         public async Task<PageConfiguration> GetPageConfiguration()

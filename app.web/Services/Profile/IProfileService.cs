@@ -8,5 +8,11 @@ namespace app.web.Services
     public interface IProfileService
     {
         Task<List<Profile>> GetProfilesAsync();
+
+        Task<List<Position>> GetPositionsAsync();
+
+        Task<Profile> GetProfileAsync(int id);
+
+        Task<bool> UpdateProfileAsync(Profile profile);
     }
 }

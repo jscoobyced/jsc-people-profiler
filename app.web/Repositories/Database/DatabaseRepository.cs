@@ -11,6 +11,8 @@ namespace app.web.Repositories
 
     public delegate void ReadList<T>(DbDataReader reader, List<T> results);
 
+    public delegate T Read<T>(DbDataReader reader);
+
     public class DatabaseRepository : IDatabaseRepository
     {
         private readonly IOptions<AppSettings> _appSettings;
@@ -20,10 +22,40 @@ namespace app.web.Repositories
             this._appSettings = appSettings;
         }
 
+        public async Task<T> ExecuteRead<T>(
+            string commandText,
+            Dictionary<string, object> parameters,
+            Read<T> read)
+        {
+            var result = await this.ExecuteReadAll(commandText, parameters, false, read, null);
+            if (result.GetType().Equals(typeof(T)))
+            {
+                return (T)result;
+            }
+
+            return default(T);
+        }
+
         public async Task<List<T>> ExecuteReadList<T>(
             string commandText,
             Dictionary<string, object> parameters,
-            ReadList<T> read)
+            ReadList<T> readList)
+        {
+            var result = await this.ExecuteReadAll(commandText, parameters, true, null, readList);
+            if (result.GetType().Equals(typeof(List<T>)))
+            {
+                return (List<T>)result;
+            }
+
+            return null;
+        }
+
+        private async Task<object> ExecuteReadAll<T>(
+            string commandText,
+            Dictionary<string, object> parameters,
+            bool listMode,
+            Read<T> read = null,
+            ReadList<T> readList = null)
         {
             if (string.IsNullOrWhiteSpace(commandText))
             {
@@ -31,6 +63,8 @@ namespace app.web.Repositories
             }
 
             var list = new List<T>();
+            var result = default(T);
+
             var connectionString = this._appSettings.Value.ConnectionString;
 
             try
@@ -56,7 +90,15 @@ namespace app.web.Repositories
                             {
                                 while (await reader.ReadAsync())
                                 {
-                                    read(reader, list);
+                                    if (listMode && readList != null)
+                                    {
+                                        readList(reader, list);
+                                    }
+                                    if (!listMode && read != null)
+                                    {
+                                        result = read(reader);
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -68,9 +110,47 @@ namespace app.web.Repositories
                 Debug.WriteLine(exception.Message);
             }
 
-            return list;
+            return (listMode ? (object)list : (object)result);
         }
 
+        public async Task<int> ExecuteUpdate(string commandText, Dictionary<string, object> parameters)
+        {
+            var columnUpdated = 0;
+            if (string.IsNullOrWhiteSpace(commandText))
+            {
+                return columnUpdated;
+            }
+
+            var connectionString = this._appSettings.Value.ConnectionString;
+
+            try
+            {
+                using (var connection = new MySqlConnection(connectionString.MySql))
+                {
+                    using (var command = new MySqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandText = commandText;
+                        if (parameters != null)
+                        {
+                            foreach (var key in parameters.Keys)
+                            {
+                                command.Parameters.AddWithValue(key, parameters[key]);
+                            }
+                        }
+
+                        await connection.OpenAsync();
+                        columnUpdated = await command.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            catch (MySqlException exception)
+            {
+                Debug.WriteLine(exception.Message);
+            }
+
+            return columnUpdated;
+        }
 
     }
 }
