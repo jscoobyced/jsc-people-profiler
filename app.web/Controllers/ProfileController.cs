@@ -9,11 +9,19 @@ namespace app.web.Controllers
 
     public class ProfileController : Controller
     {
-        private readonly IProfileService _profileService;
+        private IProfileService _profileService;
 
         public ProfileController(IProfileService profileService)
         {
             this._profileService = profileService;
+        }
+
+        public IProfileService ProfileService
+        {
+            set
+            {
+                this._profileService = value;
+            }
         }
 
         [HttpGet]
@@ -37,7 +45,7 @@ namespace app.web.Controllers
         [HttpPut("/profile/updateprofileasync/{id}")]
         public async Task<IActionResult> UpdateProfileAsync(int id, [FromBody] Profile profile)
         {
-            if (id != profile.Id)
+            if (profile == null || id != profile.Id)
             {
                 return BadRequest();
             }

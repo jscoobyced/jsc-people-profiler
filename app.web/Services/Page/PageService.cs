@@ -8,11 +8,19 @@ namespace app.web.Services
     public class PageService : IPageService
     {
 
-        private readonly IPageConfigurationService _pageConfigurationService;
+        private IPageConfigurationService _pageConfigurationService;
 
         public PageService(IPageConfigurationService pageConfigurationService)
         {
             this._pageConfigurationService = pageConfigurationService;
+        }
+
+        public IPageConfigurationService PageConfigurationService
+        {
+            set
+            {
+                this._pageConfigurationService = value;
+            }
         }
 
         public async Task<Page> GetPage()
@@ -26,6 +34,11 @@ namespace app.web.Services
         {
             var menu = new Menu();
             var pageConfiguration = await this._pageConfigurationService.GetPageConfiguration();
+            if (pageConfiguration == null)
+            {
+                return menu;
+            }
+
             menu.LeftMenu = this.GetMenuItem(pageConfiguration.LeftMenu);
             menu.RightMenu = this.GetMenuItem(pageConfiguration.RightMenu);
             return menu;

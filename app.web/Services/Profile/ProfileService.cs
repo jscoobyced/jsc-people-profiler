@@ -9,11 +9,19 @@ namespace app.web.Services
 
     public class ProfileService : IProfileService
     {
-        private readonly IDatabaseRepository _databaseRepository;
+        private IDatabaseRepository _databaseRepository;
 
         public ProfileService(IDatabaseRepository databaseRepository)
         {
             this._databaseRepository = databaseRepository;
+        }
+
+        public IDatabaseRepository DatabaseRepository
+        {
+            set
+            {
+                this._databaseRepository = value;
+            }
         }
 
         public async Task<Profile> GetProfileAsync(int id)
@@ -40,15 +48,15 @@ namespace app.web.Services
         public async Task<List<Profile>> GetProfilesAsync()
         {
             string commandText = @"SELECT
-                            pr.id
-                            , pr.firstname
-                            , pr.lastname
-                            , pr.position_id
-                            , pr.start_date
-                            , pr.status
-                        FROM `profile` pr
-                        WHERE (pr.status = @active)
-                        ORDER BY pr.id";
+                    pr.id
+                    , pr.firstname
+                    , pr.lastname
+                    , pr.position_id
+                    , pr.start_date
+                    , pr.status
+                FROM `profile` pr
+                WHERE (pr.status = @active)
+                ORDER BY pr.id";
             var parameters = new Dictionary<string, object>();
             parameters.Add("@active", Status.Active);
             var profiles = await this._databaseRepository.ExecuteReadList<Profile>(
@@ -59,8 +67,8 @@ namespace app.web.Services
         public async Task<List<Position>> GetPositionsAsync()
         {
             string commandText = @"SELECT id, name
-                        FROM `position`
-                        ORDER BY id";
+                FROM `position`
+                ORDER BY id";
             var positions = await this._databaseRepository.ExecuteReadList<Position>(
                 commandText, null, this.ReadPositionList);
             return positions;
@@ -68,12 +76,17 @@ namespace app.web.Services
 
         public async Task<bool> UpdateProfileAsync(Profile profile)
         {
+            if (profile == null || profile.Id < 1)
+            {
+                return false;
+            }
+
             string commandText = @"UPDATE `profile`
-                            set firstname = @firstname,
-                            lastname = @lastname,
-                            start_date = @startDate,
-                            status = @status
-                        WHERE (id = @id)";
+                SET firstname = @firstname,
+                lastname = @lastname,
+                start_date = @startDate,
+                status = @status
+                WHERE (id = @id)";
             var parameters = new Dictionary<string, object>();
             parameters.Add("@firstname", profile.FirstName);
             parameters.Add("@lastname", profile.LastName);
