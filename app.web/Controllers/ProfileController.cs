@@ -50,15 +50,16 @@ namespace app.web.Controllers
                 return BadRequest();
             }
 
-            if (await this._profileService.UpdateProfileAsync(profile))
+            if (id == 0)
+            {
+                var insertedId = await this._profileService.CreateProfileAsync(profile);
+                return Ok(insertedId);
+            }
+            else if (await this._profileService.UpdateProfileAsync(profile))
             {
                 return Ok();
             }
-            else
-            {
-                return NotFound();
-            }
-
+            return NotFound();
         }
 
         public IActionResult Error()

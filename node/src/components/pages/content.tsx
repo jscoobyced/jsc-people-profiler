@@ -36,18 +36,18 @@ export class Content extends React.Component<MenuProps, MenuProps>  {
         if (link === '#') {
             return;
         }
-        let page = this._resolver.resolve(link);
+        const page = this._resolver.resolve(link);
         let extension = '';
         if (page.endsWith('edit')) {
             extension += '/:id';
         }
 
-        let path = link + extension;
-        let self = this;
+        const path = link + extension;
+        const self = this;
 
         const Page = require(page + '.tsx');
 
-        let Edit = Page.Page;
+        const Edit = Page.Page;
         if (link === '/') {
             self._routes.push(
                 <Route exact key={this._key.next()} path={path} component={Edit} />

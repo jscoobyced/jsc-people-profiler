@@ -14,7 +14,7 @@ export class MainController {
     }
 
     public index(): void {
-        let menuProps: MenuProps = this._menuService.createMenuProps();
+        const menuProps: MenuProps = this._menuService.createMenuProps();
         ReactDOM.render(
             React.createElement(Menu, menuProps, null),
             document.getElementById('menu')

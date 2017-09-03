@@ -16,7 +16,7 @@ namespace app.web.Repositories
             ReadList<T> read);
 
         Task<int> ExecuteUpdate(string commandText,
-            Dictionary<string, object> parameters);
+            Dictionary<string, object> parameters, bool isInsert);
 
     }
 }

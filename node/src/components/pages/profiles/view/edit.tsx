@@ -14,24 +14,24 @@ export class Page extends React.Component<ProfileEditProps, ProfileEditProps> {
 
     render(): JSX.Element {
         const match = this.props.match;
-        let url = '/profiles/manage';
-        let back = 'Back';
-        let id: number = match.params.id;
+        const url = '/profiles/manage';
+        const back = 'Back';
+        const id: number = match.params.id;
 
         let element = (<div>Unexpected</div>);
         if (match) {
             element = (
-                <div>
-                    <ProfileDetail id={id} />
-                </div>
+                <ProfileDetail id={id} />
             );
         }
 
-        let content = (
-            <div className='row'>
-                <Link to={url} title={back}>
-                    <span className='glyphicon glyphicon-hand-left'></span> {back}
-                </Link>
+        const content = (
+            <div>
+                <div className='row'>
+                    <Link to={url} title={back}>
+                        <span className='glyphicon glyphicon-hand-left'></span> {back}
+                    </Link>
+                </div>
                 {element}
             </div>);
 

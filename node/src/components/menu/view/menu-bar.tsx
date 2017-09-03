@@ -10,7 +10,7 @@ export class MenuBar extends React.Component<MenuBarProps, MenuBarState> {
     }
 
     private mapState(props: MenuBarProps): MenuBarState {
-        let state = {
+        const state = {
             leftMenuList: props.leftMenuList,
             rightMenuList: props.rightMenuList
         };

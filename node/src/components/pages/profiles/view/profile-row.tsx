@@ -10,11 +10,11 @@ export class ProfileRow extends React.Component<ProfileProps, ProfileProps> {
     }
 
     render(): JSX.Element {
-        let rows = this.state.profiles.map((profile, key) => {
-            let url = this.state.baseUrl + '/' + profile.id;
-            let edit = 'Edit';
-            let title = edit + ' ' + profile.firstName;
-            let startDate = Util.toYYYYMMDD(profile.startDate);
+        const rows = this.state.profiles.map((profile, key) => {
+            const url = this.state.baseUrl + '/' + profile.id;
+            const edit = 'Edit';
+            const title = edit + ' ' + profile.firstName;
+            const startDate = Util.toYYYYMMDD(profile.startDate);
 
             return (
                 <tr key={key}>

@@ -5,8 +5,8 @@ import { MenuService } from '../components/menu/service/menu-service';
 export class MenuResolver {
 
     get MenuService(): IMenuService {
-        let menuRepository = new MenuRepository();
-        let menuService: IMenuService = new MenuService(menuRepository);
+        const menuRepository = new MenuRepository();
+        const menuService: IMenuService = new MenuService(menuRepository);
         return menuService;
     }
 }

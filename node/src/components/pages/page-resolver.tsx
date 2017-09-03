@@ -6,7 +6,7 @@ import { Page as P404 } from './errors/p404';
 export class PageResolver {
 
     public resolve(url: string): string {
-        let name = url.split('/');
+        const name = url.split('/');
         name.shift();
         if (name.length === 1) {
             name.push(name[0]);

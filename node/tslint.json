@@ -23,7 +23,11 @@
       true,
       "single"
     ],
-    "semicolon": true,
+    "prefer-const": true,
+    "semicolon": [
+      true,
+      "always"
+    ],
     "triple-equals": [
       true,
       "allow-null-check"

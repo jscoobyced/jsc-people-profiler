@@ -103,5 +103,29 @@ namespace app.web.Services.Test
             result
                 .Should().BeFalse("profile Id is negative");
         }
+
+        [Fact]
+        public async void CreateProfileAsyncTest()
+        {
+            var result = await GivenService
+                .ProfileService
+                .WithDatabaseRepository()
+                .CreateProfileAsync(ProfileServiceModels.NoIdProfile);
+
+            result
+                .Should().Be(1, "profile created should have Id=1");
+        }
+
+        [Fact]
+        public async void CreateNullProfileAsyncTest()
+        {
+            var result = await GivenService
+                .ProfileService
+                .WithDatabaseRepository()
+                .CreateProfileAsync(null);
+
+            result
+                .Should().Be(-1, "profile is null");
+        }
     }
 }

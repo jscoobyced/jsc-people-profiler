@@ -31,4 +31,6 @@ export interface ProfileDetailProps {
     profile?: Profile;
     positions?: Array<Position>;
     requestFailed?: boolean;
+    saveResult?: string;
+    isSaving?: boolean;
 }
