@@ -24,7 +24,8 @@ namespace app.web.Repositories.Tests
             mockDatabaseRepository
             .Setup(d => d.ExecuteUpdate(
                 It.IsAny<string>(),
-                It.IsAny<Dictionary<string, object>>()))
+                It.IsAny<Dictionary<string, object>>(),
+                It.IsAny<bool>()))
             .Returns(Task.FromResult(1));
             return mockDatabaseRepository.Object;
         }

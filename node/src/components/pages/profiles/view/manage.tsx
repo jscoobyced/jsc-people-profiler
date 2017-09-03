@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
+
 import { PageProps } from '../../page-models';
 import { ProfileProps } from '../models/profile';
 import { ProfileRow } from './profile-row';
@@ -26,8 +28,8 @@ export class Page extends React.Component<PageProps, any> {
             })
             .then(d => d.json())
             .then(d => {
-                let profiles: Array<Profile> = d.profiles;
-                let positions: Array<Position> = d.positions;
+                const profiles: Array<Profile> = d.profiles;
+                const positions: Array<Position> = d.positions;
                 this.profileHelper.toViewModels(profiles, positions);
                 this.setState({
                     data: profiles
@@ -42,6 +44,13 @@ export class Page extends React.Component<PageProps, any> {
     render(): JSX.Element {
         let response = <p>Loading...</p>;
         if (this.state.requestFailed) response = <p>Failed!</p>;
+        const newElement = (
+            <Link className='btn btn-default'
+                to='/profiles/edit/0' title='New'>
+                <span className='glyphicon glyphicon-plus'></span> New
+            </Link>
+        );
+
         if (this.state.data) {
             response = (
                 <div className='row'>
@@ -59,6 +68,11 @@ export class Page extends React.Component<PageProps, any> {
                             </thead>
                             <ProfileRow baseUrl='/profiles/edit' profiles={this.state.data} />
                         </table>
+                    </div>
+                    <div className='row'>
+                        <div className='col-md-8 col-md-offset-2'>
+                            {newElement}
+                        </div>
                     </div>
                 </div>
             );

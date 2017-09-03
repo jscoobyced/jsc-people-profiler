@@ -15,7 +15,7 @@ CREATE TABLE `position` (
 );
 
 CREATE TABLE `profile` (
-    `id` INT PRIMARY KEY
+    `id` INT PRIMARY KEY AUTO_INCREMENT
     ,`firstname` VARCHAR(64)
     ,`lastname` VARCHAR(64)
     ,`position_id` INT NOT NULL DEFAULT 1

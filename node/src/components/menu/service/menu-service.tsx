@@ -10,7 +10,7 @@ export class MenuService implements IMenuService {
     }
 
     public createMenuProps(): MenuProps {
-        let menuProps: MenuProps = {
+        const menuProps: MenuProps = {
             leftMenu: this.menuRepository.getLeftMenu(),
             rightMenu: this.menuRepository.getRightMenu()
         };

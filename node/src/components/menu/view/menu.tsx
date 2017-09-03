@@ -23,8 +23,8 @@ export class Menu extends React.Component<MenuProps, MenuProps> {
     }
 
     private createMenuItem(menuItem: MenuItem, index: number, isRight: boolean, level: number): JSX.Element {
-        let menuUlClassName = isRight ? this.menuUlRightClassName : this.menuUlLeftClassName;
-        let liItem = this.createLiItem(menuItem, index);
+        const menuUlClassName = isRight ? this.menuUlRightClassName : this.menuUlLeftClassName;
+        const liItem = this.createLiItem(menuItem, index);
         let result: JSX.Element;
 
         if (menuItem.status === 2) {
@@ -33,7 +33,7 @@ export class Menu extends React.Component<MenuProps, MenuProps> {
 
         if (menuItem.title === null || menuItem.title === '') {
             // Root level of the menu
-            let childrenNodes: JSX.Element[] = this.createChildrenNodes(menuItem, index, isRight, level);
+            const childrenNodes: JSX.Element[] = this.createChildrenNodes(menuItem, index, isRight, level);
             result = (
                 <ul className={menuUlClassName}>
                     {childrenNodes}
@@ -56,7 +56,7 @@ export class Menu extends React.Component<MenuProps, MenuProps> {
             } else {
                 // Menu item with children
                 subLevel = true;
-                let childrenNodes: JSX.Element[] = this.createChildrenNodes(menuItem, index, isRight, level);
+                const childrenNodes: JSX.Element[] = this.createChildrenNodes(menuItem, index, isRight, level);
                 subResult = (
                     <ul className={this.menuMultiLevelClassName}>
                         {childrenNodes}
@@ -107,12 +107,12 @@ export class Menu extends React.Component<MenuProps, MenuProps> {
         }
 
         let counter = 1;
-        let childrenNodes: JSX.Element[] = [];
+        const childrenNodes: JSX.Element[] = [];
         menuItem.menuItems.forEach(innerMenuItem => {
             if (innerMenuItem.status === 2) {
                 return;
             }
-            let innerMenuItemChild = this.createMenuItem(innerMenuItem, (index + counter++), isRight, level + 1);
+            const innerMenuItemChild = this.createMenuItem(innerMenuItem, (index + counter++), isRight, level + 1);
             if (innerMenuItemChild !== null) {
                 childrenNodes.push(innerMenuItemChild);
             }
@@ -122,8 +122,8 @@ export class Menu extends React.Component<MenuProps, MenuProps> {
     }
 
     render(): JSX.Element {
-        let leftMenuList = this.createMenuItem(this.state.leftMenu, 0, false, 0);
-        let rightMenuList = this.createMenuItem(this.state.rightMenu, 1, true, 0);
+        const leftMenuList = this.createMenuItem(this.state.leftMenu, 0, false, 0);
+        const rightMenuList = this.createMenuItem(this.state.rightMenu, 1, true, 0);
 
         return (
             <Router>

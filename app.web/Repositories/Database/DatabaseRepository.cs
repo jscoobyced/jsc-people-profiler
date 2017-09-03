@@ -28,7 +28,7 @@ namespace app.web.Repositories
             Read<T> read)
         {
             var result = await this.ExecuteReadAll(commandText, parameters, false, read, null);
-            if (result.GetType().Equals(typeof(T)))
+            if (result != null && result.GetType().Equals(typeof(T)))
             {
                 return (T)result;
             }
@@ -113,12 +113,15 @@ namespace app.web.Repositories
             return (listMode ? (object)list : (object)result);
         }
 
-        public async Task<int> ExecuteUpdate(string commandText, Dictionary<string, object> parameters)
+        public async Task<int> ExecuteUpdate(
+            string commandText,
+             Dictionary<string, object> parameters,
+             bool isInsert)
         {
-            var columnUpdated = 0;
+            var resultId = -1;
             if (string.IsNullOrWhiteSpace(commandText))
             {
-                return columnUpdated;
+                return resultId;
             }
 
             var connectionString = this._appSettings.Value.ConnectionString;
@@ -140,7 +143,22 @@ namespace app.web.Repositories
                         }
 
                         await connection.OpenAsync();
-                        columnUpdated = await command.ExecuteNonQueryAsync();
+                        resultId = await command.ExecuteNonQueryAsync();
+                    }
+                    if (isInsert)
+                    {
+                        using (var command = new MySqlCommand())
+                        {
+                            command.Connection = connection;
+                            command.CommandText = "SELECT LAST_INSERT_ID()";
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                if (reader != null && await reader.ReadAsync())
+                                {
+                                    resultId = reader.GetInt32(0);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -149,7 +167,7 @@ namespace app.web.Repositories
                 Debug.WriteLine(exception.Message);
             }
 
-            return columnUpdated;
+            return resultId;
         }
 
     }

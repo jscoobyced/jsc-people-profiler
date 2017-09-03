@@ -7,7 +7,7 @@ export class MenuRepository implements IMenuRepository {
 
     private get MenuData(): any {
         if (this._menuData === undefined) {
-            let data = $('#menu').attr('data-menu');
+            const data = $('#menu').attr('data-menu');
             this._menuData = JSON.parse(data);
         }
         return this._menuData;

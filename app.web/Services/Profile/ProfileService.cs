@@ -74,6 +74,28 @@ namespace app.web.Services
             return positions;
         }
 
+        public async Task<int> CreateProfileAsync(Profile profile)
+        {
+            if (profile == null)
+            {
+                return -1;
+            }
+
+            string commandText = @"INSERT INTO `profile`
+                (firstname, lastname, start_date, position_id, status)
+                VALUES(@firstname, @lastname, @startDate, @position, @status)";
+            var parameters = new Dictionary<string, object>();
+            parameters.Add("@firstname", profile.FirstName);
+            parameters.Add("@lastname", profile.LastName);
+            parameters.Add("@startDate", profile.StartDate);
+            parameters.Add("@position", profile.Position);
+            parameters.Add("@status", Status.Active);
+            var insertedId = await this._databaseRepository.ExecuteUpdate(
+                commandText, parameters, true);
+
+            return insertedId;
+        }
+
         public async Task<bool> UpdateProfileAsync(Profile profile)
         {
             if (profile == null || profile.Id < 1)
@@ -85,16 +107,16 @@ namespace app.web.Services
                 SET firstname = @firstname,
                 lastname = @lastname,
                 start_date = @startDate,
-                status = @status
+                position_id = @position
                 WHERE (id = @id)";
             var parameters = new Dictionary<string, object>();
             parameters.Add("@firstname", profile.FirstName);
             parameters.Add("@lastname", profile.LastName);
             parameters.Add("@startDate", profile.StartDate);
-            parameters.Add("@status", (int)profile.Status);
+            parameters.Add("@position", profile.Position);
             parameters.Add("@id", profile.Id);
             var columnUpdated = await this._databaseRepository.ExecuteUpdate(
-                commandText, parameters);
+                commandText, parameters, false);
 
             return columnUpdated == 1;
         }

@@ -20,7 +20,7 @@ namespace app.web.Services.Test
         public static Profile NoIdProfile
             => new Profile()
             {
-                Id = -1,
+                Id = 0,
                 FirstName = "Jane",
                 LastName = "Doe",
                 StartDate = new DateTime(2010, 10, 10),
