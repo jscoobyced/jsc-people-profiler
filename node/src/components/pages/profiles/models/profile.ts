@@ -16,6 +16,17 @@ export interface Position {
     name: string;
 }
 
+export interface Skill {
+    id: number;
+    name: string;
+    score: number;
+}
+
+export interface Characteristic {
+    id: number;
+    name: string;
+}
+
 export interface ProfileProps {
     profiles: Array<Profile>;
     baseUrl: string;
@@ -33,4 +44,6 @@ export interface ProfileDetailProps {
     requestFailed?: boolean;
     saveResult?: string;
     isSaving?: boolean;
+    skills?: Array<Skill>;
+    characteristics?: Array<Characteristic>;
 }

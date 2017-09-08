@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 
 import { ProfileDetailProps } from '../models/profile';
 import Util from '../../../../utils/util';
@@ -126,12 +125,11 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
     render(): JSX.Element {
         let response = <p>Loading...</p>;
         const saveElement = (
-            <Link className='btn btn-default'
+            <button className='btn btn-default'
                 onClick={this.handleSave}
-                to='#'
                 title='Save'>
                 <span className='glyphicon glyphicon-save'></span> Save
-            </Link>
+            </button>
         );
 
         if (this.state.requestFailed) response = <p>Failed!</p>;
@@ -143,8 +141,9 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
                 <div className='col-md-6'>
                     <div className='input-group'>
                         <label htmlFor='firstname' className='sr-only'>Firstname</label>
-                        <span className='input-group-addon'>
-                            <i className='glyphicon glyphicon-font'></i></span>
+                        <span className='input-group-addon' title='Firstname'>
+                            <i className='glyphicon glyphicon-font'></i>
+                        </span>
                         <input type='text' id='firstname' value={profile.firstName}
                             onChange={this.handleChange} required
                             className='form-control' placeholder='Enter firstname' />
@@ -155,8 +154,9 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
                 <div className='col-md-6'>
                     <div className='input-group'>
                         <label htmlFor='lastname' className='sr-only'>Lastname</label>
-                        <span className='input-group-addon'>
-                            <i className='glyphicon glyphicon-font'></i></span>
+                        <span className='input-group-addon' title='Lastname'>
+                            <i className='glyphicon glyphicon-font'></i>
+                        </span>
                         <input type='text' id='lastname' value={profile.lastName}
                             onChange={this.handleChange} required
                             className='form-control' placeholder='Enter lastname' />
@@ -167,8 +167,9 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
                 <div className='col-md-6'>
                     <div className='input-group'>
                         <label htmlFor='start-date' className='sr-only'>Start Date</label>
-                        <span className='input-group-addon'>
-                            <i className='glyphicon glyphicon-calendar'></i></span>
+                        <span className='input-group-addon' title='Start Date'>
+                            <i className='glyphicon glyphicon-calendar'></i>
+                        </span>
                         <input type='date' id='start-date' value={startDate}
                             onChange={this.handleChange}
                             className='form-control' placeholder='Enter start date' />
@@ -179,8 +180,9 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
                 <div className='col-md-6'>
                     <div className='input-group'>
                         <label htmlFor='position' className='sr-only'>Position</label>
-                        <span className='input-group-addon'>
-                            <i className='glyphicon glyphicon-user'></i></span>
+                        <span className='input-group-addon' title='Position'>
+                            <i className='glyphicon glyphicon-briefcase'></i>
+                        </span>
                         <select id='position' value={profile.position}
                             onChange={this.handleSelect}
                             className='form-control'>
@@ -199,11 +201,16 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
                 <div>
                     <div className='row'>
                         <div className='col-md-6 col-md-offset-3'>
-                            {profile.firstName &&
-                                <div className='row'>
-                                    <h2>{profile.firstName} {profile.lastName}'s Profile</h2>
-                                </div>
-                            }
+                            <div className='row'>
+                                <h2>
+                                    {(profile.firstName || profile.lastName) &&
+                                        <span>{profile.firstName} {profile.lastName}'s Profile</span>
+                                    }
+                                    {!(profile.firstName || profile.lastName) &&
+                                        <span>Create Profile</span>
+                                    }
+                                </h2>
+                            </div>
                             <div className='row'>
                                 {firstName}
                                 {lastName}
