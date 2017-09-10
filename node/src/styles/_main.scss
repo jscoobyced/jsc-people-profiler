@@ -1,6 +1,4 @@
 $font-family-base: $font-family-monospace;
-
-
 body {
   padding-top: $navbar-height + 10;
   background: $body-bg;
@@ -11,7 +9,7 @@ body {
   padding-right: 15px;
 }
 
-.row {
+.row.tall {
   min-height: 50px;
 }
 
@@ -33,6 +31,6 @@ footer>p {
 }
 
 // Middle align for rows
-.table > tbody > tr > td {
+.table>tbody>tr>td {
   vertical-align: middle;
 }

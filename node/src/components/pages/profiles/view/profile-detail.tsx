@@ -211,11 +211,11 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
                                     }
                                 </h2>
                             </div>
-                            <div className='row'>
+                            <div className='row tall'>
                                 {firstName}
                                 {lastName}
                             </div>
-                            <div className='row'>
+                            <div className='row tall'>
                                 {startDateElement}
                                 {position}
                             </div>

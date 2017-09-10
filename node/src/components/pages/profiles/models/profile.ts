@@ -44,6 +44,8 @@ export interface ProfileDetailProps {
     requestFailed?: boolean;
     saveResult?: string;
     isSaving?: boolean;
+    allSkills?: Array<Skill>;
+    allCharacteristics?: Array<Characteristic>;
     skills?: Array<Skill>;
     characteristics?: Array<Characteristic>;
 }
