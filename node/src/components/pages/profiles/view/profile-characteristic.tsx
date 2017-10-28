@@ -63,6 +63,23 @@ export class ProfileCharacteristic extends React.Component<ProfileDetailProps, P
         return null;
     }
 
+    private removeCharacteristic = (event: any): void => {
+        console.log(event.constructor.name);
+        const id = parseInt(event.target.getAttribute('data-id'));
+        console.log(id);
+        const profile = this.state.profile;
+        const newCharacteristics: Array<Characteristic> = [];
+        profile.characteristics.forEach(characteristic => {
+            if (characteristic.id !== id) {
+                newCharacteristics.push(characteristic);
+            }
+        });
+        profile.characteristics = newCharacteristics;
+        this.setState({
+            profile: profile
+        });
+    }
+
     private doAction = (): React.EventHandler<React.MouseEvent<HTMLButtonElement>> => {
         if (this.characteristicToAdd) {
             const profile = this.state.profile;
@@ -86,14 +103,12 @@ export class ProfileCharacteristic extends React.Component<ProfileDetailProps, P
     render(): JSX.Element {
         const addCharacteristicElement = this.createModalContent();
         const addButton = (
-            <div>
-                <button className='btn btn-default'
-                    onClick={this.openAction}
-                    title='Add'>
-                    <span className='glyphicon glyphicon-plus'></span>
-                    Add
+            <button className='btn btn-default'
+                onClick={this.openAction}
+                title='Add'>
+                <span className='glyphicon glyphicon-plus'></span>
+                Add
                 </button>
-            </div>
         );
 
         const modal = (
@@ -113,17 +128,26 @@ export class ProfileCharacteristic extends React.Component<ProfileDetailProps, P
                         </div> : null
                 }
                 <div className='row'>
-                    <h2>Characteristics</h2>
+                    <div className='col-md-7'>
+                        <span className='big'>Characteristics</span>
+                    </div>
+                    <div className='col-md-3'>
+                        {addButton}
+                    </div>
+                </div>
+                <div className='row'>
                     <ul>
                         {this.state.profile.characteristics.map((characteristic, key) => {
                             return (
-                                <li key={key}>{characteristic.name}</li>
+                                <li key={key} className='li-200'>
+                                    <span className='col-md-10'>{characteristic.name}</span>
+                                    <span onClick={this.removeCharacteristic}
+                                        data-id={characteristic.id}
+                                        className='col-md-2 pull-right glyphicon glyphicon-remove text-danger'></span>
+                                </li>
                             );
                         })}
                     </ul>
-                </div>
-                <div className='row'>
-                    {addButton}
                 </div>
             </div>
         );

@@ -174,31 +174,56 @@ namespace app.web.Services
             var newCharacteristics = characteristics.Where(
                 characteristic => !exisitingCharacteristics.Any(
                     exisitingCharacteristic => exisitingCharacteristic.Id == characteristic.Id)).ToList();
+            var characteristicsToDelete = exisitingCharacteristics.Where(
+                exisitingCharacteristic => !characteristics.Any(
+                    characteristic => characteristic.Id == exisitingCharacteristic.Id)).ToList();
 
-            if (!newCharacteristics.Any())
+            if (newCharacteristics.Any())
             {
-                return false;
+                var stringBuilder = new StringBuilder();
+                var first = true;
+                var parameters = new Dictionary<string, object>();
+                for (var i = 0; i < newCharacteristics.Count; i++)
+                {
+                    var profile = string.Format("@profile{0}", i);
+                    var characteristic = string.Format("@characteristic{0}", i);
+                    stringBuilder.AppendFormat(
+                        "{0}({1}, {2})", first ? "" : ",", profile, characteristic);
+                    first = false;
+                    parameters.Add(profile, profileId);
+                    parameters.Add(characteristic, newCharacteristics[i].Id);
+                };
+                string commandText = string.Format(@"INSERT INTO `profile_characteristic`
+                (`profile_id`, `characteristic_id`) VALUES {0}", stringBuilder.ToString());
+                var columnUpdated = await this._databaseRepository.ExecuteUpdate(
+                    commandText, parameters, false);
             }
 
-            var stringBuilder = new StringBuilder();
-            var first = true;
-            var parameters = new Dictionary<string, object>();
-            for (var i = 0; i < newCharacteristics.Count; i++)
+            if (characteristicsToDelete.Any())
             {
-                var profile = string.Format("@profile{0}", i);
-                var characteristic = string.Format("@characteristic{0}", i);
-                stringBuilder.AppendFormat(
-                    "{0}({1}, {2})", first ? "" : ",", profile, characteristic);
-                first = false;
-                parameters.Add(profile, profileId);
-                parameters.Add(characteristic, newCharacteristics[i].Id);
-            };
-            string commandText = string.Format(@"INSERT INTO  `profile_characteristic`
-                (`profile_id`, `characteristic_id`) VALUES {0}", stringBuilder.ToString());
-            var columnUpdated = await this._databaseRepository.ExecuteUpdate(
-                commandText, parameters, false);
+                var stringBuilder = new StringBuilder();
+                var first = true;
+                var parameters = new Dictionary<string, object>();
+                for (var i = 0; i < characteristicsToDelete.Count; i++)
+                {
+                    var profile = string.Format("@profile{0}", i);
+                    var characteristic = string.Format("@characteristic{0}", i);
+                    stringBuilder.AppendFormat(
+                        "{0}(`profile_id` = {1} AND `characteristic_id` = {2})",
+                         first ? "" : " OR ",
+                          profile,
+                           characteristic);
+                    first = false;
+                    parameters.Add(profile, profileId);
+                    parameters.Add(characteristic, characteristicsToDelete[i].Id);
+                };
+                string commandText = string.Format(@"DELETE FROM `profile_characteristic`
+                 WHERE {0}", stringBuilder.ToString());
+                var columnUpdated = await this._databaseRepository.ExecuteUpdate(
+                    commandText, parameters, false);
+            }
 
-            return columnUpdated >= 1;
+            return true;
         }
 
         private void ReadProfileList(DbDataReader reader, List<Profile> profiles)
