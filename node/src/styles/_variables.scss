@@ -2,15 +2,12 @@ $brand-primary: #2196F3;
 $body-bg: #FFF;
 $brand-bg: $brand-primary;
 $text-color: #555;
-$navbar-bg: darken($brand-bg, 10%);
-$navbar-default-color: $body-bg;
-$navbar-default-hover-color: $navbar-default-color;
-$navbar-default-link-color: $navbar-default-color;
-$navbar-default-link-active-color: $navbar-default-color;
-$dropdown-link-color: $navbar-default-color;
-$dropdown-link-hover-color: $navbar-default-color;
-$nav-link-hover-bg: darken($navbar-bg, 10%);
-$dropdown-bg: $nav-link-hover-bg;
-$dropdown-link-hover-bg: darken($dropdown-bg, 10%);
+$navbar-background-color: $brand-primary;
+$navbar-hover-color: darken($navbar-background-color, 10%);
+$navbar-ul-background-color: darken($navbar-background-color, 20%);
+$navbar-h-padding: 3px;
+$navbar-v-padding: 10px;
+$nav-link-hover-bg: $navbar-ul-background-color;
+
 $navbar-height: 28px;
 $table-bg-accent: #BBDEFB

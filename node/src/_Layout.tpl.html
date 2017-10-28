@@ -4,26 +4,26 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
-    <base href="/" />
+    <meta charset='utf-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>@ViewData['Title']</title>
+    <base href='/' />
 </head>
 
 <body>
     <header>
     </header>
-    <nav id="menu" data-menu='@Html.Raw(Json.Serialize(Model.Menu))'></nav>
+    <nav id='menu' class='navbar navbar-fixed-top' data-menu='@Html.Raw(Json.Serialize(Model.Menu))'></nav>
     <main>
-        <div id="body-content" class="container body-content">
+        <div id='body-content' class='container body-content'>
             @RenderBody()
         </div>
     </main>
     <footer>
-        <p class="text-muted credit">&copy; 2017 - C&eacute;dric ROCHEFOLLE</p>
+        <p class='text-muted credit'>&copy; 2017 - C&eacute;dric ROCHEFOLLE</p>
     </footer>
 
-    @RenderSection("Scripts", required: false)
+    @RenderSection('Scripts', required: false)
 </body>
 
 </html>

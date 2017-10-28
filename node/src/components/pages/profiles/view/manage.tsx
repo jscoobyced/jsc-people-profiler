@@ -19,7 +19,7 @@ export class Page extends React.Component<PageProps, any> {
     }
 
     componentDidMount() {
-        fetch('/profile/getprofilesasync')
+        fetch('/profiles')
             .then(response => {
                 if (!response.ok) {
                     throw Error('Network request failed');

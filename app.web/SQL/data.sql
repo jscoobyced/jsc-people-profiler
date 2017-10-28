@@ -1,26 +1,13 @@
-INSERT INTO `page_configuration`
-(`id`, `name`, `description`, `url`, `side`, `parent_id`, `order`, `status`)
-VALUES 
-(1, '', 'Left Menu', '#', 0, 0, 1, 1)
-,(2, 'Home', 'Home page of the profiler application', '/', 0, 1, 2, 1)
-,(3, 'Profiles', 'Profiles, meeting and action entries', '#', 0, 1, 3, 1)
-,(4, 'Manage', 'Manage profiles', '/profiles/manage', 0, 3, 4, 1)
-,(5, 'Edit', 'Edit profile', '/profiles/edit', 0, 3, 5, 2)
-,(6, 'Meetings', 'Meeting notes', '/meeting/manage', 0, 3, 6, 1)
-,(7, 'Actions', 'Action entries with deadlines', '/meeting/actions', 0, 3, 7, 1)
-,(8, '', 'Right Menu', '#', 1, 0, 1, 1)
-,(9, 'Other', 'General configuration and info', '#', 1, 8, 2, 1)
-,(10, 'Settings', 'General configurations', '/settings', 1, 9, 3, 1)
-,(11, 'Help', 'Help page of the profiler application', '/help', 1, 9, 4, 1)
-,(12, 'About', 'About this application and its creator(s)', '/about', 1, 9, 5, 1)
-;
-
 INSERT INTO `position` (`id`, `name`) VALUES
 (1, 'Junior Software Engineer')
 ,(2, 'Software Engineer')
 ,(3, 'Senior Software Engineer')
-,(4, 'Full Stack Developer')
-,(5, 'Development Manager')
+,(4, 'Lead Software Engineer')
+,(5, 'Software Architect')
+,(6, 'Junior QA Engineer')
+,(7, 'QA Engineer')
+,(8, 'Senior QA Engineer')
+,(9, 'Lead QA Engineer')
 ;
 
 INSERT INTO `skill` (`id`, `name`, `description`, `status`) VALUES
@@ -41,12 +28,12 @@ INSERT INTO `skill` (`id`, `name`, `description`, `status`) VALUES
 ;
 
 INSERT INTO `characteristic` (`id`, `name`, `description`, `status`) VALUES
-(1, 'Starter', 'Enthousiastic starting new projects', 1)
+(1, 'Starter', 'Enthousiastic starting new projects, creating POC', 1)
 ,(2, 'Finisher', 'Enthousiastic completing projects', 1)
 ,(3, 'Loner', 'Prefers working alone', 1)
 ,(4, 'Slow', 'Slow at execution', 1)
 ,(5, 'Fast', 'Fast at execution', 1)
-,(6, 'Leader', 'Enjoys and good at leading the team', 1)
+,(6, 'Leader', 'Enjoys and good at leading a team', 1)
 ,(7, 'Follower', 'Prefers and good at following others', 1)
 ,(8, 'Procedural', 'Follows and/or creates procedures', 1)
 ,(9, 'Liberal', 'Doesn''t like procedures', 1)

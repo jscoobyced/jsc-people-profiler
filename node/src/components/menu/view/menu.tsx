@@ -1,139 +1,32 @@
 import * as React from 'react';
-
-import { MenuHeader } from './menu-headers';
-import { MenuBar } from './menu-bar';
-import { MenuProps } from './menu-models';
-import { MenuBarProps } from './menu-models';
-import { MenuItem } from './menu-models';
 import { HashRouter as Router, Link } from 'react-router-dom';
 
-export class Menu extends React.Component<MenuProps, MenuProps> {
-    private menuMultiLevelClassName: string = 'dropdown-menu multi-level';
-    private menuUlLeftClassName: string = 'nav navbar-nav';
-    private menuUlRightClassName: string = 'nav navbar-nav navbar-right';
-    private menuUlSubMenuClassName: string = 'dropdown-submenu';
-    private menuUlToggleClassName: string = 'dropdown-toggle white';
-
-    constructor(props: MenuProps) {
-        super(props);
-        this.state = {
-            leftMenu: props.leftMenu,
-            rightMenu: props.rightMenu
-        };
-    }
-
-    private createMenuItem(menuItem: MenuItem, index: number, isRight: boolean, level: number): JSX.Element {
-        const menuUlClassName = isRight ? this.menuUlRightClassName : this.menuUlLeftClassName;
-        const liItem = this.createLiItem(menuItem, index);
-        let result: JSX.Element;
-
-        if (menuItem.status === 2) {
-            return null;
-        }
-
-        if (menuItem.title === null || menuItem.title === '') {
-            // Root level of the menu
-            const childrenNodes: JSX.Element[] = this.createChildrenNodes(menuItem, index, isRight, level);
-            result = (
-                <ul className={menuUlClassName}>
-                    {childrenNodes}
-                </ul>
-            );
-        } else {
-            let subLevel: boolean = false;
-            let subResult: JSX.Element;
-            if (menuItem.menuItems == null || menuItem.menuItems.length === 0) {
-                // Single menu item, just add it
-                if (level === 0) {
-                    result = (
-                        <ul className={menuUlClassName}>
-                            {liItem}
-                        </ul>
-                    );
-                } else {
-                    result = liItem;
-                }
-            } else {
-                // Menu item with children
-                subLevel = true;
-                const childrenNodes: JSX.Element[] = this.createChildrenNodes(menuItem, index, isRight, level);
-                subResult = (
-                    <ul className={this.menuMultiLevelClassName}>
-                        {childrenNodes}
-                    </ul>
-                );
-            }
-            if (subLevel) {
-                // First level menu
-                if (level === 1) {
-                    result = (
-                        <li key={index}>
-                            <Link to={menuItem.url} className={this.menuUlToggleClassName}
-                                title={menuItem.description}
-                                data-toggle='dropdown'>
-                                {menuItem.title}<b className='caret'></b>
-                            </Link>
-                            {subResult}
-                        </li>
-                    );
-                } else {
-                    // Deeper level menus
-                    result = (
-                        <li key={index} className={this.menuUlSubMenuClassName}>
-                            <Link to={menuItem.url} className={this.menuUlToggleClassName}
-                                title={menuItem.description}
-                                data-toggle='dropdown'>{menuItem.title}</Link>
-                            {subResult}
-                        </li>
-                    );
-                }
-            }
-        }
-        return result;
-    }
-
-    private createLiItem(menuItem: MenuItem, index: number): JSX.Element {
-        return (
-            <li key={index}>
-                <Link to={menuItem.url} className='white'
-                    title={menuItem.description}
-                >{menuItem.title}</Link>
-            </li>
-        );
-    }
-    private createChildrenNodes(menuItem: MenuItem, index: number, isRight: boolean, level: number): JSX.Element[] {
-        if (menuItem.status === 2) {
-            return null;
-        }
-
-        let counter = 1;
-        const childrenNodes: JSX.Element[] = [];
-        menuItem.menuItems.forEach(innerMenuItem => {
-            if (innerMenuItem.status === 2) {
-                return;
-            }
-            const innerMenuItemChild = this.createMenuItem(innerMenuItem, (index + counter++), isRight, level + 1);
-            if (innerMenuItemChild !== null) {
-                childrenNodes.push(innerMenuItemChild);
-            }
-        });
-
-        return childrenNodes;
-    }
+export class Menu extends React.Component<any, any> {
 
     render(): JSX.Element {
-        const leftMenuList = this.createMenuItem(this.state.leftMenu, 0, false, 0);
-        const rightMenuList = this.createMenuItem(this.state.rightMenu, 1, true, 0);
-
         return (
             <Router>
-                <nav className='navbar navbar-fixed-top'>
-                    <div className='container'>
-                        <MenuHeader />
-                        <MenuBar leftMenuList={leftMenuList}
-                            rightMenuList={rightMenuList} />
-                    </div>
-                </nav>
+                <div className='container'>
+                    <ul className='nav navbar-nav'>
+                        <li><Link to='/' title='Home page of the profiler application'>Home</Link></li>
+                        <li><Link to='#' title='Profiles, meeting and action entries'>Profiles<b className='caret'></b></Link>
+                            <ul>
+                                <li><Link to='/profiles/manage' title='Manage profiles'>Manage</Link></li>
+                                <li><Link to='/meeting/manage' title='Meeting notes'>Meetings</Link></li>
+                                <li><Link to='/meeting/action' title='Action entries with deadlines'>Actions</Link></li>
+                            </ul>
+                        </li>
+                        </ul>
+                        <ul className='nav navbar-nav navbar-right'>
+                        <li><Link to='#' title='General configuration and info'>Other<b className='caret'></b></Link>
+                            <ul>
+                                <li><Link to='/settings' title='General configurations'>Settings</Link></li>
+                                <li><Link to='/help' title='Help page of the profiler application'>Help</Link></li>
+                                <li><Link to='/about' title='About this application and its creator(s)'>About</Link> </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </Router>
         );
     }

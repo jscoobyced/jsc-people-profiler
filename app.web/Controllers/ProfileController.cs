@@ -24,7 +24,7 @@ namespace app.web.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("/profiles")]
         public async Task<IActionResult> GetProfilesAsync()
         {
             var positions = await this._profileService.GetPositionsAsync();
@@ -33,16 +33,22 @@ namespace app.web.Controllers
             return Ok(data);
         }
 
-        [HttpGet("/profile/getprofileasync/{id}")]
+        [HttpGet("/profile/{id}")]
         public async Task<IActionResult> GetProfileAsync(int id)
         {
             var positions = await this._profileService.GetPositionsAsync();
+            var allCharacteristics = await this._profileService.GetCharacteristicsAsync();
             var profile = await this._profileService.GetProfileAsync(id);
-            var data = new { positions = positions, profile = profile };
+            var data = new
+            {
+                positions = positions,
+                profile = profile,
+                allCharacteristics = allCharacteristics
+            };
             return Ok(data);
         }
 
-        [HttpPut("/profile/updateprofileasync/{id}")]
+        [HttpPut("/profile/{id}")]
         public async Task<IActionResult> UpdateProfileAsync(int id, [FromBody] Profile profile)
         {
             if (profile == null || id != profile.Id)

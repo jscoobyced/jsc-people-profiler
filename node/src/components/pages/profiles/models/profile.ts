@@ -9,6 +9,7 @@ export interface Profile {
     position: number;
     positionName?: string;
     status: number;
+    characteristics?: Array<Characteristic>;
 }
 
 export interface Position {
@@ -33,19 +34,27 @@ export interface ProfileProps {
 }
 
 export interface ProfileEditProps {
+    id: number;
     required: string;
     match?: match<IdParam>;
+    profile?: Profile;
+    requestFailed?: boolean;
+    positions?: Array<Position>;
+    allSkills?: Array<Skill>;
+    allCharacteristics?: Array<Characteristic>;
+    skills?: Array<Skill>;
+    saveResult?: string;
+    isSaving?: boolean;
 }
 
 export interface ProfileDetailProps {
     id: number;
     profile?: Profile;
-    positions?: Array<Position>;
     requestFailed?: boolean;
-    saveResult?: string;
-    isSaving?: boolean;
+    positions?: Array<Position>;
+    skills?: Array<Skill>;
     allSkills?: Array<Skill>;
     allCharacteristics?: Array<Characteristic>;
-    skills?: Array<Skill>;
-    characteristics?: Array<Characteristic>;
+    showCharacteristicsModal?: boolean;
+    selectedCharacteristic?: number;
 }

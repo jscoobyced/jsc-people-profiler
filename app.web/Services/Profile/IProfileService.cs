@@ -11,6 +11,8 @@ namespace app.web.Services
 
         Task<List<Position>> GetPositionsAsync();
 
+        Task<List<Characteristic>> GetCharacteristicsAsync();
+
         Task<Profile> GetProfileAsync(int id);
 
         Task<bool> UpdateProfileAsync(Profile profile);

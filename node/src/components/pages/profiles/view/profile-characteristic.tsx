@@ -19,8 +19,10 @@ export class ProfileCharacteristic extends React.Component<ProfileDetailProps, P
         return (
             <div>
                 <select id='characteristics'
+                    value={this.state.selectedCharacteristic}
                     onChange={this.handleAdd}
                     className='form-control'>
+                    <option value='-1'>Choose an option</option>
                     {
                         this.props.allCharacteristics.map(function (characteristic, key) {
                             return <option key={key}
@@ -35,23 +37,50 @@ export class ProfileCharacteristic extends React.Component<ProfileDetailProps, P
     private handleAdd = (event: React.ChangeEvent<HTMLSelectElement>) => {
         if (event.currentTarget.id && parseInt(event.currentTarget.id) !== 0) {
             this.characteristicToAdd = {
-                id: parseInt(event.currentTarget.id),
+                id: parseInt(event.currentTarget.options[event.currentTarget.selectedIndex].value),
                 name: event.currentTarget.options[event.currentTarget.selectedIndex].text
             };
         } else {
             this.characteristicToAdd = null;
         }
+        this.setState({
+            selectedCharacteristic: this.characteristicToAdd.id
+        });
+    }
+
+    private openAction = (): React.EventHandler<React.MouseEvent<HTMLButtonElement>> => {
+        this.setState({
+            showCharacteristicsModal: true,
+            selectedCharacteristic: -1
+        });
+        return null;
     }
 
     private closeAction = (): React.EventHandler<React.MouseEvent<HTMLButtonElement>> => {
+        this.setState({
+            showCharacteristicsModal: false
+        });
+        return null;
+    }
+
+    private doAction = (): React.EventHandler<React.MouseEvent<HTMLButtonElement>> => {
         if (this.characteristicToAdd) {
-            const characteristics = this.state.characteristics;
-            characteristics.push(this.characteristicToAdd);
+            const profile = this.state.profile;
+            let found: boolean = false;
+            profile.characteristics.forEach(characteristic => {
+                if (characteristic.id === this.characteristicToAdd.id) {
+                    found = true;
+                    return;
+                }
+            });
+            if (!found) {
+                profile.characteristics.push(this.characteristicToAdd);
+            }
             this.setState({
-                characteristics: characteristics
+                profile: profile
             });
         }
-        return null;
+        return this.closeAction();
     }
 
     render(): JSX.Element {
@@ -59,24 +88,34 @@ export class ProfileCharacteristic extends React.Component<ProfileDetailProps, P
         const addButton = (
             <div>
                 <button className='btn btn-default'
-                    data-toggle='modal'
-                    data-target='#characteristicModal'
+                    onClick={this.openAction}
                     title='Add'>
                     <span className='glyphicon glyphicon-plus'></span>
                     Add
                 </button>
-                <Modal close='Add' closeAction={this.closeAction}
-                    title='Add characteristic'
-                    name='characteristicModal'
-                    content={addCharacteristicElement} />
             </div>
+        );
+
+        const modal = (
+            <Modal close='Close' do='Add'
+                closeAction={this.closeAction}
+                doAction={this.doAction}
+                title='Add characteristic'
+                name='characteristicModal'
+                content={addCharacteristicElement} />
         );
         return (
             <div>
+                {
+                    this.state.showCharacteristicsModal ?
+                        <div className='row'>
+                            {modal}
+                        </div> : null
+                }
                 <div className='row'>
                     <h2>Characteristics</h2>
                     <ul>
-                        {this.state.characteristics.map((characteristic, key) => {
+                        {this.state.profile.characteristics.map((characteristic, key) => {
                             return (
                                 <li key={key}>{characteristic.name}</li>
                             );

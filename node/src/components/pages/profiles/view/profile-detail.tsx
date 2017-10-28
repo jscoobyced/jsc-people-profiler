@@ -2,39 +2,12 @@ import * as React from 'react';
 
 import { ProfileDetailProps } from '../models/profile';
 import Util from '../../../../utils/util';
-import { Profile } from '../models/profile';
-import { Position } from '../models/profile';
-import { ProfileHelper } from '../profile-helper';
+import { Profile, Position, Characteristic } from '../models/profile';
 
 export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDetailProps> {
-    private profileHelper: ProfileHelper = new ProfileHelper();
-
     constructor(props: ProfileDetailProps) {
         super(props);
         this.state = props;
-    }
-
-    componentDidMount() {
-        fetch('/profile/getprofileasync/' + this.props.id)
-            .then(response => {
-                if (!response.ok) {
-                    throw Error('Network request failed');
-                }
-                return response;
-            })
-            .then(d => d.json())
-            .then(d => {
-                const positions: Array<Position> = d.positions;
-                const profile = this.profileHelper.toViewModel(d.profile, positions);
-                this.setState({
-                    profile: profile,
-                    positions: positions
-                });
-            }, () => {
-                this.setState({
-                    requestFailed: true
-                });
-            });
     }
 
     handleSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
@@ -63,76 +36,8 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
         });
     }
 
-    handleSave = () => {
-        if (this.state.isSaving) {
-            return;
-        }
-
-        this.setState({
-            isSaving: true,
-            saveResult: ''
-        });
-        const profile = {
-            id: this.state.profile.id,
-            firstName: this.state.profile.firstName,
-            lastName: this.state.profile.lastName,
-            position: this.state.profile.position,
-            startDate: Util.toUTC(this.state.profile.startDate),
-            status: this.state.profile.status
-        };
-        fetch('/profile/updateprofileasync/' + profile.id, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(profile)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    this.setState({
-                        saveResult: 'Failed',
-                        isSaving: false
-                    });
-                }
-                return response;
-            })
-            .then(response => response.text())
-            .then(response => {
-                if (profile.id === 0) {
-                    const inserted: number = parseInt(response);
-                    if (inserted > 0) {
-                        this.state.profile.id = inserted;
-                        this.setState({
-                            saveResult: 'Success',
-                            isSaving: false
-                        });
-                    }
-                } else {
-                    this.setState({
-                        saveResult: 'Success',
-                        isSaving: false
-                    });
-                }
-            }, () => {
-                this.setState({
-                    saveResult: 'Failed',
-                    isSaving: false
-                });
-            });
-    }
-
     render(): JSX.Element {
         let response = <p>Loading...</p>;
-        const saveElement = (
-            <button className='btn btn-default'
-                onClick={this.handleSave}
-                title='Save'>
-                <span className='glyphicon glyphicon-save'></span> Save
-            </button>
-        );
-
-        if (this.state.requestFailed) response = <p>Failed!</p>;
         if (this.state.profile) {
             const profile = this.state.profile;
             const positions = this.state.positions;
@@ -219,11 +124,6 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
                                 {startDateElement}
                                 {position}
                             </div>
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col-md-6 col-md-offset-3'>
-                            {saveElement} {this.state.saveResult}
                         </div>
                     </div>
                 </div>

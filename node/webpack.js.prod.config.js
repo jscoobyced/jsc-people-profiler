@@ -12,7 +12,6 @@ exports.jsConfig = {
         jsc: ['./src/index'],
         vendor: ['react',
             'react-dom',
-            'jquery',
             'react-router-dom',
             'bootstrap'
         ]
@@ -56,10 +55,6 @@ exports.jsConfig = {
                 warnings: false
             },
             comments: false
-        }),
-        new webpack.ProvidePlugin({
-            $: "jquery",
-            jQuery: "jquery"
         }),
         new WebpackCleanupPlugin(),
         new webpack.DefinePlugin({

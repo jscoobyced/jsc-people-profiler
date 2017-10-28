@@ -1,5 +1,3 @@
-DROP TABLE IF EXISTS `page_configuration`;
-
 DROP TABLE IF EXISTS `profile_skill`;
 
 DROP TABLE IF EXISTS `profile_characteristic`;

@@ -1,6 +1,7 @@
 namespace app.web.Models
 {
     using System;
+    using System.Collections.Generic;
 
     public class Profile
     {
@@ -16,5 +17,7 @@ namespace app.web.Models
         public int Position { get; set; }
 
         public Status Status { get; set; }
+
+        public List<Characteristic> Characteristics { get; set; }
     }
 }
