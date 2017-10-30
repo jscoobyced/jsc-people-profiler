@@ -47,6 +47,7 @@ namespace app.web.Services
             if (profile != null)
             {
                 profile.Characteristics = await this.GetCharacteristicsByProfileIdAsync(id);
+                profile.Skills = await this.GetSkillsByProfileIdAsync(id);
             }
 
             return profile;
@@ -110,6 +111,25 @@ namespace app.web.Services
             return characteristics;
         }
 
+        private async Task<List<Skill>> GetSkillsByProfileIdAsync(int profileId)
+        {
+            string commandText = @"SELECT s.id, s.name, ps.score
+                FROM `profile_skill` ps
+                INNER JOIN `profile` p
+                ON ps.profile_id = p.id
+                INNER JOIN `skill` s
+                ON ps.skill_id = s.id
+                AND s.status = @active
+                WHERE p.id = @id
+                ORDER BY s.id";
+            var parameters = new Dictionary<string, object>();
+            parameters.Add("@id", profileId);
+            parameters.Add("@active", Status.Active);
+            var skills = await this._databaseRepository.ExecuteReadList<Skill>(
+                commandText, parameters, this.ReadSkillList);
+            return skills;
+        }
+
         public async Task<int> CreateProfileAsync(Profile profile)
         {
             if (profile == null)
@@ -155,10 +175,11 @@ namespace app.web.Services
                 commandText, parameters, false);
 
             await this.UpdateProfileCharacteristicsAsync(profile.Characteristics, profile.Id);
+            await this.UpdateProfileSkillsAsync(profile.Skills, profile.Id);
             return columnUpdated == 1;
         }
 
-        public async Task<bool> UpdateProfileCharacteristicsAsync(
+        private async Task<bool> UpdateProfileCharacteristicsAsync(
             List<Characteristic> characteristics,
             int profileId)
         {
@@ -226,6 +247,76 @@ namespace app.web.Services
             return true;
         }
 
+        private async Task<bool> UpdateProfileSkillsAsync(
+            List<Skill> skills,
+            int profileId)
+        {
+            if (skills == null
+                || !skills.Any()
+                || profileId < 1)
+            {
+                return false;
+            }
+
+            var exisitingSkills = await this.GetSkillsByProfileIdAsync(profileId);
+
+            var newSkills = skills.Where(
+                skill => !exisitingSkills.Any(
+                    exisitingSkill => exisitingSkill.Id == skill.Id)).ToList();
+            var skillsToDelete = exisitingSkills.Where(
+                exisitingSkill => !skills.Any(
+                    skill => skill.Id == exisitingSkill.Id)).ToList();
+
+            if (newSkills.Any())
+            {
+                var stringBuilder = new StringBuilder();
+                var first = true;
+                var parameters = new Dictionary<string, object>();
+                for (var i = 0; i < newSkills.Count; i++)
+                {
+                    var profile = string.Format("@profile{0}", i);
+                    var skill = string.Format("@skill{0}", i);
+                    var score = string.Format("@score{0}", i);
+                    stringBuilder.AppendFormat(
+                        "{0}({1}, {2}, {3})", first ? "" : ",", profile, skill, score);
+                    first = false;
+                    parameters.Add(profile, profileId);
+                    parameters.Add(skill, newSkills[i].Id);
+                    parameters.Add(score, newSkills[i].Score);
+                };
+                string commandText = string.Format(@"INSERT INTO `profile_skill`
+                (`profile_id`, `skill_id`, `score`) VALUES {0}", stringBuilder.ToString());
+                var columnUpdated = await this._databaseRepository.ExecuteUpdate(
+                    commandText, parameters, false);
+            }
+
+            if (skillsToDelete.Any())
+            {
+                var stringBuilder = new StringBuilder();
+                var first = true;
+                var parameters = new Dictionary<string, object>();
+                for (var i = 0; i < skillsToDelete.Count; i++)
+                {
+                    var profile = string.Format("@profile{0}", i);
+                    var skill = string.Format("@skill{0}", i);
+                    stringBuilder.AppendFormat(
+                        "{0}(`profile_id` = {1} AND `skill_id` = {2})",
+                         first ? "" : " OR ",
+                          profile,
+                           skill);
+                    first = false;
+                    parameters.Add(profile, profileId);
+                    parameters.Add(skill, skillsToDelete[i].Id);
+                };
+                string commandText = string.Format(@"DELETE FROM `profile_skill`
+                 WHERE {0}", stringBuilder.ToString());
+                var columnUpdated = await this._databaseRepository.ExecuteUpdate(
+                    commandText, parameters, false);
+            }
+
+            return true;
+        }
+
         private void ReadProfileList(DbDataReader reader, List<Profile> profiles)
         {
             profiles.Add(this.ReadProfile(reader));
@@ -239,6 +330,11 @@ namespace app.web.Services
         private void ReadCharacteristicList(DbDataReader reader, List<Characteristic> characteristics)
         {
             characteristics.Add(this.ReadCharacteristic(reader));
+        }
+
+        private void ReadSkillList(DbDataReader reader, List<Skill> skills)
+        {
+            skills.Add(this.ReadSkill(reader));
         }
 
         private Profile ReadProfile(DbDataReader reader)
@@ -267,6 +363,15 @@ namespace app.web.Services
             characteristic.Id = reader.GetInt32(reader.GetOrdinal("id"));
             characteristic.Name = reader.GetString(reader.GetOrdinal("name"));
             return characteristic;
+        }
+
+        private Skill ReadSkill(DbDataReader reader)
+        {
+            var skill = new Skill();
+            skill.Id = reader.GetInt32(reader.GetOrdinal("id"));
+            skill.Name = reader.GetString(reader.GetOrdinal("name"));
+            skill.Score = reader.GetInt32(reader.GetOrdinal("score"));
+            return skill;
         }
     }
 }

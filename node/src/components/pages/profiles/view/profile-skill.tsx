@@ -12,7 +12,7 @@ export class ProfileSkill extends React.Component<ProfileDetailProps, ProfileDet
         return (
             <div className='row'>
                 <h2>Skills</h2>
-                {this.state.skills.map((skill, key) => {
+                {this.state.profile.skills.map((skill, key) => {
                     const maxScore = 5;
                     const percent = (100 * skill.score / 5);
                     const style = {

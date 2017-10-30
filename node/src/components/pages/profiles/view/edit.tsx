@@ -129,14 +129,10 @@ export class Page extends React.Component<ProfileEditProps, ProfileEditProps> {
                         allCharacteristics={this.state.allCharacteristics}
                     />
                 );
-                const skills = new Array<Skill>();
-                skills.push({ id: 1, name: 'C#', score: 4 });
-                skills.push({ id: 2, name: 'Java', score: 2 });
-                skills.push({ id: 3, name: 'CSS', score: 3 });
-                skills.push({ id: 4, name: 'HTML', score: 1 });
-                skills.push({ id: 5, name: 'Software Architecture', score: 5 });
                 skillElement = (
-                    <ProfileSkill id={id} skills={skills} profile={this.state.profile} />
+                    <ProfileSkill id={id}
+                        allSkills={this.state.allSkills}
+                        profile={this.state.profile} />
                 );
             }
         }
@@ -164,10 +160,10 @@ export class Page extends React.Component<ProfileEditProps, ProfileEditProps> {
                     {skillElement}
                 </div>
                 <div className='row'>
-                        <div className='col-md-6 col-md-offset-3'>
-                            {saveElement} {this.state.saveResult}
-                        </div>
+                    <div className='col-md-6 col-md-offset-3'>
+                        {saveElement} {this.state.saveResult}
                     </div>
+                </div>
             </div>);
 
         return content;

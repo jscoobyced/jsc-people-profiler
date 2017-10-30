@@ -19,5 +19,7 @@ namespace app.web.Models
         public Status Status { get; set; }
 
         public List<Characteristic> Characteristics { get; set; }
+
+        public List<Skill> Skills { get; set; }
     }
 }

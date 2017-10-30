@@ -10,6 +10,7 @@ export interface Profile {
     positionName?: string;
     status: number;
     characteristics?: Array<Characteristic>;
+    skills?: Array<Skill>;
 }
 
 export interface Position {
@@ -42,7 +43,6 @@ export interface ProfileEditProps {
     positions?: Array<Position>;
     allSkills?: Array<Skill>;
     allCharacteristics?: Array<Characteristic>;
-    skills?: Array<Skill>;
     saveResult?: string;
     isSaving?: boolean;
 }
@@ -52,7 +52,6 @@ export interface ProfileDetailProps {
     profile?: Profile;
     requestFailed?: boolean;
     positions?: Array<Position>;
-    skills?: Array<Skill>;
     allSkills?: Array<Skill>;
     allCharacteristics?: Array<Characteristic>;
     showCharacteristicsModal?: boolean;
