@@ -54,6 +54,7 @@ export interface ProfileDetailProps {
     positions?: Array<Position>;
     allSkills?: Array<Skill>;
     allCharacteristics?: Array<Characteristic>;
-    showCharacteristicsModal?: boolean;
-    selectedCharacteristic?: number;
+    showModal?: boolean;
+    selectedCharacteristic?: Characteristic;
+    selectedSkill?: Skill;
 }

@@ -92,6 +92,16 @@ namespace app.web.Services
             return characteristics;
         }
 
+        public async Task<List<Skill>> GetSkillsAsync()
+        {
+            string commandText = @"SELECT id, name
+                FROM `skill`
+                ORDER BY id";
+            var skills = await this._databaseRepository.ExecuteReadList<Skill>(
+                commandText, null, this.ReadSkillList);
+            return skills;
+        }
+
         private async Task<List<Characteristic>> GetCharacteristicsByProfileIdAsync(int profileId)
         {
             string commandText = @"SELECT c.id, c.name
@@ -111,7 +121,7 @@ namespace app.web.Services
             return characteristics;
         }
 
-        private async Task<List<Skill>> GetSkillsByProfileIdAsync(int profileId)
+        private async Task<List<ProfileSkill>> GetSkillsByProfileIdAsync(int profileId)
         {
             string commandText = @"SELECT s.id, s.name, ps.score
                 FROM `profile_skill` ps
@@ -125,8 +135,8 @@ namespace app.web.Services
             var parameters = new Dictionary<string, object>();
             parameters.Add("@id", profileId);
             parameters.Add("@active", Status.Active);
-            var skills = await this._databaseRepository.ExecuteReadList<Skill>(
-                commandText, parameters, this.ReadSkillList);
+            var skills = await this._databaseRepository.ExecuteReadList<ProfileSkill>(
+                commandText, parameters, this.ReadProfileSkillList);
             return skills;
         }
 
@@ -248,7 +258,7 @@ namespace app.web.Services
         }
 
         private async Task<bool> UpdateProfileSkillsAsync(
-            List<Skill> skills,
+            List<ProfileSkill> skills,
             int profileId)
         {
             if (skills == null
@@ -332,6 +342,11 @@ namespace app.web.Services
             characteristics.Add(this.ReadCharacteristic(reader));
         }
 
+        private void ReadProfileSkillList(DbDataReader reader, List<ProfileSkill> skills)
+        {
+            skills.Add(this.ReadProfileSkill(reader));
+        }
+
         private void ReadSkillList(DbDataReader reader, List<Skill> skills)
         {
             skills.Add(this.ReadSkill(reader));
@@ -365,12 +380,20 @@ namespace app.web.Services
             return characteristic;
         }
 
+        private ProfileSkill ReadProfileSkill(DbDataReader reader)
+        {
+            var skill = new ProfileSkill();
+            skill.Id = reader.GetInt32(reader.GetOrdinal("id"));
+            skill.Name = reader.GetString(reader.GetOrdinal("name"));
+            skill.Score = reader.GetInt32(reader.GetOrdinal("score"));
+            return skill;
+        }
+
         private Skill ReadSkill(DbDataReader reader)
         {
             var skill = new Skill();
             skill.Id = reader.GetInt32(reader.GetOrdinal("id"));
             skill.Name = reader.GetString(reader.GetOrdinal("name"));
-            skill.Score = reader.GetInt32(reader.GetOrdinal("score"));
             return skill;
         }
     }

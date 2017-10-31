@@ -38,12 +38,14 @@ namespace app.web.Controllers
         {
             var positions = await this._profileService.GetPositionsAsync();
             var allCharacteristics = await this._profileService.GetCharacteristicsAsync();
+            var allSkills = await this._profileService.GetSkillsAsync();
             var profile = await this._profileService.GetProfileAsync(id);
             var data = new
             {
                 positions = positions,
                 profile = profile,
-                allCharacteristics = allCharacteristics
+                allCharacteristics = allCharacteristics,
+                allSkills = allSkills
             };
             return Ok(data);
         }

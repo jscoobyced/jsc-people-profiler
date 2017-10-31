@@ -31,11 +31,13 @@ export class Page extends React.Component<ProfileEditProps, ProfileEditProps> {
             .then(d => {
                 const positions: Array<Position> = d.positions;
                 const allCharacteristics: Array<Characteristic> = d.allCharacteristics;
+                const allSkills: Array<Skill> = d.allSkills;
                 const profile = this.profileHelper.toViewModel(d.profile, positions);
                 this.setState({
                     profile: profile,
                     positions: positions,
                     allCharacteristics: allCharacteristics,
+                    allSkills: allSkills
                 });
             }, () => {
                 this.setState({
@@ -60,7 +62,8 @@ export class Page extends React.Component<ProfileEditProps, ProfileEditProps> {
             position: this.state.profile.position,
             startDate: Util.toUTC(this.state.profile.startDate),
             status: this.state.profile.status,
-            characteristics: this.state.profile.characteristics
+            characteristics: this.state.profile.characteristics,
+            skills: this.state.profile.skills
         };
         fetch('/profile/' + profile.id, {
             method: 'PUT',
@@ -125,13 +128,14 @@ export class Page extends React.Component<ProfileEditProps, ProfileEditProps> {
                 characteristicElement = (
                     <ProfileCharacteristic id={id}
                         profile={this.state.profile}
-                        showCharacteristicsModal={false}
+                        showModal={false}
                         allCharacteristics={this.state.allCharacteristics}
                     />
                 );
                 skillElement = (
                     <ProfileSkill id={id}
                         allSkills={this.state.allSkills}
+                        showModal={false}
                         profile={this.state.profile} />
                 );
             }

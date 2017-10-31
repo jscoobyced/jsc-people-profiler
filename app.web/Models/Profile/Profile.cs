@@ -20,6 +20,6 @@ namespace app.web.Models
 
         public List<Characteristic> Characteristics { get; set; }
 
-        public List<Skill> Skills { get; set; }
+        public List<ProfileSkill> Skills { get; set; }
     }
 }

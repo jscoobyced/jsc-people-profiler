@@ -13,6 +13,8 @@ namespace app.web.Services
 
         Task<List<Characteristic>> GetCharacteristicsAsync();
 
+        Task<List<Skill>> GetSkillsAsync();
+
         Task<Profile> GetProfileAsync(int id);
 
         Task<bool> UpdateProfileAsync(Profile profile);

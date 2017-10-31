@@ -5,8 +5,6 @@ import { Modal } from '../../../../utils/modal';
 
 export class ProfileCharacteristic extends React.Component<ProfileDetailProps, ProfileDetailProps> {
 
-    private characteristicToAdd: Characteristic;
-
     constructor(props: ProfileDetailProps) {
         super(props);
         this.state = props;
@@ -16,10 +14,16 @@ export class ProfileCharacteristic extends React.Component<ProfileDetailProps, P
         if (!this.props.allCharacteristics) {
             return (<div />);
         }
+        const selectedCharacteristic = this.state.selectedCharacteristic ?
+            this.state.selectedCharacteristic
+            : {
+                id: -1,
+                name: ''
+            };
         return (
             <div>
                 <select id='characteristics'
-                    value={this.state.selectedCharacteristic}
+                    value={selectedCharacteristic.id}
                     onChange={this.handleAdd}
                     className='form-control'>
                     <option value='-1'>Choose an option</option>
@@ -36,37 +40,36 @@ export class ProfileCharacteristic extends React.Component<ProfileDetailProps, P
 
     private handleAdd = (event: React.ChangeEvent<HTMLSelectElement>) => {
         if (event.currentTarget.id && parseInt(event.currentTarget.id) !== 0) {
-            this.characteristicToAdd = {
+            const characteristicToAdd = {
                 id: parseInt(event.currentTarget.options[event.currentTarget.selectedIndex].value),
                 name: event.currentTarget.options[event.currentTarget.selectedIndex].text
             };
-        } else {
-            this.characteristicToAdd = null;
+            this.setState({
+                selectedCharacteristic: characteristicToAdd
+            });
         }
-        this.setState({
-            selectedCharacteristic: this.characteristicToAdd.id
-        });
     }
 
     private openAction = (): React.EventHandler<React.MouseEvent<HTMLButtonElement>> => {
         this.setState({
-            showCharacteristicsModal: true,
-            selectedCharacteristic: -1
+            showModal: true,
+            selectedCharacteristic: {
+                id: -1,
+                name: ''
+            }
         });
         return null;
     }
 
     private closeAction = (): React.EventHandler<React.MouseEvent<HTMLButtonElement>> => {
         this.setState({
-            showCharacteristicsModal: false
+            showModal: false
         });
         return null;
     }
 
     private removeCharacteristic = (event: any): void => {
-        console.log(event.constructor.name);
         const id = parseInt(event.target.getAttribute('data-id'));
-        console.log(id);
         const profile = this.state.profile;
         const newCharacteristics: Array<Characteristic> = [];
         profile.characteristics.forEach(characteristic => {
@@ -81,17 +84,17 @@ export class ProfileCharacteristic extends React.Component<ProfileDetailProps, P
     }
 
     private doAction = (): React.EventHandler<React.MouseEvent<HTMLButtonElement>> => {
-        if (this.characteristicToAdd) {
+        if (this.state.selectedCharacteristic) {
             const profile = this.state.profile;
             let found: boolean = false;
             profile.characteristics.forEach(characteristic => {
-                if (characteristic.id === this.characteristicToAdd.id) {
+                if (characteristic.id === this.state.selectedCharacteristic.id) {
                     found = true;
                     return;
                 }
             });
             if (!found) {
-                profile.characteristics.push(this.characteristicToAdd);
+                profile.characteristics.push(this.state.selectedCharacteristic);
             }
             this.setState({
                 profile: profile
@@ -122,7 +125,7 @@ export class ProfileCharacteristic extends React.Component<ProfileDetailProps, P
         return (
             <div>
                 {
-                    this.state.showCharacteristicsModal ?
+                    this.state.showModal ?
                         <div className='row'>
                             {modal}
                         </div> : null
