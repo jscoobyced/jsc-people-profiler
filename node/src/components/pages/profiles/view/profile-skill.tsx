@@ -192,12 +192,21 @@ export class ProfileSkill extends React.Component<ProfileDetailProps, ProfileDet
                         const progressCurrentClass = status[skill.score % maxScore];
                         const progressClass = 'progress-bar progress-bar-' + progressCurrentClass;
                         return (
-                            <div className='progress' key={key}>
-                                <div className={progressClass}
-                                    role='progressbar' aria-valuenow={skill.score}
-                                    style={style}
-                                    aria-valuemin='0' aria-valuemax={maxScore}>
-                                    {skill.name}: {skill.score}
+                            <div className='row' key={key}>
+                                <div className='col-md-10'>
+                                    <div className='progress'>
+                                        <div className={progressClass}
+                                            role='progressbar' aria-valuenow={skill.score}
+                                            style={style}
+                                            aria-valuemin='0' aria-valuemax={maxScore}>
+                                            {skill.name}: {skill.score}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='col-md-2 pull-right'>
+                                    <span onClick={this.removeSkill}
+                                        data-id={skill.id}
+                                        className='glyphicon glyphicon-remove text-danger'></span>
                                 </div>
                             </div>
                         );

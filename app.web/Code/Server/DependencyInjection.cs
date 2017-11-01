@@ -15,9 +15,10 @@ namespace app.web
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IPageConfigurationService, PageConfigurationService>();
             services.AddTransient<IProfileService, ProfileService>();
-            services.AddTransient<IPageService, PageService>();
+            services.AddTransient<ISkillService, SkillService>();
+            services.AddTransient<ICharacteristicService, CharacteristicService>();
+            services.AddTransient<IPositionService, PositionService>();
         }
 
         private void ConfigureRepositories(IServiceCollection services)

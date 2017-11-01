@@ -13,9 +13,22 @@ namespace app.web.Services
     {
         private IDatabaseRepository _databaseRepository;
 
-        public ProfileService(IDatabaseRepository databaseRepository)
+        private ISkillService _skillService;
+
+        private ICharacteristicService _characteristicService;
+
+        private IPositionService _positionService;
+
+        public ProfileService(
+            IDatabaseRepository databaseRepository,
+            ISkillService skillService,
+            ICharacteristicService characteristicService,
+            IPositionService positionService)
         {
             this._databaseRepository = databaseRepository;
+            this._skillService = skillService;
+            this._characteristicService = characteristicService;
+            this._positionService = positionService;
         }
 
         public IDatabaseRepository DatabaseRepository
@@ -26,7 +39,22 @@ namespace app.web.Services
             }
         }
 
-        public async Task<Profile> GetProfileAsync(int id)
+        public async Task<ProfileViewModel> GetProfileViewModelAsync(int id)
+        {
+            var positions = await this._positionService.GetPositionsAsync();
+            var allCharacteristics = await this._characteristicService.GetCharacteristicsAsync();
+            var allSkills = await this._skillService.GetSkillsAsync();
+            var profile = await this.GetProfileAsync(id);
+            return new ProfileViewModel()
+            {
+                Positions = positions,
+                Profile = profile,
+                AllCharacteristics = allCharacteristics,
+                AllSkills = allSkills
+            };
+        }
+
+        private async Task<Profile> GetProfileAsync(int id)
         {
             string commandText = @"SELECT
                             id
@@ -46,11 +74,22 @@ namespace app.web.Services
                 commandText, parameters, this.ReadProfile);
             if (profile != null)
             {
-                profile.Characteristics = await this.GetCharacteristicsByProfileIdAsync(id);
-                profile.Skills = await this.GetSkillsByProfileIdAsync(id);
+                profile.Characteristics = await this._characteristicService.GetCharacteristicsByProfileIdAsync(id);
+                profile.Skills = await this._skillService.GetSkillsByProfileIdAsync(id);
             }
 
             return profile;
+        }
+
+        public async Task<ProfileViewModel> GetProfileViewModelsAsync()
+        {
+            var positions = await this._positionService.GetPositionsAsync();
+            var profiles = await this.GetProfilesAsync();
+            return new ProfileViewModel()
+            {
+                Positions = positions,
+                Profiles = profiles
+            };
         }
 
         public async Task<List<Profile>> GetProfilesAsync()
@@ -70,74 +109,6 @@ namespace app.web.Services
             var profiles = await this._databaseRepository.ExecuteReadList<Profile>(
                 commandText, parameters, this.ReadProfileList);
             return profiles;
-        }
-
-        public async Task<List<Position>> GetPositionsAsync()
-        {
-            string commandText = @"SELECT id, name
-                FROM `position`
-                ORDER BY id";
-            var positions = await this._databaseRepository.ExecuteReadList<Position>(
-                commandText, null, this.ReadPositionList);
-            return positions;
-        }
-
-        public async Task<List<Characteristic>> GetCharacteristicsAsync()
-        {
-            string commandText = @"SELECT id, name
-                FROM `characteristic`
-                ORDER BY id";
-            var characteristics = await this._databaseRepository.ExecuteReadList<Characteristic>(
-                commandText, null, this.ReadCharacteristicList);
-            return characteristics;
-        }
-
-        public async Task<List<Skill>> GetSkillsAsync()
-        {
-            string commandText = @"SELECT id, name
-                FROM `skill`
-                ORDER BY id";
-            var skills = await this._databaseRepository.ExecuteReadList<Skill>(
-                commandText, null, this.ReadSkillList);
-            return skills;
-        }
-
-        private async Task<List<Characteristic>> GetCharacteristicsByProfileIdAsync(int profileId)
-        {
-            string commandText = @"SELECT c.id, c.name
-                FROM `profile_characteristic` pc
-                INNER JOIN `profile` p
-                ON pc.profile_id = p.id
-                INNER JOIN `characteristic` c
-                ON pc.characteristic_id = c.id
-                AND c.status = @active
-                WHERE p.id = @id
-                ORDER BY c.id";
-            var parameters = new Dictionary<string, object>();
-            parameters.Add("@id", profileId);
-            parameters.Add("@active", Status.Active);
-            var characteristics = await this._databaseRepository.ExecuteReadList<Characteristic>(
-                commandText, parameters, this.ReadCharacteristicList);
-            return characteristics;
-        }
-
-        private async Task<List<ProfileSkill>> GetSkillsByProfileIdAsync(int profileId)
-        {
-            string commandText = @"SELECT s.id, s.name, ps.score
-                FROM `profile_skill` ps
-                INNER JOIN `profile` p
-                ON ps.profile_id = p.id
-                INNER JOIN `skill` s
-                ON ps.skill_id = s.id
-                AND s.status = @active
-                WHERE p.id = @id
-                ORDER BY s.id";
-            var parameters = new Dictionary<string, object>();
-            parameters.Add("@id", profileId);
-            parameters.Add("@active", Status.Active);
-            var skills = await this._databaseRepository.ExecuteReadList<ProfileSkill>(
-                commandText, parameters, this.ReadProfileSkillList);
-            return skills;
         }
 
         public async Task<int> CreateProfileAsync(Profile profile)
@@ -184,172 +155,14 @@ namespace app.web.Services
             var columnUpdated = await this._databaseRepository.ExecuteUpdate(
                 commandText, parameters, false);
 
-            await this.UpdateProfileCharacteristicsAsync(profile.Characteristics, profile.Id);
-            await this.UpdateProfileSkillsAsync(profile.Skills, profile.Id);
+            await this._characteristicService.UpdateProfileCharacteristicsAsync(profile.Characteristics, profile.Id);
+            await this._skillService.UpdateProfileSkillsAsync(profile.Skills, profile.Id);
             return columnUpdated == 1;
-        }
-
-        private async Task<bool> UpdateProfileCharacteristicsAsync(
-            List<Characteristic> characteristics,
-            int profileId)
-        {
-            if (characteristics == null
-                || !characteristics.Any()
-                || profileId < 1)
-            {
-                return false;
-            }
-
-            var exisitingCharacteristics = await this.GetCharacteristicsByProfileIdAsync(profileId);
-
-            var newCharacteristics = characteristics.Where(
-                characteristic => !exisitingCharacteristics.Any(
-                    exisitingCharacteristic => exisitingCharacteristic.Id == characteristic.Id)).ToList();
-            var characteristicsToDelete = exisitingCharacteristics.Where(
-                exisitingCharacteristic => !characteristics.Any(
-                    characteristic => characteristic.Id == exisitingCharacteristic.Id)).ToList();
-
-            if (newCharacteristics.Any())
-            {
-                var stringBuilder = new StringBuilder();
-                var first = true;
-                var parameters = new Dictionary<string, object>();
-                for (var i = 0; i < newCharacteristics.Count; i++)
-                {
-                    var profile = string.Format("@profile{0}", i);
-                    var characteristic = string.Format("@characteristic{0}", i);
-                    stringBuilder.AppendFormat(
-                        "{0}({1}, {2})", first ? "" : ",", profile, characteristic);
-                    first = false;
-                    parameters.Add(profile, profileId);
-                    parameters.Add(characteristic, newCharacteristics[i].Id);
-                };
-                string commandText = string.Format(@"INSERT INTO `profile_characteristic`
-                (`profile_id`, `characteristic_id`) VALUES {0}", stringBuilder.ToString());
-                var columnUpdated = await this._databaseRepository.ExecuteUpdate(
-                    commandText, parameters, false);
-            }
-
-            if (characteristicsToDelete.Any())
-            {
-                var stringBuilder = new StringBuilder();
-                var first = true;
-                var parameters = new Dictionary<string, object>();
-                for (var i = 0; i < characteristicsToDelete.Count; i++)
-                {
-                    var profile = string.Format("@profile{0}", i);
-                    var characteristic = string.Format("@characteristic{0}", i);
-                    stringBuilder.AppendFormat(
-                        "{0}(`profile_id` = {1} AND `characteristic_id` = {2})",
-                         first ? "" : " OR ",
-                          profile,
-                           characteristic);
-                    first = false;
-                    parameters.Add(profile, profileId);
-                    parameters.Add(characteristic, characteristicsToDelete[i].Id);
-                };
-                string commandText = string.Format(@"DELETE FROM `profile_characteristic`
-                 WHERE {0}", stringBuilder.ToString());
-                var columnUpdated = await this._databaseRepository.ExecuteUpdate(
-                    commandText, parameters, false);
-            }
-
-            return true;
-        }
-
-        private async Task<bool> UpdateProfileSkillsAsync(
-            List<ProfileSkill> skills,
-            int profileId)
-        {
-            if (skills == null
-                || !skills.Any()
-                || profileId < 1)
-            {
-                return false;
-            }
-
-            var exisitingSkills = await this.GetSkillsByProfileIdAsync(profileId);
-
-            var newSkills = skills.Where(
-                skill => !exisitingSkills.Any(
-                    exisitingSkill => exisitingSkill.Id == skill.Id)).ToList();
-            var skillsToDelete = exisitingSkills.Where(
-                exisitingSkill => !skills.Any(
-                    skill => skill.Id == exisitingSkill.Id)).ToList();
-
-            if (newSkills.Any())
-            {
-                var stringBuilder = new StringBuilder();
-                var first = true;
-                var parameters = new Dictionary<string, object>();
-                for (var i = 0; i < newSkills.Count; i++)
-                {
-                    var profile = string.Format("@profile{0}", i);
-                    var skill = string.Format("@skill{0}", i);
-                    var score = string.Format("@score{0}", i);
-                    stringBuilder.AppendFormat(
-                        "{0}({1}, {2}, {3})", first ? "" : ",", profile, skill, score);
-                    first = false;
-                    parameters.Add(profile, profileId);
-                    parameters.Add(skill, newSkills[i].Id);
-                    parameters.Add(score, newSkills[i].Score);
-                };
-                string commandText = string.Format(@"INSERT INTO `profile_skill`
-                (`profile_id`, `skill_id`, `score`) VALUES {0}", stringBuilder.ToString());
-                var columnUpdated = await this._databaseRepository.ExecuteUpdate(
-                    commandText, parameters, false);
-            }
-
-            if (skillsToDelete.Any())
-            {
-                var stringBuilder = new StringBuilder();
-                var first = true;
-                var parameters = new Dictionary<string, object>();
-                for (var i = 0; i < skillsToDelete.Count; i++)
-                {
-                    var profile = string.Format("@profile{0}", i);
-                    var skill = string.Format("@skill{0}", i);
-                    stringBuilder.AppendFormat(
-                        "{0}(`profile_id` = {1} AND `skill_id` = {2})",
-                         first ? "" : " OR ",
-                          profile,
-                           skill);
-                    first = false;
-                    parameters.Add(profile, profileId);
-                    parameters.Add(skill, skillsToDelete[i].Id);
-                };
-                string commandText = string.Format(@"DELETE FROM `profile_skill`
-                 WHERE {0}", stringBuilder.ToString());
-                var columnUpdated = await this._databaseRepository.ExecuteUpdate(
-                    commandText, parameters, false);
-            }
-
-            return true;
         }
 
         private void ReadProfileList(DbDataReader reader, List<Profile> profiles)
         {
             profiles.Add(this.ReadProfile(reader));
-        }
-
-        private void ReadPositionList(DbDataReader reader, List<Position> positions)
-        {
-            positions.Add(this.ReadPosition(reader));
-        }
-
-        private void ReadCharacteristicList(DbDataReader reader, List<Characteristic> characteristics)
-        {
-            characteristics.Add(this.ReadCharacteristic(reader));
-        }
-
-        private void ReadProfileSkillList(DbDataReader reader, List<ProfileSkill> skills)
-        {
-            skills.Add(this.ReadProfileSkill(reader));
-        }
-
-        private void ReadSkillList(DbDataReader reader, List<Skill> skills)
-        {
-            skills.Add(this.ReadSkill(reader));
         }
 
         private Profile ReadProfile(DbDataReader reader)
@@ -362,39 +175,6 @@ namespace app.web.Services
             profile.Position = reader.GetInt32(reader.GetOrdinal("position_id"));
             profile.Status = (Status)reader.GetInt32(reader.GetOrdinal("status"));
             return profile;
-        }
-
-        private Position ReadPosition(DbDataReader reader)
-        {
-            var position = new Position();
-            position.Id = reader.GetInt32(reader.GetOrdinal("id"));
-            position.Name = reader.GetString(reader.GetOrdinal("name"));
-            return position;
-        }
-
-        private Characteristic ReadCharacteristic(DbDataReader reader)
-        {
-            var characteristic = new Characteristic();
-            characteristic.Id = reader.GetInt32(reader.GetOrdinal("id"));
-            characteristic.Name = reader.GetString(reader.GetOrdinal("name"));
-            return characteristic;
-        }
-
-        private ProfileSkill ReadProfileSkill(DbDataReader reader)
-        {
-            var skill = new ProfileSkill();
-            skill.Id = reader.GetInt32(reader.GetOrdinal("id"));
-            skill.Name = reader.GetString(reader.GetOrdinal("name"));
-            skill.Score = reader.GetInt32(reader.GetOrdinal("score"));
-            return skill;
-        }
-
-        private Skill ReadSkill(DbDataReader reader)
-        {
-            var skill = new Skill();
-            skill.Id = reader.GetInt32(reader.GetOrdinal("id"));
-            skill.Name = reader.GetString(reader.GetOrdinal("name"));
-            return skill;
         }
     }
 }

@@ -27,26 +27,14 @@ namespace app.web.Controllers
         [HttpGet("/profiles")]
         public async Task<IActionResult> GetProfilesAsync()
         {
-            var positions = await this._profileService.GetPositionsAsync();
-            var profiles = await this._profileService.GetProfilesAsync();
-            var data = new { positions = positions, profiles = profiles };
+            var data = await this._profileService.GetProfileViewModelsAsync();
             return Ok(data);
         }
 
         [HttpGet("/profile/{id}")]
         public async Task<IActionResult> GetProfileAsync(int id)
         {
-            var positions = await this._profileService.GetPositionsAsync();
-            var allCharacteristics = await this._profileService.GetCharacteristicsAsync();
-            var allSkills = await this._profileService.GetSkillsAsync();
-            var profile = await this._profileService.GetProfileAsync(id);
-            var data = new
-            {
-                positions = positions,
-                profile = profile,
-                allCharacteristics = allCharacteristics,
-                allSkills = allSkills
-            };
+            var data = await this._profileService.GetProfileViewModelAsync(id);
             return Ok(data);
         }
 
