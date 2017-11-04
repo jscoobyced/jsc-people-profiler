@@ -22,7 +22,7 @@ export class ProfileSkill extends React.Component<ProfileDetailProps, ProfileDet
             };
         return (
             <div>
-                <div className='row'>
+                <div>
                     <select id='skills'
                         value={selectedSkill.id}
                         onChange={this.handleAddSkill}
@@ -36,18 +36,29 @@ export class ProfileSkill extends React.Component<ProfileDetailProps, ProfileDet
                         }
                     </select>
                 </div>
-                <div className='row'>
-                    <select id='score'
-                        value={selectedSkill.score}
-                        onChange={this.handleAddScore}
-                        className='form-control'>
-                        <option value='-1'>Choose the score</option>
-                        <option value='1'>Low</option>
-                        <option value='2'>Medium</option>
-                        <option value='3'>Normal</option>
-                        <option value='4'>High</option>
-                        <option value='5'>Excellent</option>
-                    </select>
+                <div>
+                    <div className='btn-group' id='score'>
+                        <label className='btn btn-success'>
+                            <input type='radio' name='options' id='skillScore'
+                                onChange={this.handleAddScore} value='5' autoComplete='off' />Excellent
+                        </label>
+                        <label className='btn btn-success'>
+                            <input type='radio' name='options' id='skillScore'
+                                onChange={this.handleAddScore} value='4' autoComplete='off' />High
+                        </label>
+                        <label className='btn btn-info'>
+                            <input type='radio' name='options' id='skillScore'
+                                onChange={this.handleAddScore} value='3' autoComplete='off' />Normal
+                        </label>
+                        <label className='btn btn-warning'>
+                            <input type='radio' name='options' id='skillScore'
+                                onChange={this.handleAddScore} value='2' autoComplete='off' />Medium
+                        </label>
+                        <label className='btn btn-danger'>
+                            <input type='radio' name='options' id='skillScore'
+                                onChange={this.handleAddScore} value='1' autoComplete='off' />Low
+                        </label>
+                    </div>
                 </div>
             </div>
         );
@@ -66,14 +77,13 @@ export class ProfileSkill extends React.Component<ProfileDetailProps, ProfileDet
         if (event.currentTarget.id && parseInt(event.currentTarget.id) !== 0) {
             skillToAdd.id = parseInt(event.currentTarget.options[event.currentTarget.selectedIndex].value);
             skillToAdd.name = event.currentTarget.options[event.currentTarget.selectedIndex].text;
+            this.setState({
+                selectedSkill: skillToAdd
+            });
         }
-
-        this.setState({
-            selectedSkill: skillToAdd
-        });
     }
 
-    private handleAddScore = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    private handleAddScore = (event: React.ChangeEvent<HTMLButtonElement>) => {
         let skillToAdd: Skill = {
             id: -1,
             name: '',
@@ -82,14 +92,12 @@ export class ProfileSkill extends React.Component<ProfileDetailProps, ProfileDet
         if (this.state.selectedSkill) {
             skillToAdd = this.state.selectedSkill;
         }
-
-        if (event.currentTarget.id && parseInt(event.currentTarget.id) !== 0) {
-            skillToAdd.score = parseInt(event.currentTarget.options[event.currentTarget.selectedIndex].value);
+        if (event.currentTarget.id) {
+            skillToAdd.score = parseInt(event.currentTarget.value);
+            this.setState({
+                selectedSkill: skillToAdd
+            });
         }
-
-        this.setState({
-            selectedSkill: skillToAdd
-        });
     }
 
     private openAction = (): React.EventHandler<React.MouseEvent<HTMLButtonElement>> => {
@@ -136,14 +144,21 @@ export class ProfileSkill extends React.Component<ProfileDetailProps, ProfileDet
                     return;
                 }
             });
+            let selectedSkill: Skill;
             if (!found) {
-                profile.skills.push(this.state.selectedSkill);
+                selectedSkill = this.state.selectedSkill;
+                profile.skills.push(selectedSkill);
             }
             this.setState({
-                profile: profile
+                profile: profile,
+                selectedSkill: {
+                    id: -1,
+                    name: '',
+                    score: selectedSkill.score
+                }
             });
         }
-        return this.closeAction();
+        return null;
     }
 
     render(): JSX.Element {
@@ -163,6 +178,8 @@ export class ProfileSkill extends React.Component<ProfileDetailProps, ProfileDet
                 doAction={this.doAction}
                 title='Add Skill'
                 name='skillModal'
+                done='Done'
+                doneAction={this.closeAction}
                 content={addSkillElement} />
         );
         return (

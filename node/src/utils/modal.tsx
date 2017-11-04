@@ -6,8 +6,10 @@ export interface ModalProps {
     content: JSX.Element;
     close: string;
     do: string;
-    doAction?: React.EventHandler<React.MouseEvent<HTMLButtonElement>>;
+    done?: string;
     closeAction?: React.EventHandler<React.MouseEvent<HTMLButtonElement>>;
+    doAction?: React.EventHandler<React.MouseEvent<HTMLButtonElement>>;
+    doneAction?: React.EventHandler<React.MouseEvent<HTMLButtonElement>>;
 }
 
 export class Modal extends React.Component<ModalProps, ModalProps> {
@@ -21,6 +23,16 @@ export class Modal extends React.Component<ModalProps, ModalProps> {
         if (this.props.doAction) {
             doAction = this.props.doAction;
         }
+        let doneAction: React.EventHandler<React.MouseEvent<HTMLButtonElement>> = () => { };
+        if (this.props.doneAction) {
+            doneAction = this.props.doneAction;
+        }
+        let doneButton: JSX.Element;
+        if (this.props.done) {
+            doneButton = <button type='button' className='btn btn-default'
+                onClick={doneAction}>{this.props.done}</button>;
+        }
+
         return (
             <div className='mmodal' id={this.props.name} role='dialog'>
                 <div className='modal-dialog'>
@@ -36,10 +48,11 @@ export class Modal extends React.Component<ModalProps, ModalProps> {
                         <div className='modal-footer'>
                             <button type='button' className='btn btn-default'
                                 onClick={doAction}>{this.props.do}</button>
+                            {doneButton}
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         );
     }
 }

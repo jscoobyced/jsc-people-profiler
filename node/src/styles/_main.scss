@@ -1,5 +1,4 @@
 $font-family-base: $font-family-monospace;
-
 body {
   padding-top: $navbar-height + 10;
   background: $body-bg;
@@ -8,6 +7,10 @@ body {
 .body-content {
   padding-left: 15px;
   padding-right: 15px;
+}
+
+h2 {
+  margin-top: 10px;
 }
 
 .row.tall {
@@ -43,6 +46,11 @@ a:hover {
 .mmodal {
   position: fixed;
   z-index: 100;
+  top: 0px;
+}
+
+.modal-dialog {
+  width: 400px;
 }
 
 .li-200 {
@@ -51,4 +59,20 @@ a:hover {
 
 .big {
   font-size: 25px
+}
+
+.btn {
+  font-size: 12px;
+}
+
+.save-button {
+  margin-left: 10px;
+}
+
+.progress {
+  margin-bottom: 10px;
+}
+
+.profile > tbody > tr > td {
+  padding: 2px 8px;
 }

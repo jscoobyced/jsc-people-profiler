@@ -81,7 +81,7 @@ namespace app.web.Services
             return profile;
         }
 
-        public async Task<ProfileViewModel> GetProfileViewModelsAsync()
+        public async Task<ProfileViewModel> GetProfilesViewModelsAsync()
         {
             var positions = await this._positionService.GetPositionsAsync();
             var profiles = await this.GetProfilesAsync();

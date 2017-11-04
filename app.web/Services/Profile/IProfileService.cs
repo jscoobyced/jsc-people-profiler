@@ -9,7 +9,7 @@ namespace app.web.Services
     {
         Task<ProfileViewModel> GetProfileViewModelAsync(int id);
 
-        Task<ProfileViewModel> GetProfileViewModelsAsync();
+        Task<ProfileViewModel> GetProfilesViewModelsAsync();
 
         Task<bool> UpdateProfileAsync(Profile profile);
 

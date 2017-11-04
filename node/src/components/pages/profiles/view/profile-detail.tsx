@@ -43,7 +43,7 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
             const positions = this.state.positions;
             const startDate = Util.toYYYYMMDD(profile.startDate);
             const firstName = (
-                <div className='col-md-6'>
+                <div className='col-md-3'>
                     <div className='input-group'>
                         <label htmlFor='firstname' className='sr-only'>Firstname</label>
                         <span className='input-group-addon' title='Firstname'>
@@ -56,7 +56,7 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
                 </div>
             );
             const lastName = (
-                <div className='col-md-6'>
+                <div className='col-md-3'>
                     <div className='input-group'>
                         <label htmlFor='lastname' className='sr-only'>Lastname</label>
                         <span className='input-group-addon' title='Lastname'>
@@ -69,7 +69,7 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
                 </div>
             );
             const startDateElement = (
-                <div className='col-md-6'>
+                <div className='col-md-3'>
                     <div className='input-group'>
                         <label htmlFor='start-date' className='sr-only'>Start Date</label>
                         <span className='input-group-addon' title='Start Date'>
@@ -82,7 +82,7 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
                 </div>
             );
             const position = (
-                <div className='col-md-6'>
+                <div className='col-md-3'>
                     <div className='input-group'>
                         <label htmlFor='position' className='sr-only'>Position</label>
                         <span className='input-group-addon' title='Position'>
@@ -105,7 +105,7 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
             response = (
                 <div>
                     <div className='row'>
-                        <div className='col-md-6 col-md-offset-3'>
+                        <div className='col-md-10 col-md-offset-1'>
                             <div className='row'>
                                 <h2>
                                     {(profile.firstName || profile.lastName) &&
@@ -119,8 +119,6 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
                             <div className='row tall'>
                                 {firstName}
                                 {lastName}
-                            </div>
-                            <div className='row tall'>
                                 {startDateElement}
                                 {position}
                             </div>

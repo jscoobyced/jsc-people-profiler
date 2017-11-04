@@ -107,7 +107,6 @@ export class Page extends React.Component<ProfileEditProps, ProfileEditProps> {
             });
     }
 
-
     render(): JSX.Element {
         const match = this.props.match;
         const url = '/profiles/manage';
@@ -117,6 +116,15 @@ export class Page extends React.Component<ProfileEditProps, ProfileEditProps> {
         let element = (<div>Loading...</div>);
         let characteristicElement = (<div />);
         let skillElement = (<div />);
+
+        const saveElement = (
+            <button className='btn btn-default save-button'
+                onClick={this.handleSave}
+                title='Save'>
+                <span className='glyphicon glyphicon-save'></span> Save
+            </button>
+        );
+
         if (this.state.requestFailed) element = <p>Failed!</p>;
         if (this.state.profile) {
             if (match) {
@@ -140,14 +148,6 @@ export class Page extends React.Component<ProfileEditProps, ProfileEditProps> {
                 );
             }
         }
-        const saveElement = (
-            <button className='btn btn-default'
-                onClick={this.handleSave}
-                title='Save'>
-                <span className='glyphicon glyphicon-save'></span> Save
-            </button>
-        );
-
 
         const content = (
             <div>
@@ -155,6 +155,7 @@ export class Page extends React.Component<ProfileEditProps, ProfileEditProps> {
                     <Link to={url} title={back}>
                         <span className='glyphicon glyphicon-hand-left'></span> {back}
                     </Link>
+                    {saveElement} {this.state.saveResult}
                 </div>
                 {element}
                 <div className='col-md-4 col-md-offset-1'>
@@ -162,11 +163,6 @@ export class Page extends React.Component<ProfileEditProps, ProfileEditProps> {
                 </div>
                 <div className='col-md-4 col-md-offset-1'>
                     {skillElement}
-                </div>
-                <div className='row'>
-                    <div className='col-md-6 col-md-offset-3'>
-                        {saveElement} {this.state.saveResult}
-                    </div>
                 </div>
             </div>);
 

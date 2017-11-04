@@ -27,7 +27,7 @@ namespace app.web.Controllers
         [HttpGet("/profiles")]
         public async Task<IActionResult> GetProfilesAsync()
         {
-            var data = await this._profileService.GetProfileViewModelsAsync();
+            var data = await this._profileService.GetProfilesViewModelsAsync();
             return Ok(data);
         }
 

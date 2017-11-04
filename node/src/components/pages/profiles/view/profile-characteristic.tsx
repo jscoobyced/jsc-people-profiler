@@ -100,7 +100,7 @@ export class ProfileCharacteristic extends React.Component<ProfileDetailProps, P
                 profile: profile
             });
         }
-        return this.closeAction();
+        return null;
     }
 
     render(): JSX.Element {
@@ -118,6 +118,8 @@ export class ProfileCharacteristic extends React.Component<ProfileDetailProps, P
             <Modal close='Close' do='Add'
                 closeAction={this.closeAction}
                 doAction={this.doAction}
+                doneAction={this.closeAction}
+                done='Done'
                 title='Add characteristic'
                 name='characteristicModal'
                 content={addCharacteristicElement} />
