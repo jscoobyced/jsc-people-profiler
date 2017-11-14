@@ -11,24 +11,9 @@ namespace app.web.Controllers.Tests
     public class HomeControllerTests
     {
         [Fact]
-        public async void IndexNullTest()
+        public void IndexTest()
         {
-            var result = await new HomeController(null)
-                .WithPageService()
-                .Index();
-
-            result
-                .Should().NotBeNull(
-                    "HomeController.Index should return a non-null IActionResult: {0}",
-                     result);
-        }
-
-        [Fact]
-        public async void IndexTest()
-        {
-            var result = await new HomeController(null)
-                .WithNormalPageService()
-                .Index();
+            var result = new HomeController().Index();
 
             result
                 .Should().NotBeNull(
@@ -36,16 +21,6 @@ namespace app.web.Controllers.Tests
                      result);
             result
                 .Should().BeAssignableTo<ViewResult>("HomeController.Index should return a ViewResult");
-
-            /*
-                        var viewResult = (ViewResult)result;
-                        viewResult
-                            .Model
-                            .Should().NotBeNull();
-                        viewResult
-                            .Model
-                            .Should().BeAssignableTo(typeof(Page));
-                            */
         }
     }
 }

@@ -20,10 +20,10 @@ namespace app.web.Services
         private IPositionService _positionService;
 
         public ProfileService(
-            IDatabaseRepository databaseRepository,
-            ISkillService skillService,
-            ICharacteristicService characteristicService,
-            IPositionService positionService)
+            IDatabaseRepository databaseRepository = null,
+            ISkillService skillService = null,
+            ICharacteristicService characteristicService = null,
+            IPositionService positionService = null)
         {
             this._databaseRepository = databaseRepository;
             this._skillService = skillService;
@@ -36,6 +36,30 @@ namespace app.web.Services
             set
             {
                 this._databaseRepository = value;
+            }
+        }
+
+        public ICharacteristicService CharacteristicService
+        {
+            set
+            {
+                this._characteristicService = value;
+            }
+        }
+
+        public ISkillService SkillService
+        {
+            set
+            {
+                this._skillService = value;
+            }
+        }
+
+        public IPositionService PositionService
+        {
+            set
+            {
+                this._positionService = value;
             }
         }
 

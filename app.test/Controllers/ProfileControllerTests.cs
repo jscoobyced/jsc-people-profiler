@@ -34,16 +34,13 @@ namespace app.web.Controllers.Tests
                 .WithNormalProfileService()
                 .GetProfilesAsync();
 
-            result.Should().NotBeNull();
-            result.Should().BeAssignableTo<OkObjectResult>();
+            result.Should().NotBeNull("a non-null result is expected");
+            result.Should().BeAssignableTo<OkObjectResult>("it is the expected type");
 
             var okObjectResult = (OkObjectResult)result;
             okObjectResult
                 .Value
-                .Should().NotBeNull();
-            okObjectResult
-                .Value
-                .Should().NotBeNull();
+                .Should().NotBeNull("a profile list should be found");
         }
 
         [Fact]

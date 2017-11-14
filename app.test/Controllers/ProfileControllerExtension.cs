@@ -9,7 +9,7 @@ namespace app.web.Controllers.Tests
             this ProfileController pageController)
         {
             pageController.ProfileService = MockProfileService.Create(
-                ProfileServiceModels.NormalProfile,
+                ProfileServiceModels.NormalViewModelProfile,
                 true);
             return pageController;
         }
@@ -18,7 +18,7 @@ namespace app.web.Controllers.Tests
             this ProfileController pageController)
         {
             pageController.ProfileService = MockProfileService.Create(
-                ProfileServiceModels.NormalProfile,
+                ProfileServiceModels.NormalViewModelProfile,
                 false);
             return pageController;
         }
