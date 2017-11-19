@@ -51,33 +51,6 @@ namespace app.web.Services.Test
                 .Should().BeSameAs(profiles);
         }
 
-        /*
-                [Fact]
-                public async void GetPositionAsyncTest()
-                {
-                    var positions = ProfileServiceModels.Positions;
-                    var result = await GivenService
-                        .ProfileService
-                        .WithPositionsDatabaseRepository(positions)
-                        .GetPositionsAsync();
-
-                    result
-                        .Should().BeEquivalentTo(positions);
-                }
-
-
-                [Fact]
-                public async void GetNullPositionAsyncTest()
-                {
-                    var result = await GivenService
-                        .ProfileService
-                        .WithDatabaseRepository()
-                        .GetPositionsAsync();
-
-                    result
-                        .Should().BeNull();
-                }
-        */
         [Fact]
         public async void UpdateProfileAsyncTest()
         {

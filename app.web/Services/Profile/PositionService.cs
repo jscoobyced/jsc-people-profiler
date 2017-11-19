@@ -10,7 +10,7 @@ namespace app.web.Services
     {
         private IDatabaseRepository _databaseRepository;
 
-        public PositionService(IDatabaseRepository databaseRepository)
+        public PositionService(IDatabaseRepository databaseRepository = null)
         {
             this._databaseRepository = databaseRepository;
         }

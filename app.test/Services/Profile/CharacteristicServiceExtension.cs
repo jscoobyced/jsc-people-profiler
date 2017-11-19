@@ -3,6 +3,7 @@ namespace app.web.Services.Test
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using app.web.Models;
+    using app.web.Repositories.Tests;
     using Moq;
 
     public static class CharacteristicServiceExtension
@@ -49,6 +50,24 @@ namespace app.web.Services.Test
                     It.IsAny<List<Characteristic>>(),
                      It.IsAny<int>()))
                 .ReturnsAsync(true);
+            return characteristicService;
+        }
+
+        public static CharacteristicService WithDatabaseRepository(
+            this CharacteristicService characteristicService)
+        {
+            var databaseRepository = MockDatabaseRepository.Create<Characteristic>(null, null);
+            characteristicService.DatabaseRepository = databaseRepository;
+            return characteristicService;
+        }
+
+        public static CharacteristicService WithCharacteristicsDatabaseRepository(
+            this CharacteristicService characteristicService)
+        {
+            var databaseRepository = MockDatabaseRepository.Create<Characteristic>(
+                ProfileServiceModels.InfraVision,
+                ProfileServiceModels.AllCharacteristics);
+            characteristicService.DatabaseRepository = databaseRepository;
             return characteristicService;
         }
     }

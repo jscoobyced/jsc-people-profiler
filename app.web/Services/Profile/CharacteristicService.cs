@@ -12,7 +12,7 @@ namespace app.web.Services
     {
         private IDatabaseRepository _databaseRepository;
 
-        public CharacteristicService(IDatabaseRepository databaseRepository)
+        public CharacteristicService(IDatabaseRepository databaseRepository = null)
         {
             this._databaseRepository = databaseRepository;
         }

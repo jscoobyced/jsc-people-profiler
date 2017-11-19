@@ -4,5 +4,8 @@ namespace app.web.Services.Test
     {
         public static ProfileService ProfileService
             => new ProfileService();
+
+        public static CharacteristicService CharacteristicService
+            => new CharacteristicService();
     }
 }
