@@ -22,7 +22,7 @@ namespace app.web.Services.Test
         [Fact]
         public async void GetProfileAsyncTest()
         {
-            var profile = ProfileServiceModels.NormalViewModelProfile;
+            var profile = ProfileServiceModels.NormalProfileViewModel;
             var result = await Given
                 .ProfileService
                 .WithProfileDatabaseRepository(profile.Profile)
@@ -32,7 +32,7 @@ namespace app.web.Services.Test
                 .GetProfileViewModelAsync(profile.Profile.Id);
 
             result
-                .Should().BeSameAs(profile);
+                .ShouldBeEquivalentTo(profile);
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace app.web.Services.Test
                 .GetProfilesAsync();
 
             result
-                .Should().BeEquivalentTo(profiles);
+                .Should().BeSameAs(profiles);
         }
 
         /*

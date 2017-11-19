@@ -28,7 +28,7 @@ namespace app.web.Services.Test
                 Position = 1
             };
 
-        public static ProfileViewModel NormalViewModelProfile
+        public static ProfileViewModel NormalProfileViewModel
             => new ProfileViewModel()
             {
                 AllCharacteristics = AllCharacteristics,
@@ -37,7 +37,7 @@ namespace app.web.Services.Test
                 Positions = Positions
             };
 
-        public static ProfileViewModel NoIdViewModelProfile
+        public static ProfileViewModel NoIdProfileViewModel
             => new ProfileViewModel()
             {
                 AllCharacteristics = AllCharacteristics,
@@ -49,8 +49,8 @@ namespace app.web.Services.Test
         public static List<ProfileViewModel> ProfileViewModels
             => new List<ProfileViewModel>()
             {
-                NormalViewModelProfile,
-                NoIdViewModelProfile
+                NormalProfileViewModel,
+                NoIdProfileViewModel
             };
         public static List<Position> Positions
             => new List<Position>()
