@@ -141,18 +141,22 @@ export class ProfileCharacteristic extends React.Component<ProfileDetailProps, P
                     </div>
                 </div>
                 <div className='row'>
-                    <ul>
-                        {this.state.profile.characteristics.map((characteristic, key) => {
-                            return (
-                                <li key={key} className='li-200'>
-                                    <span className='col-md-10'>{characteristic.name}</span>
-                                    <span onClick={this.removeCharacteristic}
-                                        data-id={characteristic.id}
-                                        className='col-md-2 pull-right glyphicon glyphicon-remove text-danger'></span>
-                                </li>
-                            );
-                        })}
-                    </ul>
+                    {
+                        this.state.profile
+                            && this.state.profile.characteristics ?
+                            <ul>
+                                {this.state.profile.characteristics.map((characteristic, key) => {
+                                    return (
+                                        <li key={key} className='li-200'>
+                                            <span className='col-md-10'>{characteristic.name}</span>
+                                            <span onClick={this.removeCharacteristic}
+                                                data-id={characteristic.id}
+                                                className='col-md-2 pull-right glyphicon glyphicon-remove text-danger'></span>
+                                        </li>
+                                    );
+                                })}
+                            </ul> : null
+                    }
                 </div>
             </div>
         );
