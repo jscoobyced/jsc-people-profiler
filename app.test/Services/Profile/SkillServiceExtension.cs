@@ -3,6 +3,7 @@ namespace app.web.Services.Test
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using app.web.Models;
+    using app.web.Repositories.Tests;
     using Moq;
 
     public static class SkillServiceExtension
@@ -44,6 +45,34 @@ namespace app.web.Services.Test
                 .Setup(ss => ss.UpdateProfileSkillsAsync(It.IsAny<List<ProfileSkill>>(), It.IsAny<int>()))
                 .ReturnsAsync(true);
             return mockSkillService;
+        }
+
+        public static SkillService WithDatabaseRepository(
+            this SkillService skillService)
+        {
+            var databaseRepository = MockDatabaseRepository.Create<ProfileSkill>(null, null);
+            skillService.DatabaseRepository = databaseRepository;
+            return skillService;
+        }
+
+        public static SkillService WithSkillsDatabaseRepository(
+            this SkillService skillService)
+        {
+            var databaseRepository = MockDatabaseRepository.Create<Skill>(
+                null,
+                ProfileServiceModels.AllSkills);
+            skillService.DatabaseRepository = databaseRepository;
+            return skillService;
+        }
+
+        public static SkillService WithProfileSkillsDatabaseRepository(
+            this SkillService skillService)
+        {
+            var databaseRepository = MockDatabaseRepository.Create<ProfileSkill>(
+                null,
+                ProfileServiceModels.NormalProfileSkills);
+            skillService.DatabaseRepository = databaseRepository;
+            return skillService;
         }
     }
 }

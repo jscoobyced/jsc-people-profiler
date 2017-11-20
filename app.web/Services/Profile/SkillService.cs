@@ -12,7 +12,7 @@ namespace app.web.Services
     {
         private IDatabaseRepository _databaseRepository;
 
-        public SkillService(IDatabaseRepository databaseRepository)
+        public SkillService(IDatabaseRepository databaseRepository = null)
         {
             this._databaseRepository = databaseRepository;
         }

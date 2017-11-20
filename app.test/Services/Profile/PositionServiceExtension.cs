@@ -3,6 +3,7 @@ namespace app.web.Services.Test
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using app.web.Models;
+    using app.web.Repositories.Tests;
     using Moq;
 
     public static class PositionServiceExtension
@@ -24,6 +25,24 @@ namespace app.web.Services.Test
             positionService
                 .Setup(ps => ps.GetPositionsAsync())
                 .ReturnsAsync(ProfileServiceModels.Positions);
+            return positionService;
+        }
+
+        public static PositionService WithDatabaseRepository(
+            this PositionService positionService)
+        {
+            var databaseRepository = MockDatabaseRepository.Create<Position>(null, null);
+            positionService.DatabaseRepository = databaseRepository;
+            return positionService;
+        }
+
+        public static PositionService WithPositionDatabaseRepository(
+            this PositionService positionService)
+        {
+            var databaseRepository = MockDatabaseRepository.Create<Position>(
+                null,
+                ProfileServiceModels.Positions);
+            positionService.DatabaseRepository = databaseRepository;
             return positionService;
         }
     }

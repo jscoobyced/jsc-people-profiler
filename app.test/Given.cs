@@ -7,5 +7,11 @@ namespace app.web.Services.Test
 
         public static CharacteristicService CharacteristicService
             => new CharacteristicService();
+
+        public static PositionService PositionService
+            => new PositionService();
+
+        public static SkillService SkillService
+            => new SkillService();
     }
 }

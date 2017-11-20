@@ -59,7 +59,6 @@ namespace app.web.Services.Test
                     isNullCharacteristic ? null : ProfileServiceModels.AllCharacteristics,
                     profileId);
             result.Should().Be(expected, $"Have characteristics: {isNullCharacteristic}\nProfile Id: {profileId}");
-
         }
 
         [Fact]
