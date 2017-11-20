@@ -7,11 +7,9 @@ namespace app.web.Services
 
     public interface IProfileService
     {
-        Task<List<Profile>> GetProfilesAsync();
+        Task<ProfileViewModel> GetProfileViewModelAsync(int id);
 
-        Task<List<Position>> GetPositionsAsync();
-
-        Task<Profile> GetProfileAsync(int id);
+        Task<ProfileViewModel> GetProfilesViewModelsAsync();
 
         Task<bool> UpdateProfileAsync(Profile profile);
 

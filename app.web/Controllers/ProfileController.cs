@@ -24,25 +24,21 @@ namespace app.web.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("/profiles")]
         public async Task<IActionResult> GetProfilesAsync()
         {
-            var positions = await this._profileService.GetPositionsAsync();
-            var profiles = await this._profileService.GetProfilesAsync();
-            var data = new { positions = positions, profiles = profiles };
+            var data = await this._profileService.GetProfilesViewModelsAsync();
             return Ok(data);
         }
 
-        [HttpGet("/profile/getprofileasync/{id}")]
+        [HttpGet("/profile/{id}")]
         public async Task<IActionResult> GetProfileAsync(int id)
         {
-            var positions = await this._profileService.GetPositionsAsync();
-            var profile = await this._profileService.GetProfileAsync(id);
-            var data = new { positions = positions, profile = profile };
+            var data = await this._profileService.GetProfileViewModelAsync(id);
             return Ok(data);
         }
 
-        [HttpPut("/profile/updateprofileasync/{id}")]
+        [HttpPut("/profile/{id}")]
         public async Task<IActionResult> UpdateProfileAsync(int id, [FromBody] Profile profile)
         {
             if (profile == null || id != profile.Id)

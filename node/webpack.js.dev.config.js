@@ -7,7 +7,6 @@ exports.jsConfig = {
     },
     externals: {
         "react": "React",
-        "jquery": "jQuery",
         "react-dom": "ReactDOM",
         "react-router": "ReactRouter",
         "react-router-dom": "ReactRouterDOM",
@@ -27,10 +26,4 @@ exports.jsConfig = {
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js"]
-    },
-    plugins: [
-        new webpack.ProvidePlugin({
-            $: "jquery",
-            jQuery: "jquery"
-        }),
-    ]};
+    }};

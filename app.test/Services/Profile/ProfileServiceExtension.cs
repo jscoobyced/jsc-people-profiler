@@ -24,21 +24,39 @@ namespace app.web.Services.Test
             return profileService;
         }
 
-        public static ProfileService WithPositionsDatabaseRepository(
-            this ProfileService profileService,
-            List<Position> positions)
-        {
-            var databaseRepository = MockDatabaseRepository.Create<Position>(null, positions);
-            profileService.DatabaseRepository = databaseRepository;
-            return profileService;
-        }
-
         public static ProfileService WithProfilesDatabaseRepository(
             this ProfileService profileService,
             List<Profile> profiles)
         {
             var databaseRepository = MockDatabaseRepository.Create<Profile>(null, profiles);
             profileService.DatabaseRepository = databaseRepository;
+            return profileService;
+        }
+
+        public static ProfileService WithInitiatedSkillService(this ProfileService profileService)
+        {
+            var skillService = SkillServiceExtension
+                .CreateMock()
+                .Initiated();
+            profileService.SkillService = skillService.Object;
+            return profileService;
+        }
+
+        public static ProfileService WithInitiatedCharacteristicService(this ProfileService profileService)
+        {
+            var characteristicService = CharacteristicServiceExtension
+                .CreateMock()
+                .Initiated();
+            profileService.CharacteristicService = characteristicService.Object;
+            return profileService;
+        }
+
+        public static ProfileService WithInitiatedPositionService(this ProfileService profileService)
+        {
+            var positionService = PositionServiceExtension
+                .CreateMock()
+                .Initiated();
+            profileService.PositionService = positionService.Object;
             return profileService;
         }
     }

@@ -1,71 +1,30 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { HashRouter as Router, Route } from 'react-router-dom';
 
-import { MenuProps } from '../menu/view/menu-models';
-import { MenuItem } from '../menu/view/menu-models';
-import { PageResolver } from './page-resolver';
-import Key from './../../utils/key';
+import { Page as Home } from './home/view/home';
+import { Page as ManageProfile } from './profiles/view/manage';
+import { Page as EditProfile } from './profiles/view/edit';
+import { Page as Meeting } from './meeting/view/manage';
+import { Page as Action } from './meeting/view/actions';
+import { Page as Help } from './help/view/help';
+import { Page as About } from './about/view/about';
+import { Page as Settings } from './settings/view/settings';
 
-export class Content extends React.Component<MenuProps, MenuProps>  {
-    private _key: Key = new Key();
-    private _routes: Array<JSX.Element> = new Array<JSX.Element>();
-    private _resolver = new PageResolver();
-
-    constructor(props: MenuProps) {
-        super(props);
-        this.state = {
-            leftMenu: props.leftMenu,
-            rightMenu: props.rightMenu
-        };
-    }
-
-    private addRoutes(menuItem: MenuItem): void {
-        if (menuItem !== null
-            && menuItem.menuItems !== null
-            && menuItem.menuItems.length > 0) {
-            menuItem.menuItems.forEach((innerMenuItem) => {
-                this.addRoutes(innerMenuItem);
-            });
-        }
-
-        this.addRoute(menuItem.url, menuItem.title);
-    }
-
-    private addRoute(link: string, name: string): void {
-        if (link === '#') {
-            return;
-        }
-        const page = this._resolver.resolve(link);
-        let extension = '';
-        if (page.endsWith('edit')) {
-            extension += '/:id';
-        }
-
-        const path = link + extension;
-        const self = this;
-
-        const Page = require(page + '.tsx');
-
-        const Edit = Page.Page;
-        if (link === '/') {
-            self._routes.push(
-                <Route exact key={this._key.next()} path={path} component={Edit} />
-            );
-        } else {
-            self._routes.push(
-                <Route key={this._key.next()} path={path} component={Edit} />
-            );
-        }
-    }
+export class Content extends React.Component<any, any>  {
 
     render(): JSX.Element {
-        this.addRoutes(this.state.leftMenu);
-        this.addRoutes(this.state.rightMenu);
         return (
             <Router>
+
                 <div>
-                    {this._routes}
+                    <Route exact path='/' component={Home} />
+                    <Route path='/profiles/manage' component={ManageProfile} />
+                    <Route path='/profiles/edit/:id' component={EditProfile} />
+                    <Route path='/meeting/manage' component={Meeting} />
+                    <Route path='/meeting/action' component={Action} />
+                    <Route path='/help' component={Help} />
+                    <Route path='/about' component={About} />
+                    <Route path='/settings' component={Settings} />
                 </div>
             </Router>
         );

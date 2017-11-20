@@ -3,6 +3,8 @@ namespace app.web.Services
     using System;
     using System.Collections.Generic;
     using System.Data.Common;
+    using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using app.web.Models;
     using app.web.Repositories;
@@ -11,9 +13,22 @@ namespace app.web.Services
     {
         private IDatabaseRepository _databaseRepository;
 
-        public ProfileService(IDatabaseRepository databaseRepository)
+        private ISkillService _skillService;
+
+        private ICharacteristicService _characteristicService;
+
+        private IPositionService _positionService;
+
+        public ProfileService(
+            IDatabaseRepository databaseRepository = null,
+            ISkillService skillService = null,
+            ICharacteristicService characteristicService = null,
+            IPositionService positionService = null)
         {
             this._databaseRepository = databaseRepository;
+            this._skillService = skillService;
+            this._characteristicService = characteristicService;
+            this._positionService = positionService;
         }
 
         public IDatabaseRepository DatabaseRepository
@@ -24,7 +39,46 @@ namespace app.web.Services
             }
         }
 
-        public async Task<Profile> GetProfileAsync(int id)
+        public ICharacteristicService CharacteristicService
+        {
+            set
+            {
+                this._characteristicService = value;
+            }
+        }
+
+        public ISkillService SkillService
+        {
+            set
+            {
+                this._skillService = value;
+            }
+        }
+
+        public IPositionService PositionService
+        {
+            set
+            {
+                this._positionService = value;
+            }
+        }
+
+        public async Task<ProfileViewModel> GetProfileViewModelAsync(int id)
+        {
+            var positions = await this._positionService.GetPositionsAsync();
+            var allCharacteristics = await this._characteristicService.GetCharacteristicsAsync();
+            var allSkills = await this._skillService.GetSkillsAsync();
+            var profile = await this.GetProfileAsync(id);
+            return new ProfileViewModel()
+            {
+                Positions = positions,
+                Profile = profile,
+                AllCharacteristics = allCharacteristics,
+                AllSkills = allSkills
+            };
+        }
+
+        private async Task<Profile> GetProfileAsync(int id)
         {
             string commandText = @"SELECT
                             id
@@ -42,7 +96,24 @@ namespace app.web.Services
             parameters.Add("@active", Status.Active);
             var profile = await this._databaseRepository.ExecuteRead<Profile>(
                 commandText, parameters, this.ReadProfile);
+            if (profile != null)
+            {
+                profile.Characteristics = await this._characteristicService.GetCharacteristicsByProfileIdAsync(id);
+                profile.Skills = await this._skillService.GetSkillsByProfileIdAsync(id);
+            }
+
             return profile;
+        }
+
+        public async Task<ProfileViewModel> GetProfilesViewModelsAsync()
+        {
+            var positions = await this._positionService.GetPositionsAsync();
+            var profiles = await this.GetProfilesAsync();
+            return new ProfileViewModel()
+            {
+                Positions = positions,
+                Profiles = profiles
+            };
         }
 
         public async Task<List<Profile>> GetProfilesAsync()
@@ -62,16 +133,6 @@ namespace app.web.Services
             var profiles = await this._databaseRepository.ExecuteReadList<Profile>(
                 commandText, parameters, this.ReadProfileList);
             return profiles;
-        }
-
-        public async Task<List<Position>> GetPositionsAsync()
-        {
-            string commandText = @"SELECT id, name
-                FROM `position`
-                ORDER BY id";
-            var positions = await this._databaseRepository.ExecuteReadList<Position>(
-                commandText, null, this.ReadPositionList);
-            return positions;
         }
 
         public async Task<int> CreateProfileAsync(Profile profile)
@@ -118,17 +179,14 @@ namespace app.web.Services
             var columnUpdated = await this._databaseRepository.ExecuteUpdate(
                 commandText, parameters, false);
 
+            await this._characteristicService.UpdateProfileCharacteristicsAsync(profile.Characteristics, profile.Id);
+            await this._skillService.UpdateProfileSkillsAsync(profile.Skills, profile.Id);
             return columnUpdated == 1;
         }
 
         private void ReadProfileList(DbDataReader reader, List<Profile> profiles)
         {
             profiles.Add(this.ReadProfile(reader));
-        }
-
-        private void ReadPositionList(DbDataReader reader, List<Position> positions)
-        {
-            positions.Add(this.ReadPosition(reader));
         }
 
         private Profile ReadProfile(DbDataReader reader)
@@ -141,14 +199,6 @@ namespace app.web.Services
             profile.Position = reader.GetInt32(reader.GetOrdinal("position_id"));
             profile.Status = (Status)reader.GetInt32(reader.GetOrdinal("status"));
             return profile;
-        }
-
-        private Position ReadPosition(DbDataReader reader)
-        {
-            var position = new Position();
-            position.Id = reader.GetInt32(reader.GetOrdinal("id"));
-            position.Name = reader.GetString(reader.GetOrdinal("name"));
-            return position;
         }
     }
 }

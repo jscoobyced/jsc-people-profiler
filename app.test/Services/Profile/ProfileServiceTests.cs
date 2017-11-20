@@ -8,72 +8,58 @@ namespace app.web.Services.Test
         [Fact]
         public async void GetProfileNoIdAsyncTest()
         {
-            var result = await GivenService
+            var result = await Given
                 .ProfileService
                 .WithDatabaseRepository()
-                .GetProfileAsync(-1);
-            result
+                .WithInitiatedSkillService()
+                .WithInitiatedCharacteristicService()
+                .WithInitiatedPositionService()
+                .GetProfileViewModelAsync(-1);
+            result.Profile
                 .Should().BeNull("profile Id is negative");
         }
 
         [Fact]
         public async void GetProfileAsyncTest()
         {
-            var profile = ProfileServiceModels.NormalProfile;
-            var result = await GivenService
+            var profile = ProfileServiceModels.NormalProfileViewModel;
+            var result = await Given
                 .ProfileService
-                .WithProfileDatabaseRepository(profile)
-                .GetProfileAsync(profile.Id);
+                .WithProfileDatabaseRepository(profile.Profile)
+                .WithInitiatedSkillService()
+                .WithInitiatedCharacteristicService()
+                .WithInitiatedPositionService()
+                .GetProfileViewModelAsync(profile.Profile.Id);
 
             result
-                .Should().BeSameAs(profile);
+                .ShouldBeEquivalentTo(profile);
         }
 
         [Fact]
         public async void GetProfilesAsyncTest()
         {
             var profiles = ProfileServiceModels.Profiles;
-            var result = await GivenService
+            var result = await Given
                 .ProfileService
                 .WithProfilesDatabaseRepository(profiles)
+                .WithInitiatedSkillService()
+                .WithInitiatedCharacteristicService()
+                .WithInitiatedPositionService()
                 .GetProfilesAsync();
 
             result
-                .Should().BeEquivalentTo(profiles);
-        }
-
-        [Fact]
-        public async void GetPositionAsyncTest()
-        {
-            var positions = ProfileServiceModels.Positions;
-            var result = await GivenService
-                .ProfileService
-                .WithPositionsDatabaseRepository(positions)
-                .GetPositionsAsync();
-
-            result
-                .Should().BeEquivalentTo(positions);
-        }
-
-
-        [Fact]
-        public async void GetNullPositionAsyncTest()
-        {
-            var result = await GivenService
-                .ProfileService
-                .WithDatabaseRepository()
-                .GetPositionsAsync();
-
-            result
-                .Should().BeNull();
+                .Should().BeSameAs(profiles);
         }
 
         [Fact]
         public async void UpdateProfileAsyncTest()
         {
-            var result = await GivenService
+            var result = await Given
                 .ProfileService
                 .WithDatabaseRepository()
+                .WithInitiatedSkillService()
+                .WithInitiatedCharacteristicService()
+                .WithInitiatedPositionService()
                 .UpdateProfileAsync(ProfileServiceModels.NormalProfile);
 
             result
@@ -83,9 +69,12 @@ namespace app.web.Services.Test
         [Fact]
         public async void UpdateNullProfileAsyncTest()
         {
-            var result = await GivenService
+            var result = await Given
                 .ProfileService
                 .WithDatabaseRepository()
+                .WithInitiatedSkillService()
+                .WithInitiatedCharacteristicService()
+                .WithInitiatedPositionService()
                 .UpdateProfileAsync(null);
 
             result
@@ -95,9 +84,12 @@ namespace app.web.Services.Test
         [Fact]
         public async void UpdateNoIdProfileAsyncTest()
         {
-            var result = await GivenService
+            var result = await Given
                 .ProfileService
                 .WithDatabaseRepository()
+                .WithInitiatedSkillService()
+                .WithInitiatedCharacteristicService()
+                .WithInitiatedPositionService()
                 .UpdateProfileAsync(ProfileServiceModels.NoIdProfile);
 
             result
@@ -107,9 +99,12 @@ namespace app.web.Services.Test
         [Fact]
         public async void CreateProfileAsyncTest()
         {
-            var result = await GivenService
+            var result = await Given
                 .ProfileService
                 .WithDatabaseRepository()
+                .WithInitiatedSkillService()
+                .WithInitiatedCharacteristicService()
+                .WithInitiatedPositionService()
                 .CreateProfileAsync(ProfileServiceModels.NoIdProfile);
 
             result
@@ -119,9 +114,12 @@ namespace app.web.Services.Test
         [Fact]
         public async void CreateNullProfileAsyncTest()
         {
-            var result = await GivenService
+            var result = await Given
                 .ProfileService
                 .WithDatabaseRepository()
+                .WithInitiatedSkillService()
+                .WithInitiatedCharacteristicService()
+                .WithInitiatedPositionService()
                 .CreateProfileAsync(null);
 
             result

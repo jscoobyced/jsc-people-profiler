@@ -28,18 +28,42 @@ namespace app.web.Services.Test
                 Position = 1
             };
 
+        public static ProfileViewModel NormalProfileViewModel
+            => new ProfileViewModel()
+            {
+                AllCharacteristics = AllCharacteristics,
+                AllSkills = AllSkills,
+                Profile = NormalProfile,
+                Positions = Positions
+            };
+
+        public static ProfileViewModel NoIdProfileViewModel
+            => new ProfileViewModel()
+            {
+                AllCharacteristics = AllCharacteristics,
+                AllSkills = AllSkills,
+                Profile = NoIdProfile,
+                Positions = Positions
+            };
+
+        public static List<ProfileViewModel> ProfileViewModels
+            => new List<ProfileViewModel>()
+            {
+                NormalProfileViewModel,
+                NoIdProfileViewModel
+            };
         public static List<Position> Positions
             => new List<Position>()
             {
                 new Position()
                 {
                     Id = 1,
-                    Name = "Developer"
+                    Name = "Super-Hero"
                 },
                 new Position()
                 {
                     Id = 2,
-                    Name = "Programmer"
+                    Name = "Super-Vilain"
                 }
             };
 
@@ -48,6 +72,82 @@ namespace app.web.Services.Test
             {
                 NormalProfile,
                 NoIdProfile
+            };
+
+        public static Characteristic InfraVision
+            => new Characteristic()
+            {
+                Id = 1,
+                Name = "Infra-Vision"
+            };
+
+        public static Characteristic SuperForce
+            => new Characteristic()
+            {
+                Id = 2,
+                Name = "Super Force"
+            };
+
+        public static List<Characteristic> AllCharacteristics
+            => new List<Characteristic>()
+            {
+                InfraVision,
+                SuperForce
+            };
+
+        public static Skill Combat
+            => new Skill()
+            {
+                Id = 1,
+                Name = "Combat"
+            };
+
+        public static Skill Infiltration
+            => new Skill()
+            {
+                Id = 2,
+                Name = "Infiltration"
+            };
+
+        public static List<Skill> AllSkills
+            => new List<Skill>()
+            {
+                Combat,
+                Infiltration
+            };
+
+        public static List<ProfileSkill> NormalProfileSkills
+            => new List<ProfileSkill>()
+            {
+                new ProfileSkill()
+                {
+                    Id = Combat.Id,
+                    Name = Combat.Name,
+                    Score = 5
+                },
+                new ProfileSkill()
+                {
+                    Id = Infiltration.Id,
+                    Name = Infiltration.Name,
+                    Score = 5
+                }
+            };
+
+        public static List<ProfileSkill> InvalidProfileSkills
+            => new List<ProfileSkill>()
+            {
+                new ProfileSkill()
+                {
+                    Id = Combat.Id,
+                    Name = Combat.Name,
+                    Score = 6
+                },
+                new ProfileSkill()
+                {
+                    Id = Infiltration.Id,
+                    Name = Infiltration.Name,
+                    Score = 5
+                }
             };
     }
 }

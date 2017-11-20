@@ -5,11 +5,19 @@ namespace app.web.Controllers.Tests
 {
     public static class ProfileControllerExtension
     {
-        public static ProfileController WithNormalProfileService(
+        public static ProfileController WithProfileService(
+            this ProfileController pageController, ProfileViewModel profileViewModel)
+        {
+            pageController.ProfileService = MockProfileService.Create(
+                profileViewModel,
+                true);
+            return pageController;
+        }
+        public static ProfileController WithNoProfileService(
             this ProfileController pageController)
         {
             pageController.ProfileService = MockProfileService.Create(
-                ProfileServiceModels.NormalProfile,
+                null,
                 true);
             return pageController;
         }
@@ -18,7 +26,7 @@ namespace app.web.Controllers.Tests
             this ProfileController pageController)
         {
             pageController.ProfileService = MockProfileService.Create(
-                ProfileServiceModels.NormalProfile,
+                ProfileServiceModels.NormalProfileViewModel,
                 false);
             return pageController;
         }
