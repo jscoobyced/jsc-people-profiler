@@ -154,6 +154,12 @@ namespace app.web.Services
             var insertedId = await this._databaseRepository.ExecuteUpdate(
                 commandText, parameters, true);
 
+            if (insertedId > 0)
+            {
+                await this._characteristicService.UpdateProfileCharacteristicsAsync(profile.Characteristics, insertedId);
+                await this._skillService.UpdateProfileSkillsAsync(profile.Skills, insertedId);
+            }
+
             return insertedId;
         }
 
