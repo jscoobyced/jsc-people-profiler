@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
+
 import { PageProps } from '../../page-models';
 import { MeetingProps, Meeting } from '../models/meeting';
 import { MeetingRow } from './manage-row';
@@ -38,6 +40,13 @@ export class Page extends React.Component<PageProps, MeetingProps> {
     render(): JSX.Element {
         let response = <p>Loading...</p>;
         if (this.state.requestFailed) response = <p>Failed!</p>;
+        if (this.state.requestFailed) response = <p>Failed!</p>;
+        const newElement = (
+            <Link className='btn btn-default'
+                to='/meeting/edit/0' title='New'>
+                <div className='glyphicon glyphicon-plus'></div> New
+            </Link>
+        );
         if (this.state.meetings) {
             response = (
                 <div className='row'>
@@ -53,6 +62,11 @@ export class Page extends React.Component<PageProps, MeetingProps> {
                             </thead>
                             <MeetingRow baseUrl='/meeting/edit' meetings={this.state.meetings} />
                         </table>
+                    </div>
+                    <div className='row'>
+                        <div className='col-md-8 col-md-offset-2'>
+                            {newElement}
+                        </div>
                     </div>
                 </div>
             );

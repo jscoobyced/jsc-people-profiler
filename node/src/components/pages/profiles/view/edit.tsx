@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { match } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Link, match } from 'react-router-dom';
 
 import { Profile, Position, ProfileEditProps, Characteristic, Skill } from '../models/profile';
 import { ProfileDetail } from './profile-detail';
