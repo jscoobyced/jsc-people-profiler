@@ -51,3 +51,15 @@ ALTER TABLE `profile_characteristic` ADD FOREIGN KEY (`profile_id`)
 
 ALTER TABLE `profile_characteristic` ADD FOREIGN KEY (`characteristic_id`)
     REFERENCES `characteristic` (`id`);
+
+CREATE TABLE `meeting` (
+    `id` INT PRIMARY KEY AUTO_INCREMENT
+    ,`profile_id` INT
+    ,`meeting_date` DATETIME NOT NULL DEFAULT '2017-01-01 00:00:00'
+    ,`content` TEXT
+    ,`status` INT NOT NULL DEFAULT 1
+);
+
+ALTER TABLE `meeting` ADD FOREIGN KEY (`profile_id`)
+    REFERENCES `profile` (`id`);
+

@@ -73,6 +73,7 @@ export class Page extends React.Component<ProfileEditProps, ProfileEditProps> {
             body: JSON.stringify(profile)
         })
             .then(response => {
+                Util.handleNetworkResponse(response);
                 if (!response.ok) {
                     this.setState({
                         saveResult: 'Failed',

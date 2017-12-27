@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { PageProps } from '../../page-models';
 import { MeetingProps, Meeting } from '../models/meeting';
 import { MeetingRow } from './manage-row';
+import { MeetingHelper } from '../meeting-helper';
 
 export class Page extends React.Component<PageProps, MeetingProps> {
     constructor(props: any) {
@@ -14,21 +15,17 @@ export class Page extends React.Component<PageProps, MeetingProps> {
     }
 
     componentDidMount() {
-        fetch('/profiles')
+        fetch('/meetings')
             .then(response => {
                 if (!response.ok) {
                     throw Error('Network request failed');
                 }
                 return response;
             })
-            .then(data => data.json)
+            .then(data => data.json())
             .then(data => {
                 this.setState({
-                    meetings: [{
-                        id: 1,
-                        name: 'John Smith',
-                        date: new Date()
-                    }]
+                    meetings: new MeetingHelper().toViewModels(data)
                 });
             }, () => {
                 this.setState({

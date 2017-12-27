@@ -19,6 +19,7 @@ namespace app.web
             services.AddTransient<ISkillService, SkillService>();
             services.AddTransient<ICharacteristicService, CharacteristicService>();
             services.AddTransient<IPositionService, PositionService>();
+            services.AddTransient<IMeetingService, MeetingService>();
         }
 
         private void ConfigureRepositories(IServiceCollection services)

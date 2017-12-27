@@ -16,7 +16,7 @@ export class MeetingRow extends React.Component<MeetingProps, MeetingProps> {
             const name = meeting.name;
             const edit = 'Edit';
             const title = edit + ' meeting notes with ' + meeting.name;
-            const meetingDate = Util.toYYYYMMDD(meeting.date);
+            const meetingDate = Util.toYYYYMMDDHHMMSS(meeting.date, ' ');
 
             return (
                 <tr key={key}>

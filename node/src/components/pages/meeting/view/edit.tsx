@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { Link, match } from 'react-router-dom';
 
+import Util from '../../../../utils/util';
 import { PageProps } from '../../page-models';
 import { MeetingProps, Meeting } from '../models/meeting';
 import { MeetingDetail } from './meeting-detail';
+import { MeetingHelper } from '../meeting-helper';
 
 export class EditMeeting extends React.Component<PageProps, MeetingProps> {
 
@@ -17,6 +19,7 @@ export class EditMeeting extends React.Component<PageProps, MeetingProps> {
         const id: number = match.params.id;
         fetch('/meeting/' + id)
             .then(response => {
+                Util.handleNetworkResponse(response);
                 if (!response.ok) {
                     throw Error('Network request failed');
                 }
@@ -25,19 +28,13 @@ export class EditMeeting extends React.Component<PageProps, MeetingProps> {
             .then(d => d.json())
             .then(d => {
                 this.setState({
-                    meeting: d,
+                    meeting: new MeetingHelper().toViewModel(d),
                 });
             }, () => {
                 this.setState({
                     requestFailed: true
                 });
             });
-    }
-
-    handleSave = () => {
-        if (this.state.isSaving) {
-            return;
-        }
     }
 
     render(): JSX.Element {
@@ -47,32 +44,23 @@ export class EditMeeting extends React.Component<PageProps, MeetingProps> {
         const id: number = match.params.id;
 
         let element = (<span>Loading...</span>);
-
-        const saveElement = (
-            <button className='btn btn-default save-button'
-                onClick={this.handleSave}
-                title='Save'>
-                <span className='glyphicon glyphicon-save'></span> Save
-            </button>
-        );
         if (this.state.requestFailed) element = <p>Failed!</p>;
         if (this.state.meeting) {
             if (match) {
                 element = (
-                    <MeetingDetail meeting={this.state.meeting}/>
+                    <MeetingDetail meeting={this.state.meeting} />
                 );
             }
         }
 
         const content = (
-            <div>
+            <div className='container row'>
                 <div className='row'>
                     <Link to={url} title={back}>
                         <div className='glyphicon glyphicon-hand-left'></div> {back}
                     </Link>
                 </div>
                 {element}
-                {saveElement} {this.state.saveResult}
             </div>);
 
         return content;

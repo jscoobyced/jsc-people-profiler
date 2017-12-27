@@ -9,17 +9,49 @@ namespace app.web.Controllers
 
     public class MeetingController : Controller
     {
+        private IMeetingService _meetingService;
+
+        public MeetingController(IMeetingService meetingService)
+        {
+            this._meetingService = meetingService;
+        }
+
+        public IMeetingService MeetinService
+        {
+            get
+            {
+                return this._meetingService;
+            }
+
+            set
+            {
+                this._meetingService = value;
+            }
+        }
+
+        [HttpGet("/meetings")]
+        public async Task<IActionResult> GetMeetingsAsync()
+        {
+            var meetings = await this._meetingService.GetMeetingsAsync();
+            if (meetings == null)
+            {
+                meetings = new List<MeetingViewModel>();
+            }
+
+            return Ok(meetings);
+        }
+
         [HttpGet("/meeting/{id}")]
         public async Task<IActionResult> GetMeetingAsync(int id)
         {
-            var meeting = new
+            var meeting = new MeetingViewModel()
             {
-                id = id,
-                name = "John Smith",
-                date = DateTime.Now,
-                content = "This is the content. Lorem Ipsum alari est"
+                Id = id,
+                Name = "John Smith",
+                Date = DateTime.Now,
+                Content = "This is the content. Lorem Ipsum alari est"
             };
-            await Task.Run(()=>
+            await Task.Run(() =>
             {
 
             });

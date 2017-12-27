@@ -1,8 +1,8 @@
-using app.web.Models;
-using app.web.Services.Test;
-
 namespace app.web.Controllers.Tests
 {
+    using app.web.Models;
+    using app.web.Services.Test;
+
     public static class ProfileControllerExtension
     {
         public static ProfileController WithProfileService(
