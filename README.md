@@ -59,6 +59,11 @@ followed by
 |  -------------- | ---------------- |
 | `yarn run wp:prod` | `yarn run wp:dev` |
 
+** Note: if you run in production mode, you'll need to edit the file  
+`app.web/Views/Shared/_Layout.cshtml`  
+and delete the extra  
+`<script src='jsc-xxxxxxxxxx.css'>`  
+which is inserted at the bottom of the file due to a [bug](https://github.com/jantimon/html-webpack-plugin/issues/798) in HtmlWebpackPlugin
 
 - To build the dotnet core application
 ```

@@ -9,8 +9,7 @@ exports.jsConfig = {
         "react": "React",
         "react-dom": "ReactDOM",
         "react-router": "ReactRouter",
-        "react-router-dom": "ReactRouterDOM",
-        "bootstrap": "bootstrap"
+        "react-router-dom": "ReactRouterDOM"
     },
     output: {
         path: __dirname + '/../app.web/wwwroot/js',
