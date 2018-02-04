@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS `profile_skill`;
 
 DROP TABLE IF EXISTS `profile_characteristic`;
 
+DROP TABLE IF EXISTS `meeting`;
+
 DROP TABLE IF EXISTS `profile`;
 
 DROP TABLE IF EXISTS `position`;

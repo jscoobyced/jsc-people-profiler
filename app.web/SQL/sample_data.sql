@@ -49,3 +49,7 @@ INSERT INTO `profile_characteristic` (`profile_id`, `characteristic_id`) VALUES
 ,(3, 2)
 ,(3, 5)
 ;
+
+INSERT INTO `meeting` (`profile_id`, `meeting_date`, `content`, `status`)
+VALUES (1, '2017-12-27 10:10:00', 'This is a great meeting that happened today.', 1)
+,(2, '2017-12-27 12:10:00', 'This is another great meeting that happened today.', 1);

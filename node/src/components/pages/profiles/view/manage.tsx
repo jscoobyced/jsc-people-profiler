@@ -55,7 +55,7 @@ export class Page extends React.Component<PageProps, any> {
             response = (
                 <div className='row'>
                     <div className='col-md-8 col-md-offset-2'>
-                        <table className='table table-striped profile'>
+                        <table className='table table-striped table-manage'>
                             <thead>
                                 <tr>
                                     <th>#</th>

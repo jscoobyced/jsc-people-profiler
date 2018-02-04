@@ -103,26 +103,22 @@ export class ProfileDetail extends React.Component<ProfileDetailProps, ProfileDe
             );
 
             response = (
-                <div>
+                <div className='row col-md-10 col-md-offset-1'>
                     <div className='row'>
-                        <div className='col-md-10 col-md-offset-1'>
-                            <div className='row'>
-                                <h2>
-                                    {(profile.firstName || profile.lastName) &&
-                                        <span>{profile.firstName} {profile.lastName}'s Profile</span>
-                                    }
-                                    {!(profile.firstName || profile.lastName) &&
-                                        <span>Create Profile</span>
-                                    }
-                                </h2>
-                            </div>
-                            <div className='row tall'>
-                                {firstName}
-                                {lastName}
-                                {startDateElement}
-                                {position}
-                            </div>
-                        </div>
+                        <h2>
+                            {(profile.firstName || profile.lastName) &&
+                                <span>{profile.firstName} {profile.lastName}'s Profile</span>
+                            }
+                            {!(profile.firstName || profile.lastName) &&
+                                <span>Create Profile</span>
+                            }
+                        </h2>
+                    </div>
+                    <div className='row tall'>
+                        {firstName}
+                        {lastName}
+                        {startDateElement}
+                        {position}
                     </div>
                 </div>
             );

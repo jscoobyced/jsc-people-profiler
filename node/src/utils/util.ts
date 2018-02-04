@@ -20,6 +20,15 @@ export default class Util {
             + Util.twoDigits(date.getDate());
     }
 
+    static toYYYYMMDDHHMMSS(date: Date, timeSeparator: string = 'T'): string {
+        return date.getFullYear() + '-'
+            + Util.twoDigits(date.getMonth() + 1) + '-'
+            + Util.twoDigits(date.getDate()) + timeSeparator
+            + Util.twoDigits(date.getHours()) + ':'
+            + Util.twoDigits(date.getMinutes()) + ':'
+            + Util.twoDigits(date.getSeconds());
+    }
+
     static toUTC(date: Date): Date {
         const newDate = new Date(date.getTime());
         newDate.setHours(newDate.getHours() - newDate.getTimezoneOffset() / 60);
@@ -29,5 +38,16 @@ export default class Util {
 
     static twoDigits(num: number): string {
         return ('0' + num).slice(-2);
+    }
+
+    static handleNetworkResponse(response: Response): void {
+        switch (response.status) {
+            case 404:
+                throw new Error('Feature not implemented.');
+            case 500:
+                throw new Error('The server returned an error.');
+            default:
+                break;
+        }
     }
 }

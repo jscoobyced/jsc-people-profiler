@@ -13,23 +13,23 @@ export class ProfileHelper {
                 status: 1,
                 characteristics: [],
                 skills: []
-        };
-    }
-    profile.startDate = new Date(profile.startDate);
-    positions.forEach(position => {
+            };
+        }
+        profile.startDate = new Date(profile.startDate);
+        positions.forEach(position => {
             if (position.id === profile.position) {
                 profile.positionName = position.name;
             }
         });
 
-return profile;
+        return profile;
     }
 
-toViewModels = (profiles: Array<Profile>, positions: Array<Position>): Array<Profile> => {
-    profiles.map((profile) => {
-        profile = this.toViewModel(profile, positions);
-    });
+    toViewModels = (profiles: Array<Profile>, positions: Array<Position>): Array<Profile> => {
+        profiles.map((profile) => {
+            profile = this.toViewModel(profile, positions);
+        });
 
-    return profiles;
-}
+        return profiles;
+    }
 }

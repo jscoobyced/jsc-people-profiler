@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { match } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Link, match } from 'react-router-dom';
 
 import { Profile, Position, ProfileEditProps, Characteristic, Skill } from '../models/profile';
 import { ProfileDetail } from './profile-detail';
@@ -74,6 +73,7 @@ export class Page extends React.Component<ProfileEditProps, ProfileEditProps> {
             body: JSON.stringify(profile)
         })
             .then(response => {
+                Util.handleNetworkResponse(response);
                 if (!response.ok) {
                     this.setState({
                         saveResult: 'Failed',

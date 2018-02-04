@@ -1,0 +1,9 @@
+version: '3'
+services:
+  database:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mysql
+    ports:
+     - "13306:3306"
