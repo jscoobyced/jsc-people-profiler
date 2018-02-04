@@ -163,6 +163,7 @@ export class MeetingDetail extends React.Component<MeetingDetailProps, MeetingDe
                         <select id='profile' value={meeting.profileId}
                             onChange={this.handleSelect}
                             className='form-control'>
+                            <option value='-1'>Select a profile</option>
                             {
                                 profiles.map(function (profile, key) {
                                     return <option key={key}

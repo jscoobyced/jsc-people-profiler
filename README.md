@@ -15,12 +15,12 @@ If you have docker up and running, fire up your favorite terminal then run one o
 
 #### Development
 
-During development, the best is to use the version with sample data pre-loaded:
+During development, the best is to use the version with sample data pre-loaded:  
 `docker-compose -f docker-compose-dev.yml -p profiler up --rm`
 
 #### Production
 
-If you feel like running the DB in production with docker, then simply:
+If you feel like running the DB in production with docker, then simply:  
 `docker-compose -p profiler up`
 
 ### With native MySQL database
@@ -59,6 +59,11 @@ followed by
 |  -------------- | ---------------- |
 | `yarn run wp:prod` | `yarn run wp:dev` |
 
+** Note: if you run in production mode, you'll need to edit the file  
+`app.web/Views/Shared/_Layout.cshtml`  
+and delete the extra  
+`<script src='jsc-xxxxxxxxxx.css'>`  
+which is inserted at the bottom of the file due to a [bug](https://github.com/jantimon/html-webpack-plugin/issues/798) in HtmlWebpackPlugin
 
 - To build the dotnet core application
 ```

@@ -12,8 +12,7 @@ exports.jsConfig = {
         jsc: ['./src/index'],
         vendor: ['react',
             'react-dom',
-            'react-router-dom',
-            'bootstrap'
+            'react-router-dom'
         ]
     },
     output: {
