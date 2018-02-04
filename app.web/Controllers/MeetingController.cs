@@ -44,18 +44,34 @@ namespace app.web.Controllers
         [HttpGet("/meeting/{id}")]
         public async Task<IActionResult> GetMeetingAsync(int id)
         {
-            var meeting = new MeetingViewModel()
+            var meeting = await this._meetingService.GetMeetingAsync(id);
+            if (meeting == null)
             {
-                Id = id,
-                Name = "John Smith",
-                Date = DateTime.Now,
-                Content = "This is the content. Lorem Ipsum alari est"
-            };
-            await Task.Run(() =>
-            {
+                meeting = new MeetingViewModel();
+            }
 
-            });
             return Ok(meeting);
+        }
+
+        
+        [HttpPut("/meeting/{id}")]
+        public async Task<IActionResult> UpdateMeetingAsync(int id, [FromBody] MeetingViewModel meeting)
+        {
+            if (meeting == null || id != meeting.Id)
+            {
+                return BadRequest();
+            }
+
+            if (id == 0)
+            {
+                var insertedId = await this._meetingService.CreateMeetingAsync(meeting);
+                return Ok(insertedId);
+            }
+            else if (await this._meetingService.UpdateMeetingAsync(meeting))
+            {
+                return Ok();
+            }
+            return NotFound();
         }
     }
 }

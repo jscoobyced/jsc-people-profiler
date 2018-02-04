@@ -1,6 +1,8 @@
+import { Profile } from "../../profiles/models/profile";
+
 export interface Meeting {
     id: number;
-    employeeId: number;
+    profileId: number;
     name: string;
     date: Date;
     content?: string;
@@ -17,4 +19,6 @@ export interface MeetingDetailProps {
     meeting: Meeting;
     isSaving?: boolean;
     saveResult?: string;
+    requestFailed?: boolean;
+    profiles?: Array<Profile>;
 }

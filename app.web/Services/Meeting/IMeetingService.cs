@@ -7,5 +7,11 @@ namespace app.web.Services
     public interface IMeetingService
     {
         Task<List<MeetingViewModel>> GetMeetingsAsync();
+
+        Task<MeetingViewModel> GetMeetingAsync(int meetingId);
+
+        Task<int> CreateMeetingAsync(MeetingViewModel meeting);
+
+        Task<bool> UpdateMeetingAsync(MeetingViewModel meeting);
     }
 }

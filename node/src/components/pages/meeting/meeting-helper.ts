@@ -8,11 +8,14 @@ export class MeetingHelper {
                 content: '',
                 date: new Date(),
                 name: '',
-                employeeId: 0
+                profileId: 0
             };
         }
 
         meeting.date = new Date(meeting.date);
+        if(!meeting.content) {
+            meeting.content = '';
+        }
         return meeting;
     }
 

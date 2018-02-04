@@ -4,5 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    container_name: mysqldev
     ports:
-     - "3306:3306"
+     - "13306:3306"
