@@ -15,12 +15,12 @@ If you have docker up and running, fire up your favorite terminal then run one o
 
 #### Development
 
-During development, the best is to use the version with sample data pre-loaded:
+During development, the best is to use the version with sample data pre-loaded:  
 `docker-compose -f docker-compose-dev.yml -p profiler up --rm`
 
 #### Production
 
-If you feel like running the DB in production with docker, then simply:
+If you feel like running the DB in production with docker, then simply:  
 `docker-compose -p profiler up`
 
 ### With native MySQL database
