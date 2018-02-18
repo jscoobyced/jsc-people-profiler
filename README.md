@@ -13,35 +13,44 @@ The easiest way to get started with a valid database is to use docker. If you do
 
 If you have docker up and running, fire up your favorite terminal then run one of the following commands.
 
-#### Development
+```
+docker-compose -p profiler build
+docker run --name profilerdb -p 13306:3306 -d profiler_database
+```
+If the above command returns an error that it can't create a TCP connection looking similar like this (mostly on Windows 10):
+```
+Error response from daemon: driver failed programming external connectivity on endpoint profilerdb (a585677b537fedc749a2ae4f003010661bf704b4f962607863373a1d9182c5f0): Error starting userland proxy: mkdir /port/tcp:127.0.0.1:13306:tcp:172.17.0.2:3306: input/output error.
+ ```
+then stop your running containers, stop docker then restart it. If you're still getting an error, also try disable the "Experimental features".
 
-During development, the best is to use the version with sample data pre-loaded:  
-`docker-compose -f docker-compose-dev.yml -p profiler up --rm`
+If you want to insert the sample data:  
+`docker exec profilerdb mysql -u profiler -pprofiler profiler -e "source /docker-entrypoint-initdb.d/3-sample_data.txt"`
 
-#### Production
+To stop the container:  
+`docker stop profilerdb`
 
-If you feel like running the DB in production with docker, then simply:  
-`docker-compose -p profiler up`
+To start it the next times:  
+`docker start profilerdb`
 
 ### With native MySQL database
 
-This project is set to run with MySQL. You'll need to create a database and an account. You can do so by connecting as root then entering the followinf commands:
+You'll need to create a database and an account. You can do so by connecting as root then entering the following commands:
 - `CREATE DATABASE profiler;`
 - `GRANT ALL PRIVILEGES ON profiler.* TO 'profiler_user'@'localhost' IDENTIFIED BY 'profiler_password';`
 
 Obviously you'll want to use your own username and password.
 
 Then run those scripts on your database:
-- `<root>/app.web/SQL/create.sql`
-- `<root>/app.web/SQL/data.sql`
-- and optionaly `<root>/app.web/SQL/sample_data.sql`
+- `SQL/create.sql`
+- `SQL/data.sql`
+- and optionaly `SQL/sample_data.sql`
 
 You can do so by typing:  
 `mysql -u profiler_user -p profiler < create.sql`  
 In the above command, the `-p profiler` are 2 separate arguments. The `-p` means you'll be prompted with a password, the `profiler` argument is the database name created above.
 
 You can always delete all tables by running the script:
-- `<root>/app.web/SQL/cleanup.sql`
+- `SQL/cleanup.sql`
 
 Then update the `<root>/app.web/appsettings.json` to set your MySQL server host, username and password in the `ConnectionString/MySql` setting.
 

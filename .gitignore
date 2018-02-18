@@ -7,8 +7,6 @@ x86/
 [Bb]in/
 [Oo]bj/
 .vs/
-.vscode/
-node_modules/
-app.web/wwwroot/css/
-app.web/wwwroot/js/
-app.web/Views/Shared/_Layout.cshtml
+/Src/wwwroot/dist/
+/Src/node_modules/
+/original/node_modules/
